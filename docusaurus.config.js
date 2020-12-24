@@ -1,16 +1,16 @@
 module.exports = {
-  title: 'My Site',
-  tagline: 'The tagline of my site',
-  url: 'https://your-docusaurus-test-site.com',
+  title: 'vMod',
+  tagline: 'Learn and Accelerate Game Development in Minecraft',
+  url: 'https://docs.vanillamod.com',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
+  organizationName: 'TechLX', // Usually your GitHub org/user name.
+  projectName: 'vanillamod-transpiler', // Usually your repo name.
   themeConfig: {
     navbar: {
-      title: 'My Site',
+      title: 'vMod',
       logo: {
         alt: 'My Site Logo',
         src: 'img/logo.svg',
@@ -28,8 +28,8 @@ module.exports = {
           position: 'left',
         },
         {
-          href: 'https://github.com/facebook/docusaurus',
-          label: 'GitHub',
+          href: 'https://github.com/bakerfugu/vanillamod-transpiler',
+          label: 'Source',
           position: 'right',
         },
       ],
@@ -54,16 +54,16 @@ module.exports = {
           title: 'Community',
           items: [
             {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-            },
-            {
               label: 'Discord',
-              href: 'https://discordapp.com/invite/docusaurus',
+              href: 'https://discord.gg/WPMCMjy',
             },
             {
-              label: 'Twitter',
-              href: 'https://twitter.com/docusaurus',
+              label: 'Reddit',
+              href: 'https://www.reddit.com/r/VanillaMod/',
+            },
+            {
+              label: 'Github Discussions',
+              href: 'https://github.com/bakerfugu/vanillamod-transpiler/discussions',
             },
           ],
         },
@@ -80,7 +80,7 @@ module.exports = {
             },
             {
               label: 'GitHub',
-              href: 'https://github.com/facebook/docusaurus',
+              href: 'https://github.com/bakerfugu/vanillamod-transpiler',
             },
           ],
         },
