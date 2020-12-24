@@ -1,7 +1,7 @@
 module.exports = {
   title: 'vMod',
   tagline: 'Learn and Accelerate Game Development in Minecraft',
-  url: 'https://docs.vanillamod.com',
+  url: 'https://meta.vanillamod.com',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
