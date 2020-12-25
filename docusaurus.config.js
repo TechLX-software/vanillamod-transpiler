@@ -6,7 +6,7 @@ module.exports = {
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
-  organizationName: 'TechLX', // Usually your GitHub org/user name.
+  organizationName: 'bakerfugu', // Usually your GitHub org/user name.
   projectName: 'vanillamod-transpiler', // Usually your repo name.
   themeConfig: {
     navbar: {
