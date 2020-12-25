@@ -4,9 +4,11 @@ title: Introduction
 slug: /
 ---
 
-This is a link to [another document.](doc1.md) This is a link to an [external page.](http://www.example.com/)
+**vMod** is the open source library that powers the [**vanillamod.com**](https://www.vanillamod.com/) website. **vMod** translates JavaScript into the Minecraft command language (like `/gamemode creative`). The result is the practicality of a real programming language, while leveraging the features and compatibility of Minecraft’s built in features.
 
-<details><summary>CLICK ME</summary>
+We built the [**vanillamod.com**](https://www.vanillamod.com/) website or educational use to help teach programming and game design. But, it's powerful enough
+
+<details><summary>Technical Details</summary>
 <p>
 
 #### yes, even hidden code blocks!
