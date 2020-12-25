@@ -1,6 +1,31 @@
 module.exports = {
-  someSidebar: {
-    Docusaurus: ['doc1', 'doc2', 'doc3'],
-    Features: ['mdx'],
+  mainSidebar: {
+    'vMod': [
+      'vMod/introduction', 
+      'vMod/quick-start', 
+      'vMod/examples', 
+      'vMod/transpiler', 
+      'vMod/editor', 
+      'vMod/contributing'
+    ],
+    'Code Reference': [
+      'Code Reference/functions',
+      'Code Reference/controls',
+      {
+        'Minecraft': [
+          'Code Reference/Minecraft/mc-commands',
+          'Code Reference/Minecraft/mc-selectors',
+          'Code Reference/Minecraft/mc-constants'
+        ]
+      },
+      'Code Reference/variables',
+      'Code Reference/drone',
+      'Code Reference/team',
+      'Code Reference/math-and-logic',
+      'Code Reference/events',
+      'Code Reference/sensing',
+      'Code Reference/shorthand',
+      'mdx'
+    ],
   },
 };
