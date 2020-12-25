@@ -1,8 +1,8 @@
 module.exports = {
   title: 'vMod',
   tagline: 'Learn and Accelerate Game Development in Minecraft',
-  url: 'https://meta.vanillamod.com',
-  baseUrl: '/',
+  url: 'https://bakerfugu.github.io',
+  baseUrl: '/vanillamod-transpiler/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
