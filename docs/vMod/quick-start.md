@@ -18,6 +18,6 @@ Feel free to look around, but all examples and videos are copied from the online
 This quick start guide is meant for people who are familiar with programming and basic Minecraft map making. Whether or not you are familiar with both of those things, this guide is objectively way less cool than the Intro to Modding online course. 
 :::
 
-This guide covers several small examples to demonstrate the basics of what vMod can do. These examples are taken from the "Intro to Modding (with Minecraft)" online course on [**vanillamod.com**], but with most of the explanations removed based on the assumption that you can understand code and interpret what happens in Minecraft.
+This guide covers several small examples to demonstrate the basics of what vMod can do. These examples are taken from the "Intro to Modding (with Minecraft)" online course on [**vanillamod.com**](https://www.vanillamod.com/), but with most of the explanations removed based on the assumption that you can understand code and interpret what happens in Minecraft.
 
 Stuff
