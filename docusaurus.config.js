@@ -46,7 +46,7 @@ module.exports = {
             },
             {
               label: 'Code Reference',
-              to: 'docs/quick-reference',
+              to: 'docs/Code/quick-reference',
             },
           ],
         },
