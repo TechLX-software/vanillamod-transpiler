@@ -1,6 +1,6 @@
 ---
 id: mc-constants
-title: Minecraft Constants
+title: Constants
 slug: /minecraft/constants
 ---
 

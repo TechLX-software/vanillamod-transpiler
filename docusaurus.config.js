@@ -41,12 +41,12 @@ module.exports = {
           title: 'Docs',
           items: [
             {
-              label: 'Style Guide',
+              label: 'Introduction',
               to: 'docs/',
             },
             {
-              label: 'Second Doc',
-              to: 'docs/mdx/',
+              label: 'Code Reference',
+              to: 'docs/quick-reference',
             },
           ],
         },
@@ -62,7 +62,7 @@ module.exports = {
               href: 'https://www.reddit.com/r/VanillaMod/',
             },
             {
-              label: 'Github Discussions',
+              label: 'Github',
               href: 'https://github.com/bakerfugu/vanillamod-transpiler/discussions',
             },
           ],
@@ -71,16 +71,16 @@ module.exports = {
           title: 'More',
           items: [
             {
-              label: 'TechLX',
-              href: 'https://www.techlx.com/',
-            },
-            {
               label: 'Blog',
               href: 'https://www.techlx.com/blog/',
             },
             {
-              label: 'GitHub',
+              label: 'Source',
               href: 'https://github.com/bakerfugu/vanillamod-transpiler',
+            },
+            {
+              label: 'TechLX',
+              href: 'https://www.techlx.com/',
             },
           ],
         },

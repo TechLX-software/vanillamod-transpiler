@@ -4,16 +4,18 @@ title: Editor
 slug: /editor
 ---
 
-This is a link to [another document.](doc1.md) This is a link to an [external page.](http://www.example.com/)
+The "vMod editor" is made up of three pieces, or panels. The most important panel is in the center, and it contains the code editor. The panels on the left and right can display different kinds of information for reference.
 
-<details><summary>CLICK ME</summary>
-<p>
+(Screenshot)
 
-#### yes, even hidden code blocks!
+## Code Editor Panel
 
-```python
-print("hello world!")
-```
+Stuff
 
-</p>
-</details>
+## Left Panel
+
+Stuff - Documentation or Course progress / table of contents
+
+## Right Panel
+
+Stuff - Mod description or Lesson information / code tests

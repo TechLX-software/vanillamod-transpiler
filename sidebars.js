@@ -8,7 +8,8 @@ module.exports = {
       'vMod/editor', 
       'vMod/contributing'
     ],
-    'Code Reference': [
+    'Code': [
+      'Code Reference/quick-reference',
       'Code Reference/functions',
       'Code Reference/controls',
       {
