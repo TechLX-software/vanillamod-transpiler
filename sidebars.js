@@ -9,23 +9,23 @@ module.exports = {
       'vMod/contributing'
     ],
     'Code': [
-      'Code Reference/quick-reference',
-      'Code Reference/functions',
-      'Code Reference/controls',
+      'Code/quick-reference',
+      'Code/functions',
+      'Code/controls',
       {
         'Minecraft': [
-          'Code Reference/Minecraft/mc-commands',
-          'Code Reference/Minecraft/mc-selectors',
-          'Code Reference/Minecraft/mc-constants'
+          'Code/Minecraft/mc-commands',
+          'Code/Minecraft/mc-selectors',
+          'Code/Minecraft/mc-constants'
         ]
       },
-      'Code Reference/variables',
-      'Code Reference/drone',
-      'Code Reference/team',
-      'Code Reference/math-and-logic',
-      'Code Reference/events',
-      'Code Reference/sensing',
-      'Code Reference/shorthand',
+      'Code/variables',
+      'Code/drone',
+      'Code/team',
+      'Code/math-and-logic',
+      'Code/events',
+      'Code/sensing',
+      'Code/shorthand',
       'mdx'
     ],
   },

@@ -1,8 +1,10 @@
 ---
-id: shorthand
-title: Shorthand
-slug: /shorthand
+id: quick-reference
+title: Quick Reference
+slug: quick-reference
 ---
+
+<!-- Consider renaming to "Overview", "Table of Contents" or whatever -->
 
 This is a link to [another document.](doc1.md) This is a link to an [external page.](http://www.example.com/)
 

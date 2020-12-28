@@ -1,7 +1,7 @@
 ---
-id: mc-selectors
-title: Entity Selectors
-slug: minecraft/selectors
+id: mc-constants
+title: Constants
+slug: constants
 ---
 
 This is a link to [another document.](doc1.md) This is a link to an [external page.](http://www.example.com/)
