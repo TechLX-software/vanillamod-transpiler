@@ -15,8 +15,8 @@ const INIT_HELPER_ARRAY = function(selector) {
 	`scoreboard objectives add ${STORE_VARIABLE_OBJECTIVE} dummy`]
 }
 
-const LAST_SUCCESS_TRUE = function(selector = '') { return `@s[${selector}scores={vMod_LastSuccess=1..}]` }
-const LAST_SUCCESS_FALSE = function(selector = '') { return `@s[${selector}scores={vMod_LastSuccess=..0}]` }
+const LAST_SUCCESS_TRUE = (selector = '') => `@s[${selector}scores={vMod_LastSuccess=1..}]`
+const LAST_SUCCESS_FALSE = (selector = '') => `@s[${selector}scores={vMod_LastSuccess=..0}]`
 
 function addError(error, mod) {
 	if (error.location) {
