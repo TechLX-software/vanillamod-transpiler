@@ -1,7 +1,10 @@
 import React, { useRef, useState } from "react";
+import clsx from 'clsx';
+import styles from './styles.module.css'
+
 import Editor from '@monaco-editor/react';
 
-function VModEditor() {
+function VModEditor(props) {
   const [isEditorReady, setIsEditorReady] = useState(false);
   const valueGetter = useRef();
 
@@ -15,11 +18,20 @@ function VModEditor() {
   }
 
   return <>
-    <div>Hello yes it is I, Baker</div>
+    <nav className={clsx('navbar', styles.editorHeader)}>
+      <div className="navbar__inner">
+        <h1 className={styles.editorHeaderTitle}>{props.title}</h1>
+        <div className="navbar__items navbar__items--right">
+          <a className={clsx('button button--outline button--secondary button--lg', styles.editorHeaderButton)} onClick={() => alert("hi")}>
+            Check
+          </a>
 
-    <button onClick={handleShowValue} disabled={!isEditorReady}>
-      Show value
-    </button>
+          <a className={clsx('button button--outline button--primary button--lg', styles.editorHeaderButton)} onClick={() => alert("hi")}>
+            Download
+          </a>
+        </div>
+      </div>
+    </nav>
 
     <Editor
       height="90vh"
@@ -27,7 +39,7 @@ function VModEditor() {
       theme="dark"
       options={{fontSize: 15, minimap: {enabled: false}}}
       editorDidMount={handleEditorDidMount}
-      value={"// write your code here"}
+      value={props.startingCode}
     />
   </>;
 }

@@ -6,16 +6,23 @@
  */
 
 /* You can override the default Infima variables here. */
+/* https://coolors.co/a74a25-b85128-c9582c-d36135-d77047-da7d58-de8a68 */
 :root {
-  --ifm-color-primary: #25c2a0;
-  --ifm-color-primary-dark: rgb(33, 175, 144);
-  --ifm-color-primary-darker: rgb(31, 165, 136);
-  --ifm-color-primary-darkest: rgb(26, 136, 112);
-  --ifm-color-primary-light: rgb(70, 203, 174);
-  --ifm-color-primary-lighter: rgb(102, 212, 189);
-  --ifm-color-primary-lightest: rgb(146, 224, 208);
+  --ifm-color-primary: #D36135;
+  --ifm-color-primary-dark: #C9582C;
+  --ifm-color-primary-darker: #B85128;
+  --ifm-color-primary-darkest: #A74A25;
+  --ifm-color-primary-light: #D77047;
+  --ifm-color-primary-lighter: #DA7D58;
+  --ifm-color-primary-lightest: #DE8A68;
   --ifm-code-font-size: 95%;
 }
+
+/* 
+Future color palette maybe
+https://coolors.co/ffffff-f2f2f2-9da89f-d36135-654c4f-006d77-303846
+ ----------------- white  lite   liteax main   darkax darksh dark
+*/
 
 .docusaurus-highlight-code-line {
   background-color: rgb(72, 77, 91);
