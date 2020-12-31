@@ -8,3 +8,12 @@
 .paneContentWrapper {
   padding: 10px;
 }
+
+.expandLeftButton {
+  position: absolute;
+  top: 65px;
+  left: 5px;
+  padding: 0px;
+  width: 30px;
+  height: 25px;
+}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Layout from '@theme/Layout';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import clsx from 'clsx';
 import styles from './styles.module.css';
 
 import { VModEditor } from '../../../components/vModEditor';
@@ -13,8 +14,9 @@ function EditorPlayground() {
   const [showLeftPanelContent, setShowLeftPanelContent] = useState(true);
   let editorRef = React.createRef();
 
-  const dragFinished = (sizes) => {
+  const changeLeftPanel = (sizes) => {
     const leftSize = parseFloat(sizes[0], 10);
+    console.log("resize", leftSize)
     if (leftSize < 10) {
       setShowLeftPanelContent(false);
     } else {
@@ -29,14 +31,22 @@ function EditorPlayground() {
         elem.style.opacity = 0;
       })
     }
+    console.log("hello?")
   }, [])
+
+  console.log("main func")
 
   return (
     <Layout
       title={`Editor Playground`}
       description="Code Editor Playground for the vMod / VanillaMod library">
       <main ref={editorRef}>
-        <SplitPane split="vertical" onResizeEnd={dragFinished} >
+        {!showLeftPanelContent && 
+          <a className={clsx('button button--secondary', styles.expandLeftButton)} onClick={() => changeLeftPanel([10])}>
+            {'>'}
+          </a>
+        }
+        <SplitPane split="vertical" onResizeEnd={changeLeftPanel} >
           {showLeftPanelContent &&
             <Pane initialSize="15%">
               <div className={styles.paneContentWrapper}>
