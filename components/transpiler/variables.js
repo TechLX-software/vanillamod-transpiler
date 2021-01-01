@@ -1,7 +1,6 @@
-'use strict'
+const vars = {}
 
-var vars = module.exports = {}
-var vMod = require('./library-1-13.js')
+import vMod from './library-1-13.js'
 
 // var USER_NAME = 'testUser'
 // var PROJECT_NAME = 'testProjectName'
@@ -201,3 +200,5 @@ vars.Function = class {
 function getMCFunctionPath(mod, calledFunction, mcFunctionName) {
   return mod.NAME+':'+calledFunction+'/'+mcFunctionName;
 }
+
+export default vars;

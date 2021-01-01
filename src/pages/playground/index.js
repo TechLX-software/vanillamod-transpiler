@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import styles from './styles.module.css';
 
 import { VModEditor } from '../../../components/vModEditor';
+import codeEamples from '../../../components/transpiler/codeExamples';
 import SplitPane from 'react-split-pane';
 import Pane from 'react-split-pane/lib/Pane'
 
@@ -12,11 +13,12 @@ function EditorPlayground() {
   const context = useDocusaurusContext();
   const {siteConfig = {}} = context;
   const [showLeftPanelContent, setShowLeftPanelContent] = useState(true);
+  const [editorStarterCode, setEditorStarterCode] = useState("// write your code here");
+
   let editorRef = React.createRef();
 
   const changeLeftPanel = (sizes) => {
     const leftSize = parseFloat(sizes[0], 10);
-    console.log("resize", leftSize)
     if (leftSize < 10) {
       setShowLeftPanelContent(false);
     } else {
@@ -31,10 +33,7 @@ function EditorPlayground() {
         elem.style.opacity = 0;
       })
     }
-    console.log("hello?")
   }, [])
-
-  console.log("main func")
 
   return (
     <Layout
@@ -56,14 +55,11 @@ function EditorPlayground() {
                   </div>
                   <div className="card__body">
                     <p>
-                      This panel will hold the table of contents of a course if the current 
+                      This resizable panel will hold the table of contents of a course if the current 
                       mod has one. Unsure of what it should display for a normal user-made mod.
                     </p>
                     <p>
                       Eventually, there might be a file browser here too.
-                    </p>
-                    <p>
-                      Try resizing me!
                     </p>
                   </div>
                 </div>
@@ -74,7 +70,7 @@ function EditorPlayground() {
           <Pane>
             <VModEditor 
               title="vMod Playground"
-              startingCode="// write your code here"
+              startingCode={editorStarterCode}
             />
           </Pane>
           <Pane initialSize="25%">
@@ -85,16 +81,25 @@ function EditorPlayground() {
                 </div>
                 <div className="card__body">
                   <p>
-                    This panel will hold the the description of the mod or lesson. 
+                    This resizable panel will hold the the description of the mod or lesson. 
                     It will have a tab to switch to the interactive documentation.
                   </p>
                   <p>
                     Eventually, there might be a display for test results.
                   </p>
-                  <p>
-                    Try resizing me!
-                  </p>
                 </div>
+              </div>
+              <div className="card">
+                <div className="card__header">
+                  <h3>Code Examples</h3>
+                </div>
+                {codeEamples.map((example, index) =>
+                  <div className="card__body" key={index}>
+                    <a className='button button--info' onClick={() => setEditorStarterCode(example.code)}>
+                      {example.title}
+                    </a>
+                  </div>
+                )}
               </div>
             </div>
           </Pane>

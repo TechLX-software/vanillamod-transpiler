@@ -23,9 +23,15 @@ module.exports = {
           position: 'left',
         },
         {
+          to: 'playground',
+          activeBasePath: 'playground',
+          label: 'Playground',
+          position: 'left',
+        },
+        {
           href: 'https://www.techlx.com/blog/',
           label: 'Blog',
-          position: 'left',
+          position: 'right',
         },
         {
           href: 'https://github.com/bakerfugu/vanillamod-transpiler',

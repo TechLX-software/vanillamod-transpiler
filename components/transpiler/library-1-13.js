@@ -1,7 +1,5 @@
-'use strict';
-
-//Library
-var vMod = module.exports = {};
+//Library (bad name, rename this)
+const vMod = {};
 
 // var prefix = ''; //'minecraft:'
 
@@ -15,6 +13,7 @@ var vMod = module.exports = {};
 // }
 
 //These need to be executes at some point because 1.13 is weird
+//Also these are functions of drones/entities, and should be described as such
 vMod.turnLeft = function() {
   return ['teleport', '@s', `~ ~ ~ ~-90 ~`]
 }
@@ -127,3 +126,5 @@ vMod.team = function(action, teamName, param1, optionValue) {
 // vMod.print = function(...args) {
 // eventually do a tellraw thing here
 // }
+
+export default vMod;

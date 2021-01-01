@@ -1,7 +1,9 @@
-var validator = module.exports = {}
-const commandValidator = require('./1-13-commands.json').children
-const vMod = require('./library-1-13.js');
+const validator = {}
 
+import commandTree from './resources/1-13-commands.json'
+import vMod from './library-1-13.js'
+
+const commandValidator = commandTree.children;
 
 validator.validate = function(statement, inGameVars) {
   debugPrint('================================================ validate() ================================================')
@@ -341,3 +343,5 @@ function debugPrint() {
     console.log.apply(console, arguments);
   }
 }
+
+export default validator;

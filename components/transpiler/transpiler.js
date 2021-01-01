@@ -1,12 +1,11 @@
-'use strict';
+import { parseScript } from 'esprima'
 
-const transpiler = module.exports = {};
-const vMod = require('../library-1-13.js');
-const vars = require('../variables.js');
-const hash = require('object-hash');
-const esprima = require('esprima');
-const MCF_library = require('../vMod-MCF-library.json')
-const validator = require('../validator.js')
+import vMod from './library-1-13'
+import vars from './variables'
+import validator from './validator'
+import MCF_library from './resources/vMod-MCF-library.json'
+
+const transpiler = {};
 
 const STORE_VARIABLE_OBJECTIVE = 'vMod_Variable';
 const INIT_HELPER_ARRAY = function(selector) {
@@ -18,23 +17,19 @@ const INIT_HELPER_ARRAY = function(selector) {
 const LAST_SUCCESS_TRUE = (selector = '') => `@s[${selector}scores={vMod_LastSuccess=1..}]`
 const LAST_SUCCESS_FALSE = (selector = '') => `@s[${selector}scores={vMod_LastSuccess=..0}]`
 
-function addError(error, mod) {
-	if (error.location) {
-		if (typeof error.location === 'string') {
-			mod.errors.push(`Location: ${error.location}\n${error.message}`)
-		} else {
-			const errorLocation = error.location.start
-			mod.errors.push(`Line: ${errorLocation.line} Column: ${errorLocation.column}\n${error.message}`)
-		}
-	} else {
-		console.log('Source code error:', error)
-		mod.errors.push('VanillaMod Source - ' + error)
-	}
+class VModError extends Error {
+  constructor(location, message) {
+    super(message)
+    this.location = location
+  }
 }
 
 function jsonFile(fileName, fileType, fileContents = []) {
 	if (!/[a-z0-9_.-]/.test(fileName)) {
-		throw { location: 'VanillaMod Source Code (sort of)', message: `The file name ${fileName} contains a non [a-z0-9_.-] character (Uppercase is not allowed)` }
+		throw new VModError(
+      'VanillaMod Source Code (sort of)', 
+      `The file name ${fileName} contains a non [a-z0-9_.-] character (Uppercase is not allowed)`
+    )
 	}
 	return {
 		name: fileName,
@@ -67,10 +62,10 @@ function getFileByName(fileName, currentFolder) {
 //https://www.reddit.com/r/Minecraft/comments/3xx4xz/modern_scientific_calculator/
 
 transpiler.compile = function(rawJavaScript, modInfo) {
-	console.log('modInfo JSON:', modInfo);
+	debugPrint('modInfo JSON:', modInfo);
 
 	try {
-		var parsedJS = esprima.parse(rawJavaScript, { loc: true });
+    var parsedJS = parseScript(rawJavaScript, { loc: true });
 	} catch (e) {
     //should this be console logged?
     debugPrint('Esprima had an error: ', JSON.stringify(e));
@@ -97,23 +92,25 @@ transpiler.compile = function(rawJavaScript, modInfo) {
   		modName: snakeCaseModName,
   		mcmeta: {
   			"pack": {
-  				"pack_format": 1,
-  				"description": `A VanillaMod by ${'USER_NAME_HERE'}. Last updated on data/time`
+  				"pack_format": 6,
+  				"description": `A VanillaMod by ${'USER_NAME_HERE'}. Last updated on ${(new Date()).toLocaleString()}`
   			}
   		},
   		data: [
-  		jsonFile(snakeCaseModName, 'folder', [jsonFile('functions', 'folder')]),
-  		jsonFile('minecraft', 'folder', [
-  			jsonFile('tags', 'folder', [
-  				jsonFile('functions', 'folder', [
-  					jsonFile('load', 'json', {
-  						"values": [
-  						snakeCaseModName + ":init"
-  						]
-  					})
-  					])
-  				])
-  			])
+  		  jsonFile(snakeCaseModName, 'folder', [
+          jsonFile('functions', 'folder')
+        ]),
+        jsonFile('minecraft', 'folder', [
+          jsonFile('tags', 'folder', [
+            jsonFile('functions', 'folder', [
+              jsonFile('load', 'json', {
+                "values": [
+                  snakeCaseModName + ":init"
+                ]
+              })
+            ])
+          ])
+        ])
   		]
   	}
   }
@@ -132,7 +129,7 @@ transpiler.compile = function(rawJavaScript, modInfo) {
 
   if (mod.errors.length > 0) {
   	debugPrint('errors found by vMod: ', mod.errors);
-  	return mod.errors;
+  	return { errors: mod.errors };
   }
 
   //add dependencies:
@@ -150,13 +147,13 @@ transpiler.compile = function(rawJavaScript, modInfo) {
   	)
   }
 
-  debugPrint('datapack JSON: ', JSON.stringify(mod.datapackJson, null, 4));
+  debugPrint('datapack JSON:', mod.datapackJson);
 
   return mod.datapackJson;
 }
 
 transpiler.transpileProgramStatement = function(programStatement, mod) {
-	debugPrint('datapack JSON at start:', JSON.stringify(mod.datapackJson, null, 4));
+	debugPrint('datapack JSON at start:', mod.datapackJson);
   const functionsFolder = getFileByName('functions', mod.datapackJson.data[0]) //get the function folder from the namespace of this mod
   let scope = {
   	functionName: 'vMod-GLOBAL',
@@ -190,7 +187,7 @@ transpiler.transpileProgramStatement = function(programStatement, mod) {
     modInit.push('function ' + scope.mcFunctionPath + 'main');
     modInit.push(`kill ${thisMod.getSelector()}`);
   } catch (e) {
-  	addError(e, mod)
+  	mod.errors.push(e)
   }
 
    //get all functions in an array
@@ -203,7 +200,7 @@ transpiler.transpileProgramStatement = function(programStatement, mod) {
   	try {
   		transpiler.initializeFunction(functionStatement, mod, scope)
   	} catch (e) {
-  		addError(e, mod)
+  		mod.errors.push(e)
   	}
   })
 
@@ -216,7 +213,7 @@ transpiler.transpileProgramStatement = function(programStatement, mod) {
   	try {
   		transpiler.transpileVariableDeclaration(variableStatement, mod, scope)
   	} catch (e) {
-  		addError(e, mod)
+      mod.errors.push(e)
   	}
   })
 
@@ -232,10 +229,13 @@ transpiler.transpileProgramStatement = function(programStatement, mod) {
       if (transpiler.hasOwnProperty('transpile'+initStatement.type)) {
       	transpiler['transpile'+initStatement.type](initStatement, mod, scope)
       } else {
-      	throw {location: initStatement.loc, message: `InvalidType. VanillaMod does not currently support ${initStatement.type}`}
+      	throw new VModError(
+          initStatement.loc, 
+          `InvalidType. VanillaMod does not currently support ${initStatement.type}`
+        )
       }
     } catch (e) {
-    	addError(e, mod)
+      mod.errors.push(e)
     }
   })
 
@@ -245,7 +245,7 @@ transpiler.transpileProgramStatement = function(programStatement, mod) {
     try {
     	transpiler.transpileFunctionDeclaration(functionStatement, mod, scope);
     } catch (e) {
-    	addError(e, mod)
+      mod.errors.push(e)
     }
   });
   debugPrint(indenter(scope.depth) + ']');
@@ -261,25 +261,25 @@ transpiler.transpileProgramStatement = function(programStatement, mod) {
   	debugPrint('init functions', mod.initFunctionsList)
   	modInitMain.push(...mod.initFunctionsList)
   } catch (e) {
-  	addError(e, mod)
+    mod.errors.push(e)
   }
 }
 
 transpiler.initializeFunction = function(statement, mod, scope) {
 	const newFunctionName = snakeCaser(statement.id.name)
 	if (!/[a-z0-9_.-]/.test(newFunctionName)) {
-		throw {
-			location: statement.id.loc,
-			message: `The file name ${newFunctionName} contains a non [a-z0-9_.-] character. ` +
+		throw new VModError(
+			statement.id.loc,
+			`The file name ${newFunctionName} contains a non [a-z0-9_.-] character. ` +
 			`It should only have lowercase letters, numbers, periods, underscores, or hyphens`
-		}
+    )
 	}
 	if (scope.variables.has(newFunctionName)) {
-		throw {
-			location: statement.id.loc,
-			message: `There is already a function called ${newFunctionName}. ` +
+		throw new VModError(
+			statement.id.loc,
+			`There is already a function called ${newFunctionName}. ` +
 			`Function names must be unique, ignoring uppercase and lowercase.`
-		}
+    )
 	}
 
 	scope.variables.set(newFunctionName, new vars.Function(newFunctionName, statement.params));
@@ -356,7 +356,7 @@ transpiler.transpileBlockStatement = function(statement, mod, oldScope) {
   			transpiler['transpile' + statement.type](statement, mod, scope)
   		}
   		catch (e) {
-  			addError(e, mod)
+  			mod.errors.push(e)
   		}
   	}
   });
@@ -377,7 +377,10 @@ transpiler.transpileVariableDeclaration = function(statement, mod, scope) {
 	debugPrint(indenter(scope.depth) + ' ' + scope.depth + ':' + scope.index + ' variable declaration');
 
 	if (statement.kind == 'const') {
-		throw { location: statement.loc, message: 'VanillaMod incompatibility, constants are not yet supported' }
+		throw new VModError(
+      statement.loc, 
+      'VanillaMod incompatibility, constants are not yet supported'
+    )
 	}
 
 	statement.declarations.forEach(function(declaration) {
@@ -405,7 +408,10 @@ transpiler.transpileVariableDeclaration = function(statement, mod, scope) {
     			const setValue = `scoreboard players set ${newInt.getVariable()} ${STORE_VARIABLE_OBJECTIVE} ${declaration.init.value}`;
     			scope.mcFunctionContents.push(setValue);
     		} else {
-    			throw { location: declaration.loc, message: `Do not redeclare variables, ${declaration.id.name} already exists!` }
+    			throw new VModError( 
+            declaration.loc, 
+            `Do not redeclare variables, ${declaration.id.name} already exists!`
+          )
     		}
     	} else {
         //must be a newExpression
@@ -413,7 +419,10 @@ transpiler.transpileVariableDeclaration = function(statement, mod, scope) {
         	declaration.init.justDeclared = true
         	transpiler.transpileNewExpression(declaration.init, mod, scope, varName);
         } else {
-        	throw { location: declaration.init.loc, message: 'Variable defininitions should either be a new expression or an integer.' }
+        	throw new VModError(
+            declaration.init.loc, 
+            'Variable defininitions should either be a new expression or an integer.'
+          )
         }
       }
     }
@@ -454,17 +463,23 @@ transpiler.transpileIfStatement = function(statement, mod, scope) {
   		checkConditionalCommand = transpiler['transpileCallExpression'](statement.test, mod, scope, true)
   	} else {
       // REMOVED UNTIL COMPLEX CONDITIONALS ARE IMPLEMENTED
-      throw { location: statement.test.loc, message: `VanillaMod: The condition used is overly complex. `
-      	+`Try a simple comparison like yourVar < 5 or vMod.yourCommand(...)`}
+      throw new VModError(
+        statement.test.loc, 
+        `VanillaMod: The condition used is overly complex. `
+        +`Try a simple comparison like yourVar < 5 or vMod.yourCommand(...)`
+      )
       // scope.statementContext = 'conditional'
       // scope.mcFunctionContents = ifStatementTest
       // scope.mcFunctionPath = ifStatementTestPath
       // transpiler['transpile' + statement.test.type](statement.test, mod, scope)
     }
   } else {
-  	throw { location: statement.test.loc, message: `VanillaMod: IncompatibleStatementType. `
-  		+`The type ${statement.test.type} cannot be used as a condition/boolean` }
-  	}
+  	throw new VModError(
+      statement.test.loc, 
+      `VanillaMod: IncompatibleStatementType. `
+      +`The type ${statement.test.type} cannot be used as a condition/boolean`
+    )
+  }
 
   //Add continue tag if needed
   const continueTag = 'vMod-ElseContinue-' + scope.functionName + '-depth-' + scope.depth
@@ -576,9 +591,12 @@ transpiler.transpileForStatement = function(statement, mod, scope) {
   	scope.mcFunctionContents = newJsonFile(forStatementFolder, 'init', 'mcfunction').contents
   	transpiler['transpile' + forStatementInit.type](forStatementInit, mod, scope)
   } else {
-  	throw { location: forStatementInit.loc, message: `VanillaMod: IncompatibleStatementType. `
-  		+`The type ${forStatementInit.type} cannot be used to initialize a for loop` }
-  	}
+  	throw new VModError(
+      forStatementInit.loc,
+      `VanillaMod: IncompatibleStatementType. `
+      +`The type ${forStatementInit.type} cannot be used to initialize a for loop`
+    )
+  }
 
   //second part ex: i < 5;
   const forStatementCondition = statement.test
@@ -592,8 +610,11 @@ transpiler.transpileForStatement = function(statement, mod, scope) {
   	} else if (isSimpleCallExpressionCondition(statement)) {
   		forStatementConditionCommand = transpiler['transpileCallExpression'](forStatementCondition, mod, scope, true)
   	} else {
-  		throw { location: forStatementCondition.loc, message: `VanillaMod: The condition used is overly complex. `
-  			+`Try a simple comparison like yourVar < 5 or vMod.yourCommand(...)`}
+  		throw new VModError(
+        forStatementCondition.loc, 
+        `VanillaMod: The condition used is overly complex. `
+        +`Try a simple comparison like yourVar < 5 or vMod.yourCommand(...)`
+      )
       // once I actually build a complex condition parser
       // scope.statementContext = 'condition'
       // scope.mcFunctionName = 'condition'
@@ -601,9 +622,12 @@ transpiler.transpileForStatement = function(statement, mod, scope) {
       // transpiler['transpile' + forStatementCondition.type](forStatementCondition, mod, scope)
     }
   } else {
-  	throw { location: forStatementCondition.loc, message: `VanillaMod: IncompatibleStatementType. The type `
-  		+`${forStatementCondition.type} cannot be used as a condition` }
-  	}
+  	throw new VModError(
+      forStatementCondition.loc,
+      `VanillaMod: IncompatibleStatementType. The type `
+      +`${forStatementCondition.type} cannot be used as a condition`
+    )
+  }
 
   //third part ex: i++)
   const forStatementUpdate = statement.update
@@ -614,9 +638,12 @@ transpiler.transpileForStatement = function(statement, mod, scope) {
   	scope.mcFunctionContents = newJsonFile(forStatementFolder, 'update', 'mcfunction').contents
   	transpiler['transpile' + forStatementUpdate.type](forStatementUpdate, mod, scope)
   } else {
-  	throw { location: forStatementUpdate.loc, message: `VanillaMod: IncompatibleStatementType. `
-  		+`The type ${forStatementUpdate.type} cannot be used as an updater in a for loop` }
-  	}
+  	throw new VModError(
+      forStatementUpdate.loc, 
+      `VanillaMod: IncompatibleStatementType. `
+      +`The type ${forStatementUpdate.type} cannot be used as an updater in a for loop`
+    )
+  }
 
   //block statement
   const forStatementBodyCommand = `execute if entity ${LAST_SUCCESS_TRUE()} run `
@@ -658,7 +685,10 @@ transpiler.transpileExpressionStatement = function(statement, mod, scope) {
   if (transpiler.hasOwnProperty('transpile' + statement.expression.type)) {
   	transpiler['transpile' + statement.expression.type](statement.expression, mod, scope);
   } else {
-  	throw { location: statement.loc, message: `Invalid expression type ${statement.expression.type}. It's possible what you're trying to do is not currently supported by VanillaMod` }
+  	throw new VModError(
+      statement.loc,
+      `Invalid expression type ${statement.expression.type}. It's possible what you're trying to do is not currently supported by VanillaMod`
+    )
   }
 }
 
@@ -676,7 +706,10 @@ transpiler.transpileCallExpression = function(statement, mod, scope, isCondition
   		scope.mcFunctionContents.push(validatedCommand)
   		return
   	} else {
-  		throw { location: statement.callee.property.loc, message: 'Consoles are only good for logging. use console.log()' }
+  		throw new VModError(
+        statement.callee.property.loc, 
+        'Consoles are only good for logging. use console.log()' 
+      )
   	}
   }
 
@@ -715,15 +748,17 @@ transpiler.transpileCallExpression = function(statement, mod, scope, isCondition
         scope.mcFunctionContents.push(vMod.function(getMCFunctionPath(mod, calledFunctionName, 'main')).join(' '))
 
       } else {
-      	throw {
-      		location: statement.loc,
-      		message: 'User defined objects cannot call user defined functions.' +
+      	throw new VModError(
+      		statement.loc,
+      		'User defined objects cannot call user defined functions.' +
       		'\nIf you\'re not doing that, you may have spelled something wrong'
-      	}
+        )
       }
     } else {
-    	debugPrint('checking callexpression:', statement);
-    	throw { location: statement.loc, message: 'Function: ' + calledFunctionName + ' cannot be found.' }
+    	throw new VModError(
+        statement.loc, 
+        'Function: ' + calledFunctionName + ' cannot be found.'
+      )
     }
   }
 }
@@ -789,10 +824,16 @@ transpiler.transpileAssignmentExpression = function(statement, mod, scope) {
 		} else if (statement.right.type == 'NewExpression') {
 			transpiler.transpileNewExpression(statement.right, mod, scope, statement.left.name);
 		} else {
-			throw { location: statement.right.loc, message: 'Unsupported type. ' + statement.right.type + ' cannot be used as part of an assignment expression' }
+			throw new VModError(
+        statement.right.loc,
+        'Unsupported type. ' + statement.right.type + ' cannot be used as part of an assignment expression'
+      )
 		}
 	} else {
-		throw { location: statement.left.loc, message: 'variable: ' + statement.left.name + ' is not declared or is out of scope' }
+		throw new VModError(
+      statement.left.loc, 
+      'variable: ' + statement.left.name + ' is not declared or is out of scope'
+    )
 	}
 }
 
@@ -812,7 +853,10 @@ transpiler.transpileNewExpression = function(statement, mod, scope, varName) {
 	  		if (typeof statement.arguments[0].value == 'string') {
 	  			firstArg = statement.arguments[0].value
 	  		} else {
-	  			throw { location: statement.arguments[0].loc, message: 'Constructor arguments must be strings' }
+	  			throw new VModError(
+            statement.arguments[0].loc, 
+            'Constructor arguments must be strings'
+          )
 	  		}
 			}
 
@@ -821,9 +865,11 @@ transpiler.transpileNewExpression = function(statement, mod, scope, varName) {
   			let entityObject = scope.variables.get(varName);
 
   			if (toBeDefined.defined && toBeDefined.variableType != entityObject.variableType) {
-  				throw {location: statement.loc, message: `Cannot redefine variables as a different type. `
+  				throw new VModError(
+            statement.loc,
+            `Cannot redefine variables as a different type. `
   					+`The variable ${varName} is already defined as a ${toBeDefined.variableType}`
-  				}
+          )
 				}
 
   			const createCommands = entityObject.createInGameVariable()
@@ -836,7 +882,10 @@ transpiler.transpileNewExpression = function(statement, mod, scope, varName) {
 		          scope.variableCounter--;
 		        }
 	        } else {
-	        	throw { location: statement.callee.loc, message: 'Cannot do new expression with normal variables' }
+	        	throw new VModError(
+              statement.callee.loc, 
+              'Cannot do new expression with normal variables'
+            )
 	        }
 	      } else {
 		    	scope.mcFunctionContents.push(...createCommands)
@@ -850,7 +899,10 @@ transpiler.transpileNewExpression = function(statement, mod, scope, varName) {
       //   debugPrint('it was an array, mcfunctioncontents:', scope.mcFunctionContents)
 
 	  } else {
-	  	throw { location: statement.callee.property.loc, message: 'Unknown constructor: ' + newType + ' try Drone() or Team()' }
+	  	throw new VModError(
+        statement.callee.property.loc, 
+        'Unknown constructor: ' + newType + ' try Drone() or Team()'
+      )
 	  }
 	//end isValidNewObject
 	}
@@ -868,7 +920,7 @@ transpiler.transpileNewExpression = function(statement, mod, scope, varName) {
     //         scope.mcFunctionContents.push(toBeDefined.clearReference());
     //       } else {
     //         // Should this be here, or should it part of variables.js? Every variable should have a clear-reference?
-    //         throw {location: statement.loc, message:  'Typing error. You cannot change the type of the variable: "' + toBeDefined.varName + '" to a team because it is already something else'}
+    //         throw new VModError( statement.loc, message:  'Typing error. You cannot change the type of the variable: "' + toBeDefined.varName + '" to a team because it is already something else'}
     //       }
     //     } else {
     //       //remove old team just to be safe
@@ -882,7 +934,7 @@ transpiler.transpileNewExpression = function(statement, mod, scope, varName) {
     //     //create new team (should this be partially generated by vars.Team?) YES! SAME WITH DRONE
     //     scope.mcFunctionContents.push(teamObject.createTeam());
     //   } else {
-    //     throw {location: statement.loc, message:  'Team names are limited to 16 characters, ' + varName + ' is too long. Eventually VanillaMod may generate a hash for you, not yet'}
+    //     throw new VModError( statement.loc, message:  'Team names are limited to 16 characters, ' + varName + ' is too long. Eventually VanillaMod may generate a hash for you, not yet'}
     //   }
     // }
   //}
@@ -894,15 +946,24 @@ transpiler.transpileBinaryExpression = function(statement, mod, scope, getSimple
 
   const test = statement;
   if (test.left.type != 'Identifier') {
-  	throw { location: test.left.loc, message: 'VanillaMod InvalidType. The left side of a math condition must be a variable' }
+  	throw new VModError(
+      test.left.loc, 
+      'VanillaMod InvalidType. The left side of a math condition must be a variable'
+    )
   }
   const leftVariableName = test.left.name
   const leftVariable = scope.variables.has(leftVariableName) ? scope.variables.get(leftVariableName) : undefined
   if (!leftVariable) {
-  	throw { location: test.left.loc, message: `ReferenceError. The variable ${leftVariableName} does not exist` }
+  	throw new VModError(
+      test.left.loc, 
+      `ReferenceError. The variable ${leftVariableName} does not exist`
+    )
   }
   if (leftVariable.variableType != 'int') {
-  	throw { location: test.left.loc, message: `VanillaMod TypeError. The variable ${leftVariableName} is not a number` }
+  	throw new VModError(
+      test.left.loc, 
+      `VanillaMod TypeError. The variable ${leftVariableName} is not a number`
+    )
   }
 
   test.right = fixIfNegativeNumber(test.right)
@@ -913,10 +974,16 @@ transpiler.transpileBinaryExpression = function(statement, mod, scope, getSimple
     const rightVariable = scope.variables.has(rightVariableName) ? scope.variables.get(rightVariableName) : undefined
 
     if (!rightVariable) {
-    	throw { location: test.right.loc, message: `ReferenceError. The variable ${rightVariableName} does not exist` }
+    	throw new VModError(
+        test.right.loc, 
+        `ReferenceError. The variable ${rightVariableName} does not exist`
+      )
     }
     if (rightVariable.variableType != 'int') {
-    	throw { location: test.left.loc, message: `VanillaMod TypeError. The variable ${rightVariableName} is not a number` }
+    	throw new VModError(
+        test.left.loc, 
+        `VanillaMod TypeError. The variable ${rightVariableName} is not a number`
+      )
     }
 
     //change == or === to just = for minecraft
@@ -965,7 +1032,10 @@ transpiler.transpileBinaryExpression = function(statement, mod, scope, getSimple
     	scope.mcFunctionContents.push(comparisonCommand)
     }
   } else {
-  	throw { location: test.right.loc, message: `VanillaMod InvalidType. ${JSON.stringify(test.right)} must be a variable or a number` }
+  	throw new VModError(
+      test.right.loc, 
+      `VanillaMod InvalidType. ${JSON.stringify(test.right)} must be a variable or a number`
+    )
   }
 }
 
@@ -978,7 +1048,10 @@ transpiler.transpileLogicalExpression = function(statement, mod, scope) {
   //scope.depth FIRST
   debugPrint(indenter(scope.depth) + ' ' + scope.depth + ':' + scope.index + ' logical expression');
 
-  throw { location: statement.loc, message: 'VanillaMod is not able to handle logical expressions right now' }
+  throw new VModError(
+    statement.loc, 
+    'VanillaMod is not able to handle logical expressions right now'
+  )
 }
 
 // testVar = otherVar;
@@ -989,7 +1062,10 @@ transpiler.transpileIdentifier = function(statement, mod, scope) {
 
 transpiler.transpileLiteral = function(statement, mod, scope) {
 	debugPrint(indenter(scope.depth) + ' ' + scope.depth + ':' + scope.index + ' literal (found on its own?)');
-	throw { location: statement.loc, message: ' unused literal, try removing it' }
+	throw new VModError(
+    statement.loc, 
+    'Unused literal, try removing it'
+  )
 }
 
 function isSimpleBinaryCondition(statement) {
@@ -1028,39 +1104,44 @@ function isSimpleCallExpressionCondition(statement) {
 
 function isValidNewObject(statement) {
 	if (statement.callee.type != 'MemberExpression') {
-		throw {
-			location: statement.loc, message: 'Creating new objects must look like this: new library.objectName(...)'
+		throw new VModError(
+      statement.loc, 
+      'Creating new objects must look like this: new library.objectName(...)'
 			+ '\n(Not in MemberExpression format)'
-		}
+    )
 	}
 	if (statement.callee.object.type != 'Identifier' || statement.callee.property.type != 'Identifier') {
-		throw {
-			location: statement.loc, message: 'Creating new objects must look like this: new library.objectName(...)'
+		throw new VModError(
+      statement.loc, 
+      'Creating new objects must look like this: new library.objectName(...)'
 			+ '\n(Both sides of MemberExpression must be Identifiers)'
-		}
+    )
 	}
 	if (statement.callee.object.name == 'vMod') {
 		if (statement.callee.property.name == 'Drone') {
 			return true;
 		}
-		throw {
-			location: statement.callee.property.name, message: `The vMod library does not contain object type: `
+		throw new VModError(
+      statement.callee.property.name, 
+      `The vMod library does not contain object type: `
 			+ `'vMod.${statement.callee.property.name}', try using vMod.Drone(...)`
-		}
+    )
 	}
 	if (statement.callee.object.name == 'mc') {
 		if (statement.callee.property.name == 'Team') {
 			return true;
 		}
-		throw {
-			location: statement.callee.property.name, message: `The mc library does not contain object type: `
+		throw new VModError(
+      statement.callee.property.name, 
+      `The mc library does not contain object type: `
 			+ `'mc.${statement.callee.property.name}', try using mc.Team(...)`
-		}
+    )
 	}
-	throw {
-		location: statement.callee.object.name, message: `The library ${statement.callee.object.name} does not exist, `
+	throw new VModError(
+    statement.callee.object.name, 
+    `The library or object: ${statement.callee.object.name} does not exist, `
 		+ `try using mc. or vMod.`
-	}
+  )
 }
 
 
@@ -1072,7 +1153,10 @@ function fixIfNegativeNumber(statement) {
 			newStatement.raw = '-' + newStatement.raw
 			return newStatement
 		} else {
-			throw { location: statement.loc, message: `VanillaMod error. Negative signs can only be used with numbers` }
+			throw new VModError(
+        statement.loc, 
+        `VanillaMod error. Negative signs can only be used with numbers`
+      )
 		}
 	}
 	return statement
@@ -1101,6 +1185,13 @@ function modIdHasher(projectPrefix, functionName) {
 	return hashedId;
 }
 
+// https://gist.github.com/iperelivskiy/4110988#gistcomment-2697447
+function hash(s) {
+  for(var i = 0, h = 0xdeadbeef; i < s.length; i++)
+      h = Math.imul(h ^ s.charCodeAt(i), 2654435761);
+  return (h ^ h >>> 16) >>> 0;
+};
+
 function indenter(depth) {
 	var indent = '';
 	for (var i = 0; i < depth; i++) {
@@ -1116,24 +1207,30 @@ function minecraftPrintJSON(scope, args) {
 		if (argument.type) {
 			switch (argument.type) {
 				case 'Identifier':
-				if (scope.variables.has(argument.name)) {
-					let variableToPrint = scope.variables.get(argument.name)
-					if (variableToPrint.defined) {
-						if (variableToPrint.prettyJSON) {
-							tellrawJSON += ',' + variableToPrint.prettyJSON()
-						}
-					} else {
-						tellrawJSON += `,"undefined"`
-					}
-				} else {
-					throw { location: argument.loc, message: `ReferenceError. ${argument.name} is undefined` }
-				}
-				break;
+          if (scope.variables.has(argument.name)) {
+            let variableToPrint = scope.variables.get(argument.name)
+            if (variableToPrint.defined) {
+              if (variableToPrint.prettyJSON) {
+                tellrawJSON += ',' + variableToPrint.prettyJSON()
+              }
+            } else {
+              tellrawJSON += `,"undefined"`
+            }
+          } else {
+            throw new VModError(
+              argument.loc, 
+              `ReferenceError. ${argument.name} is undefined`
+            )
+          }
+          break;
 				case 'Literal':
-				tellrawJSON += `,"${argument.value}"`
-				break;
+          tellrawJSON += `,"${argument.value}"`
+          break;
 				default:
-				throw { location: argument.loc, message: `VanillaMod InvalidType error. The argument type ${argument.type} cannot be used in a console.log` }
+				  throw new VModError(
+            argument.loc, 
+            `VanillaMod InvalidType error. The argument type ${argument.type} cannot be used in a console.log`
+          )
 			}
 		} else if (typeof argument == 'string') {
 			tellrawJSON += `,"${argument}"`
@@ -1166,6 +1263,8 @@ function newStatementSubPath(codeLine, statementType) {
     }
   }
 }
+
+export { transpiler };
 
 //}
 
