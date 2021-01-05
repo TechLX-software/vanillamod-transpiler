@@ -1,3 +1,9 @@
+/* eslint-disable consistent-return */
+/* eslint-disable no-prototype-builtins */
+/* eslint-disable camelcase */
+/* eslint-disable no-use-before-define */
+/* eslint no-param-reassign: ["error", { "props": false }] */
+
 import { parseScript } from "esprima";
 
 import vMod from "./library-1-13";
@@ -8,18 +14,16 @@ import MCF_library from "./resources/vMod-MCF-library.json";
 const transpiler = {};
 
 const STORE_VARIABLE_OBJECTIVE = "vMod_Variable";
-const INIT_HELPER_ARRAY = function (selector) {
-  return [
-    "scoreboard objectives add vMod_LastSuccess dummy",
-    `scoreboard players set ${selector} vMod_LastSuccess 0`,
-    `scoreboard objectives add ${STORE_VARIABLE_OBJECTIVE} dummy`,
-  ];
-};
+const INIT_HELPER_ARRAY = (selector) => [
+  "scoreboard objectives add vMod_LastSuccess dummy",
+  `scoreboard players set ${selector} vMod_LastSuccess 0`,
+  `scoreboard objectives add ${STORE_VARIABLE_OBJECTIVE} dummy`,
+];
 
 const LAST_SUCCESS_TRUE = (selector = "") =>
   `@s[${selector}scores={vMod_LastSuccess=1..}]`;
-const LAST_SUCCESS_FALSE = (selector = "") =>
-  `@s[${selector}scores={vMod_LastSuccess=..0}]`;
+// const LAST_SUCCESS_FALSE = (selector = "") =>
+//   `@s[${selector}scores={vMod_LastSuccess=..0}]`;
 
 class VModError extends Error {
   constructor(location, message) {
@@ -75,13 +79,13 @@ function getFileByName(fileName, currentFolder) {
 
 // https://www.reddit.com/r/Minecraft/comments/3xx4xz/modern_scientific_calculator/
 
-transpiler.compile = function (rawJavaScript, modInfo) {
-  debugPrint("modInfo JSON:", modInfo);
+transpiler.compile = (rawJavaScript, modInfo) => {
+  debugPrint("modInfo:", modInfo);
 
+  let parsedJS;
   try {
-    var parsedJS = parseScript(rawJavaScript, { loc: true });
+    parsedJS = parseScript(rawJavaScript, { loc: true });
   } catch (e) {
-    console.log("error keys", e);
     const location = {
       esprima: true,
       line: e.lineNumber,
@@ -167,7 +171,7 @@ transpiler.compile = function (rawJavaScript, modInfo) {
   return mod.datapackJson;
 };
 
-transpiler.transpileProgramStatement = function (programStatement, mod) {
+transpiler.transpileProgramStatement = (programStatement, mod) => {
   debugPrint("datapack JSON at start:", mod.datapackJson);
   const functionsFolder = getFileByName("functions", mod.datapackJson.data[0]); // get the function folder from the namespace of this mod
   const scope = {
@@ -187,11 +191,13 @@ transpiler.transpileProgramStatement = function (programStatement, mod) {
   debugPrint(
     `${indenter(scope.depth) + scope.depth}:${scope.index} program statement [`
   );
+  let modInit;
+  let modInitMain;
   try {
     // assign easily accessible vars to and create mcfunctions
-    var modInit = newJsonFile(scope.datapackFolder, "init", "mcfunction")
+    modInit = newJsonFile(scope.datapackFolder, "init", "mcfunction")
       .contents;
-    var modInitMain = newJsonFile(
+    modInitMain = newJsonFile(
       scope.datapackFolder,
       scope.mcFunctionName,
       "mcfunction",
@@ -266,7 +272,7 @@ transpiler.transpileProgramStatement = function (programStatement, mod) {
   });
 
   debugPrint("Do stuff inside functions now (loop #2)");
-  esprimaFunctions.forEach((functionStatement, i) => {
+  esprimaFunctions.forEach((functionStatement) => {
     // debugPrint('in statement with statement type:', statement.type);
     try {
       transpiler.transpileFunctionDeclaration(functionStatement, mod, scope);
@@ -293,7 +299,7 @@ transpiler.transpileProgramStatement = function (programStatement, mod) {
   }
 };
 
-transpiler.initializeFunction = function (statement, mod, scope) {
+transpiler.initializeFunction = (statement, mod, scope) => {
   const newFunctionName = snakeCaser(statement.id.name);
   if (!/[a-z0-9_.-]/.test(newFunctionName)) {
     throw new VModError(
@@ -324,7 +330,7 @@ transpiler.initializeFunction = function (statement, mod, scope) {
   // have a method in vars.Function to get the number of params
 };
 
-transpiler.transpileFunctionDeclaration = function (statement, mod, scope) {
+transpiler.transpileFunctionDeclaration = (statement, mod, scope) => {
   const newFunctionName = snakeCaser(statement.id.name);
   const thisFunction = scope.variables.get(newFunctionName);
 
@@ -375,7 +381,7 @@ transpiler.transpileFunctionDeclaration = function (statement, mod, scope) {
   // something something parameters
 };
 
-transpiler.transpileBlockStatement = function (statement, mod, oldScope) {
+transpiler.transpileBlockStatement = (statement, mod, oldScope) => {
   // Creating new scope
   // const unreferencedDatapackFolder = JSON.parse(JSON.stringify(oldScope.datapackFolder))
   const newDatapackFolder = getFileByName(
@@ -411,20 +417,17 @@ transpiler.transpileBlockStatement = function (statement, mod, oldScope) {
   // awesome ingame debug helper:
   // scope.mcFunctionContents.push(`say Now running ${scope.mcFunctionName} from: ${scope.mcFunctionPath}));
 
-  statement.body.forEach((statement, i) => {
-    if (typeof transpiler[`transpile${statement.type}`] === "function") {
+  statement.body.forEach((bodyStatement) => {
+    if (typeof transpiler[`transpile${bodyStatement.type}`] === "function") {
       scope.index++;
       try {
-        transpiler[`transpile${statement.type}`](statement, mod, scope);
+        transpiler[`transpile${bodyStatement.type}`](bodyStatement, mod, scope);
       } catch (e) {
         mod.errors.push(e);
       }
     }
   });
 
-  console.log(
-    `Depth:${scope.depth} and variable counter:${scope.variableCounter}`
-  );
   if (scope.depth > 0 && scope.variableCounter > 0) {
     const blockScopeTag = `${scope.mcFunctionPath.replace(
       /[:|/]/g,
@@ -439,14 +442,14 @@ transpiler.transpileBlockStatement = function (statement, mod, oldScope) {
   // therefore removing the need to pass them functionPath or JSONfolder.
 };
 
-transpiler.transpileVariableDeclaration = function (statement, mod, scope) {
+transpiler.transpileVariableDeclaration = (statement, mod, scope) => {
   debugPrint(
     `${indenter(scope.depth)} ${scope.depth}:${
       scope.index
     } variable declaration`
   );
 
-  if (statement.kind == "const") {
+  if (statement.kind === "const") {
     throw new VModError(
       statement.loc,
       "VanillaMod incompatibility, constants are not yet supported"
@@ -477,7 +480,7 @@ transpiler.transpileVariableDeclaration = function (statement, mod, scope) {
     if (declaration.init) {
       fixIfNegativeNumber(declaration.init);
       if (
-        declaration.init.type == "Literal" &&
+        declaration.init.type === "Literal" &&
         typeof declaration.init.value === "number"
       ) {
         const toBeDefined = scope.variables.get(varName);
@@ -500,29 +503,26 @@ transpiler.transpileVariableDeclaration = function (statement, mod, scope) {
             `Do not redeclare variables, ${declaration.id.name} already exists!`
           );
         }
+      } else if (declaration.init.type === "NewExpression") {
+        declaration.init.justDeclared = true;
+        transpiler.transpileNewExpression(
+          declaration.init,
+          mod,
+          scope,
+          varName
+        );
       } else {
-        // must be a newExpression
-        if (declaration.init.type == "NewExpression") {
-          declaration.init.justDeclared = true;
-          transpiler.transpileNewExpression(
-            declaration.init,
-            mod,
-            scope,
-            varName
-          );
-        } else {
-          throw new VModError(
-            declaration.init.loc,
-            "Variable defininitions should either be a new expression or an integer."
-          );
-        }
+        throw new VModError(
+          declaration.init.loc,
+          "Variable defininitions should either be a new expression or an integer."
+        );
       }
     }
   });
 };
 
 // ZIP SKIPPED
-transpiler.transpileIfStatement = function (statement, mod, scope) {
+transpiler.transpileIfStatement = (statement, mod, scope) => {
   // handles if, else if, and else all in one ... well, it will
   debugPrint(
     `${indenter(scope.depth)} ${scope.depth}:${scope.index} if statement`
@@ -535,7 +535,7 @@ transpiler.transpileIfStatement = function (statement, mod, scope) {
   // establish proper statement names
   const location = statement.loc.start;
   const statementName =
-    scope.statementContext == "else"
+    scope.statementContext === "else"
       ? newStatementSubPath(location.line, "else-if")
       : newStatementSubPath(location.line, "if");
   const ifStatementMCFunctionPath = oldMCFunctionPath + statementName;
@@ -563,10 +563,7 @@ transpiler.transpileIfStatement = function (statement, mod, scope) {
     scope.statementContext = oldContext;
     scope.mcFunctionName = oldContext;
     scope.mcFunctionContents = oldMCFunctionContents;
-    console.log(
-      "IF STATEMENT TEST STATEMENT: ",
-      JSON.stringify(statement.test, null, 4)
-    );
+
     if (isSimpleBinaryCondition(statement.test)) {
       checkConditionalCommand = transpiler.transpileBinaryExpression(
         statement.test,
@@ -604,7 +601,7 @@ transpiler.transpileIfStatement = function (statement, mod, scope) {
   // Add continue tag if needed
   const continueTag = `vMod-ElseContinue-${scope.functionName}-depth-${scope.depth}`;
   let testDoLoop = "";
-  if (oldContext == "else") {
+  if (oldContext === "else") {
     testDoLoop = `execute if entity @s[tag=${continueTag}] run ${checkConditionalCommand}`;
   } else {
     if (statement.alternate) {
@@ -616,7 +613,7 @@ transpiler.transpileIfStatement = function (statement, mod, scope) {
 
   // Add continueTag check where needed to run the inside of else-if
   let conditionalBody = "";
-  if (oldContext == "else") {
+  if (oldContext === "else") {
     conditionalBody = `execute if entity ${LAST_SUCCESS_TRUE(
       `tag=${continueTag},`
     )} run ${vMod.function(`${ifStatementMCFunctionPath}/main`).join(" ")}`;
@@ -655,7 +652,7 @@ transpiler.transpileIfStatement = function (statement, mod, scope) {
     scope.datapackFolder = oldDatapackFolder;
     scope.mcFunctionContents = oldMCFunctionContents;
     scope.index++;
-    if (statement.alternate.type == "IfStatement") {
+    if (statement.alternate.type === "IfStatement") {
       scope.statementContext = "else";
       scope.mcFunctionPath = oldMCFunctionPath;
       transpiler.transpileIfStatement(statement.alternate, mod, scope);
@@ -708,7 +705,7 @@ transpiler.transpileIfStatement = function (statement, mod, scope) {
 };
 
 // ZIP SKIPPED
-transpiler.transpileForStatement = function (statement, mod, scope) {
+transpiler.transpileForStatement = (statement, mod, scope) => {
   debugPrint(
     `${indenter(scope.depth)} ${scope.depth}:${scope.index} for statement`
   );
@@ -878,7 +875,7 @@ transpiler.transpileForStatement = function (statement, mod, scope) {
   scope.mcFunctionContents.push(killInitVars);
 };
 
-transpiler.transpileExpressionStatement = function (statement, mod, scope) {
+transpiler.transpileExpressionStatement = (statement, mod, scope) => {
   // function call -- technically var declaration is an expressionstatement too
   debugPrint(
     `${indenter(scope.depth)} ${scope.depth}:${
@@ -902,12 +899,12 @@ transpiler.transpileExpressionStatement = function (statement, mod, scope) {
   }
 };
 
-transpiler.transpileCallExpression = function (
+transpiler.transpileCallExpression = (
   statement,
   mod,
   scope,
   isCondition = false
-) {
+) => {
   debugPrint(
     `${indenter(scope.depth)} ${scope.depth}:${
       scope.index
@@ -999,11 +996,11 @@ transpiler.transpileCallExpression = function (
   }
 };
 
-transpiler.transpileUpdateExpression = function (
+transpiler.transpileUpdateExpression = (
   statementToTransform,
   mod,
   scope
-) {
+) => {
   const transformedStatement = statementToTransform;
   // debugPrint('preTransformedStatement: ', transformedStatement);
 
@@ -1024,13 +1021,18 @@ transpiler.transpileUpdateExpression = function (
     case "--":
       transformedStatement.operator = "-=";
       break;
+    default:
+      throw new VModError(
+        statementToTransform.loc,
+        `This kind of update operator is not supported, try ++ or --`
+      );
   }
 
   transpiler.transpileAssignmentExpression(transformedStatement, mod, scope);
 };
 
 // NEEDS 1.13 HELP, LOOK IN SWITCH STATEMENT
-transpiler.transpileAssignmentExpression = function (statement, mod, scope) {
+transpiler.transpileAssignmentExpression = (statement, mod, scope) => {
   debugPrint(
     `${indenter(scope.depth)} ${scope.depth}:${
       scope.index
@@ -1041,7 +1043,7 @@ transpiler.transpileAssignmentExpression = function (statement, mod, scope) {
     let toBeAssigned = scope.variables.get(varName);
     fixIfNegativeNumber(statement.right);
     if (
-      statement.right.type == "Literal" &&
+      statement.right.type === "Literal" &&
       typeof statement.right.value === "number"
     ) {
       if (!toBeAssigned.defined) {
@@ -1077,9 +1079,15 @@ transpiler.transpileAssignmentExpression = function (statement, mod, scope) {
             statement.right.value
           }`;
           break;
+        default:
+          throw new VModError(
+            statement.loc,
+            `This kind of assignment expression is not supported, try =, +=, -=. ` +
+            `Feel free to ask on discord to move up the importance of adding more operations!`
+          );
       }
       scope.mcFunctionContents.push(editValue);
-    } else if (statement.right.type == "NewExpression") {
+    } else if (statement.right.type === "NewExpression") {
       transpiler.transpileNewExpression(
         statement.right,
         mod,
@@ -1101,7 +1109,7 @@ transpiler.transpileAssignmentExpression = function (statement, mod, scope) {
 };
 
 // var testDrone = new vMod.Drone();
-transpiler.transpileNewExpression = function (statement, mod, scope, varName) {
+transpiler.transpileNewExpression = (statement, mod, scope, varName) => {
   // new object being declared
   debugPrint(
     `${indenter(scope.depth)} ${scope.depth}:${scope.index} new expression`
@@ -1134,7 +1142,7 @@ transpiler.transpileNewExpression = function (statement, mod, scope, varName) {
 
         if (
           toBeDefined.defined &&
-          toBeDefined.variableType != entityObject.variableType
+          toBeDefined.variableType !== entityObject.variableType
         ) {
           throw new VModError(
             statement.loc,
@@ -1150,7 +1158,7 @@ transpiler.transpileNewExpression = function (statement, mod, scope, varName) {
           if (object.params) {
             if (
               statement.callee.property &&
-              statement.callee.property.name == "setVariable"
+              statement.callee.property.name === "setVariable"
             ) {
               // this area is to assign a living entity to a variable. How do?
               scope.variableCounter--;
@@ -1216,19 +1224,19 @@ transpiler.transpileNewExpression = function (statement, mod, scope, varName) {
 // }
 
 // 5 + 5 / 2
-transpiler.transpileBinaryExpression = function (
+transpiler.transpileBinaryExpression = (
   statement,
   mod,
   scope,
   getSimpleCommand = false
-) {
+) => {
   debugPrint(
     `${indenter(scope.depth)} ${scope.depth}:${scope.index} binary expression`
   );
   // assumes variable on the left
 
   const test = statement;
-  if (test.left.type != "Identifier") {
+  if (test.left.type !== "Identifier") {
     throw new VModError(
       test.left.loc,
       "VanillaMod InvalidType. The left side of a math condition must be a variable"
@@ -1244,7 +1252,7 @@ transpiler.transpileBinaryExpression = function (
       `ReferenceError. The variable ${leftVariableName} does not exist`
     );
   }
-  if (leftVariable.variableType != "int") {
+  if (leftVariable.variableType !== "int") {
     throw new VModError(
       test.left.loc,
       `VanillaMod TypeError. The variable ${leftVariableName} is not a number`
@@ -1253,7 +1261,7 @@ transpiler.transpileBinaryExpression = function (
 
   test.right = fixIfNegativeNumber(test.right);
 
-  if (test.right.type == "Identifier") {
+  if (test.right.type === "Identifier") {
     // execute store success score @s vMod_LastSuccess if score @e[tag=vMod_number,limit=1] vMod_Variable <= #TheNumberFive vMod_Variable
     const rightVariableName = test.right.name;
     const rightVariable = scope.variables.has(rightVariableName)
@@ -1266,7 +1274,7 @@ transpiler.transpileBinaryExpression = function (
         `ReferenceError. The variable ${rightVariableName} does not exist`
       );
     }
-    if (rightVariable.variableType != "int") {
+    if (rightVariable.variableType !== "int") {
       throw new VModError(
         test.left.loc,
         `VanillaMod TypeError. The variable ${rightVariableName} is not a number`
@@ -1275,7 +1283,7 @@ transpiler.transpileBinaryExpression = function (
 
     // change == or === to just = for minecraft
     const operator =
-      test.operator == "==" || test.operator == "===" ? "=" : test.operator;
+      test.operator === "==" || test.operator === "===" ? "=" : test.operator;
 
     const comparisonCommand =
       `execute store success score @s vMod_LastSuccess if score ${leftVariable.getVariable(
@@ -1291,7 +1299,7 @@ transpiler.transpileBinaryExpression = function (
     }
     scope.mcFunctionContents.push(comparisonCommand);
   } else if (
-    test.right.type == "Literal" &&
+    test.right.type === "Literal" &&
     typeof test.right.value === "number"
   ) {
     const comparedInteger = test.right.value;
@@ -1315,12 +1323,17 @@ transpiler.transpileBinaryExpression = function (
       case "===":
         range = comparedInteger;
         break;
-      // also !=, but we not doing dat yet
+      // also !=, but we not doing dat yet        
+      default:
+        throw new VModError(
+          test.loc,
+          `This kind of comparison is not supported, try ==, <, >, >=, <=. ` +
+          `Feel free to ask on discord to move up the importance of adding more comparisons!`
+        )
     }
     const comparisonCommand =
-      `execute store success score @s vMod_LastSuccess if score ${leftVariable.getVariable(
-        true
-      )} ` + `vMod_Variable matches ${range}`;
+      `execute store success score @s vMod_LastSuccess if score ` +
+      `${leftVariable.getVariable(true)} vMod_Variable matches ${range}`;
 
     // Used to simplify condition checks if they are simple
     if (getSimpleCommand) {
@@ -1338,7 +1351,7 @@ transpiler.transpileBinaryExpression = function (
 };
 
 // bool1 || bool2 && bool3
-transpiler.transpileLogicalExpression = function (statement, mod, scope) {
+transpiler.transpileLogicalExpression = (statement, mod, scope) => {
   // this one may be harder, look into 1s and 0s, adding them together, using % 2
   // this one gets funny with large numbers and > or <
   // figure out how to do without conditionals/scoreboard test?
@@ -1355,7 +1368,7 @@ transpiler.transpileLogicalExpression = function (statement, mod, scope) {
 };
 
 // testVar = otherVar;
-transpiler.transpileIdentifier = function (statement, mod, scope) {
+transpiler.transpileIdentifier = (statement, mod, scope) => {
   // this is easy, check scope, and then... ?
   debugPrint(
     `${indenter(scope.depth)} ${scope.depth}:${
@@ -1364,7 +1377,7 @@ transpiler.transpileIdentifier = function (statement, mod, scope) {
   );
 };
 
-transpiler.transpileLiteral = function (statement, mod, scope) {
+transpiler.transpileLiteral = (statement, mod, scope) => {
   debugPrint(
     `${indenter(scope.depth)} ${scope.depth}:${
       scope.index
@@ -1373,40 +1386,36 @@ transpiler.transpileLiteral = function (statement, mod, scope) {
   throw new VModError(statement.loc, "Unused literal, try removing it");
 };
 
+// lots of console.log in here before, is it buggy?
 function isSimpleBinaryCondition(statement) {
-  console.log("INSIDE SIMPLE BINARY");
-  if (statement.type != "BinaryExpression") {
+  if (statement.type !== "BinaryExpression") {
     return false;
   }
-  console.log("VERFIED BINARY EXPRESSION");
-  if (statement.left.type != "Identifier") {
+  if (statement.left.type !== "Identifier") {
     return false;
   }
-  console.log("LEFTT IS IDENTIFIER");
-  console.log("HERE IS RIGHT: ", JSON.stringify(statement.right, null, 4));
   if (!["Identifier", "Literal"].includes(statement.right.type)) {
     return false;
   }
-  console.log("VERFIED DEFINITELY IS SIMPLE");
   return true;
 }
 
 function isSimpleCallExpressionCondition(statement) {
-  if (statement.type != "CallExpression") {
+  if (statement.type !== "CallExpression") {
     return false;
   }
-  if (statement.callee.type != "MemberExpression") {
+  if (statement.callee.type !== "MemberExpression") {
     return false;
   }
   if (
-    statement.callee.object.type != "Identifier" ||
-    statement.callee.property.type != "Identifier"
+    statement.callee.object.type !== "Identifier" ||
+    statement.callee.property.type !== "Identifier"
   ) {
     return false;
   }
   if (
-    statement.callee.object.name != "vMod" ||
-    statement.callee.object.name != "mc"
+    statement.callee.object.name !== "vMod" ||
+    statement.callee.object.name !== "mc"
   ) {
     return false;
   }
@@ -1414,7 +1423,7 @@ function isSimpleCallExpressionCondition(statement) {
 }
 
 function isValidNewObject(statement) {
-  if (statement.callee.type != "MemberExpression") {
+  if (statement.callee.type !== "MemberExpression") {
     throw new VModError(
       statement.loc,
       "Creating new objects must look like this: new library.objectName(...)" +
@@ -1422,8 +1431,8 @@ function isValidNewObject(statement) {
     );
   }
   if (
-    statement.callee.object.type != "Identifier" ||
-    statement.callee.property.type != "Identifier"
+    statement.callee.object.type !== "Identifier" ||
+    statement.callee.property.type !== "Identifier"
   ) {
     throw new VModError(
       statement.loc,
@@ -1431,8 +1440,8 @@ function isValidNewObject(statement) {
         "\n(Both sides of MemberExpression must be Identifiers)"
     );
   }
-  if (statement.callee.object.name == "vMod") {
-    if (statement.callee.property.name == "Drone") {
+  if (statement.callee.object.name === "vMod") {
+    if (statement.callee.property.name === "Drone") {
       return true;
     }
     throw new VModError(
@@ -1441,8 +1450,8 @@ function isValidNewObject(statement) {
         `'vMod.${statement.callee.property.name}', try using vMod.Drone(...)`
     );
   }
-  if (statement.callee.object.name == "mc") {
-    if (statement.callee.property.name == "Team") {
+  if (statement.callee.object.name === "mc") {
+    if (statement.callee.property.name === "Team") {
       return true;
     }
     throw new VModError(
@@ -1459,10 +1468,10 @@ function isValidNewObject(statement) {
 }
 
 function fixIfNegativeNumber(statement) {
-  if (statement.type == "UnaryExpression" && statement.operator == "-") {
+  if (statement.type === "UnaryExpression" && statement.operator === "-") {
     const newStatement = statement.argument;
     if (
-      newStatement.type == "Literal" &&
+      newStatement.type === "Literal" &&
       typeof newStatement.value === "number"
     ) {
       newStatement.value *= -1;
@@ -1479,33 +1488,30 @@ function fixIfNegativeNumber(statement) {
 
 function debugPrint(...args) {
   // if (process.env.ENVIRONMENT == 'dev') {
+  // eslint-disable-next-line no-console
   console.log(...args);
   // }
 }
 
-function isEmpty(obj) {
-  return Object.keys(obj).length === 0;
-}
+// function modIdHasher(projectPrefix, functionName) {
+//   const modHashObj = { projectPrefix };
+//   let modHash = hash(modHashObj);
+//   modHash = modHash.substring(0, 6);
 
-function modIdHasher(projectPrefix, functionName) {
-  const modHashObj = { projectPrefix };
-  let modHash = hash(modHashObj);
-  modHash = modHash.substring(0, 6);
+//   const functionHashObj = { functionName };
+//   let functionHash = hash(functionHashObj);
+//   functionHash = functionHash.substring(0, 4);
 
-  const functionHashObj = { functionName };
-  let functionHash = hash(functionHashObj);
-  functionHash = functionHash.substring(0, 4);
-
-  const hashedId = `vmod-${modHash}-${functionHash}`;
-  return hashedId;
-}
+//   const hashedId = `vmod-${modHash}-${functionHash}`;
+//   return hashedId;
+// }
 
 // https://gist.github.com/iperelivskiy/4110988#gistcomment-2697447
-function hash(s) {
-  for (var i = 0, h = 0xdeadbeef; i < s.length; i++)
-    h = Math.imul(h ^ s.charCodeAt(i), 2654435761);
-  return (h ^ (h >>> 16)) >>> 0;
-}
+// function hash(s) {
+//   for (let i = 0, h = 0xdeadbeef; i < s.length; i++)
+//     h = Math.imul(h ^ s.charCodeAt(i), 2654435761);
+//   return (h ^ (h >>> 16)) >>> 0;
+// }
 
 function indenter(depth) {
   let indent = "";
@@ -1584,7 +1590,7 @@ function newStatementSubPath(codeLine, statementType) {
   }
 }
 
-export { transpiler };
+export default transpiler;
 
 // }
 
