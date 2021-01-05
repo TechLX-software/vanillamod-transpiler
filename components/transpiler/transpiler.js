@@ -2,7 +2,6 @@
 /* eslint-disable no-prototype-builtins */
 /* eslint-disable camelcase */
 /* eslint-disable no-use-before-define */
-/* eslint no-param-reassign: ["error", { "props": false }] */
 
 import { parseScript } from "esprima";
 
@@ -280,8 +279,6 @@ transpiler.transpileProgramStatement = (programStatement, mod) => {
       mod.errors.push(e);
     }
   });
-  debugPrint(`${indenter(scope.depth)}]`);
-  debugPrint("end loop #2");
 
   try {
     mod.objectives.forEach((objectiveName) => {

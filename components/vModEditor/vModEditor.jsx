@@ -5,7 +5,11 @@ import {
   Button,
   Toolbar,
   Typography,
+  Grid,
+  Box,
 } from "@material-ui/core";
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import Editor, { monaco } from "@monaco-editor/react";
 import styles from "./styles.module.scss";
 
@@ -27,13 +31,6 @@ const useStyles = makeStyles({
 });
 
 function displayErrors(errorMarkers, editor, monacoAlive) {
-  // reset model markers to get rid of old errors
-  monacoAlive.editor.setModelMarkers(
-    editor.getModel(),
-    "vanillamod",
-    []
-  );
-  
   if (errorMarkers.length < 1) {
     // something funky happened, we got an error but didn't handle it smoothly
     // usually means vMod library has a bug
@@ -64,7 +61,8 @@ function VModEditor({ title, startingCode }) {
   const classes = useStyles();
 
   const [monacoAlive, setMonacoAlive] = useState(null);
-  const [checkErrorsResult, setCheckErrorsResult] = useState(null);
+  const [errorInfo, setErrorInfo] = useState(null);
+  const [clearErrorInfo, setClearErrorInfo] = useState(null);
   const editorRef = useRef();
 
   useEffect(() => {
@@ -85,11 +83,18 @@ function VModEditor({ title, startingCode }) {
     const errorMarkers = checkForErrors(code, modInfo, editorRef.current, monacoAlive);
     if (errorMarkers) {
       displayErrors(errorMarkers, editorRef.current, monacoAlive);
-      return;
     }
 
     // no errors, hooray, display green confirm
-    setCheckErrorsResult(true);
+    const errorCount = errorMarkers ? errorMarkers.length : 0;
+    setErrorInfo(<ErrorInfo
+      errorCount={errorCount}
+    />);
+    if (clearErrorInfo) clearTimeout(clearErrorInfo);
+    const newClear = setTimeout(() => {
+      setErrorInfo(null);
+    }, 8000);
+    setClearErrorInfo(newClear);
   }
 
   function downloadButtonClicked() {
@@ -110,35 +115,45 @@ function VModEditor({ title, startingCode }) {
   return (
     <>
       <Toolbar className={styles.editorHeader}>
-        <Typography variant="h4" classes={{ root: classes.editorTitle }}>
-          {title}
-        </Typography>
-        <div>
-          <Button
-            variant="outlined"
-            color="secondary"
-            size="large"
-            classes={{
-              root: classes.fatButton,
-              label: classes.fatButtonText,
-            }}
-            onClick={checkButtonClicked}
+        <Box width="60%" display="inline-block">
+          <Typography variant="h4" classes={{ root: classes.editorTitle }}>
+            {title}
+          </Typography>
+        </Box>
+        <Box width="40%" display="inline-block">
+          <Grid
+            container
+            direction="row"
+            justify="flex-end"
+            alignItems="center"
           >
-            Check
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            size="large"
-            classes={{
-              root: classes.fatButton,
-              label: classes.fatButtonText,
-            }}
-            onClick={downloadButtonClicked}
-          >
-            Download
-          </Button>
-        </div>
+            {errorInfo}
+            <Button
+              variant="outlined"
+              color="secondary"
+              size="large"
+              classes={{
+                root: classes.fatButton,
+                label: classes.fatButtonText,
+              }}
+              onClick={checkButtonClicked}
+            >
+              Check
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              size="large"
+              classes={{
+                root: classes.fatButton,
+                label: classes.fatButtonText,
+              }}
+              onClick={downloadButtonClicked}
+            >
+              Download
+            </Button>
+          </Grid>
+        </Box>
       </Toolbar>
 
       <Editor
@@ -158,5 +173,34 @@ VModEditor.propTypes = {
   title: PropTypes.string.isRequired
 }
 
-// eslint-disable-next-line import/prefer-default-export
-export { VModEditor };
+function ErrorInfo({ errorCount }) {
+  return (
+    <Box width="30%">
+      <Grid
+        container
+        direction="row"
+        justify="space-evenly"
+        alignItems="center"
+      >
+        {errorCount ? 
+          <ErrorOutlineIcon color="error"/>
+        :
+          <CheckCircleOutlineIcon color="secondary"/>
+        }
+        <Typography color={errorCount ? "error" : "secondary"}>
+          {errorCount ? 
+            `${errorCount} Error${errorCount > 1 ? "s" : ""}`
+          :
+            "No Errors!"
+          }
+        </Typography>
+      </Grid>
+    </Box>
+  )
+}
+
+ErrorInfo.propTypes = {
+  errorCount: PropTypes.number.isRequired,
+}
+
+export default VModEditor;

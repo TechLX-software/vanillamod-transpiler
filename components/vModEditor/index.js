@@ -1,1 +1,3 @@
-export * from "./vModEditor";
+import EditorView from "./editorView";
+
+export default EditorView;

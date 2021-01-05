@@ -3,7 +3,7 @@ const helloWorld = {
   code: `// Prints "Hello World" when you run this function in Minecraft
 
 function sayHello() {
-  console.log("Hello World!");
+    console.log("Hello World!");
 }
 `,
 };
@@ -13,7 +13,7 @@ const simpleErrorMessage = {
   code: `// Display an error message
 
 function begin() {
-  notExistentFunction();
+    notExistentFunction();
 }
 `,
 };

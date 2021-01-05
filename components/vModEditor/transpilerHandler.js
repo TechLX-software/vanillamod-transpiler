@@ -36,6 +36,13 @@ function addCustomError(error, editor, monacoAlive) {
 }
 
 function checkForErrors(code, modInfo, editor, monaco) {
+  // reset model markers to get rid of old errors
+  monaco.editor.setModelMarkers(
+    editor.getModel(),
+    "vanillamod",
+    []
+  );
+
   const datapack = transpiler.compile(code, modInfo);
   if (datapack.errors && monaco) {
     const underlineMarkers = [];

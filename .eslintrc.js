@@ -21,5 +21,6 @@ module.exports = {
   ],
   rules: {
     "no-plusplus": "off",
+    "no-param-reassign": ["error", { "props": false }],
   },
 };
