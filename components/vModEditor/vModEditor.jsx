@@ -1,19 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import PropTypes from 'prop-types';
-import {
-  Button,
-  Toolbar,
-  Typography,
-  Grid,
-  Box,
-} from "@material-ui/core";
-import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
-import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import PropTypes from "prop-types";
+import { Button, Toolbar, Typography, Grid, Box } from "@material-ui/core";
+import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
+import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import Editor, { monaco } from "@monaco-editor/react";
 import styles from "./styles.module.scss";
 
-import { checkForErrors, downloadMod } from "./transpilerHandler"
+import { transpileCode, downloadDatapack } from "./transpilerHandler";
 
 const useStyles = makeStyles({
   fatButton: {
@@ -51,7 +45,7 @@ function displayErrors(errorMarkers, editor, monacoAlive) {
         "action-container"
       );
       if (actionContainer.length > 0) actionContainer[0].click();
-    }, 100);  
+    }, 100);
   }
 
   // display red X thingy saying errors were found
@@ -75,21 +69,12 @@ function VModEditor({ title, startingCode }) {
     editorRef.current = editor;
   }
 
-  function checkButtonClicked() {
-    const modInfo = {
-      modName: title,
-    };
-    const code = editorRef.current.getValue();
-    const errorMarkers = checkForErrors(code, modInfo, editorRef.current, monacoAlive);
-    if (errorMarkers) {
-      displayErrors(errorMarkers, editorRef.current, monacoAlive);
-    }
-
-    // no errors, hooray, display green confirm
+  function showErrorInfo(errorMarkers) {
     const errorCount = errorMarkers ? errorMarkers.length : 0;
-    setErrorInfo(<ErrorInfo
-      errorCount={errorCount}
-    />);
+    // still need to figure out what to do when error markers
+    // exists, but is not zero (which is a vMod "crash")
+    // see top part of displayErrors(...)
+    setErrorInfo(<ErrorInfo errorCount={errorCount} />);
     if (clearErrorInfo) clearTimeout(clearErrorInfo);
     const newClear = setTimeout(() => {
       setErrorInfo(null);
@@ -97,19 +82,41 @@ function VModEditor({ title, startingCode }) {
     setClearErrorInfo(newClear);
   }
 
+  function checkButtonClicked() {
+    const modInfo = {
+      modName: title,
+    };
+    const code = editorRef.current.getValue();
+    const { errorMarkers } = transpileCode(
+      code,
+      modInfo,
+      editorRef.current,
+      monacoAlive
+    );
+    if (errorMarkers) {
+      displayErrors(errorMarkers, editorRef.current, monacoAlive);
+    }
+
+    showErrorInfo(errorMarkers);
+  }
+
   function downloadButtonClicked() {
     const modInfo = {
       modName: title,
     };
     const code = editorRef.current.getValue();
-    const errorMarkers = checkForErrors(code, modInfo, editorRef.current, monacoAlive);
+    const { datapack, errorMarkers } = transpileCode(
+      code,
+      modInfo,
+      editorRef.current,
+      monacoAlive
+    );
     if (errorMarkers) {
       displayErrors(errorMarkers, editorRef.current, monacoAlive);
-      return;
+      showErrorInfo(errorMarkers);
+    } else {
+      downloadDatapack(datapack);
     }
-
-    // no errors, generate zip file clientside
-    downloadMod(code, modInfo)
   }
 
   return (
@@ -170,10 +177,12 @@ function VModEditor({ title, startingCode }) {
 
 VModEditor.propTypes = {
   startingCode: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired
-}
+  title: PropTypes.string.isRequired,
+};
 
 function ErrorInfo({ errorCount }) {
+  // expand this eventually to have a modal button that displays
+  // a list of all the errors
   return (
     <Box width="30%">
       <Grid
@@ -182,25 +191,23 @@ function ErrorInfo({ errorCount }) {
         justify="space-evenly"
         alignItems="center"
       >
-        {errorCount ? 
-          <ErrorOutlineIcon color="error"/>
-        :
-          <CheckCircleOutlineIcon color="secondary"/>
-        }
+        {errorCount ? (
+          <ErrorOutlineIcon color="error" />
+        ) : (
+          <CheckCircleOutlineIcon color="secondary" />
+        )}
         <Typography color={errorCount ? "error" : "secondary"}>
-          {errorCount ? 
-            `${errorCount} Error${errorCount > 1 ? "s" : ""}`
-          :
-            "No Errors!"
-          }
+          {errorCount
+            ? `${errorCount} Error${errorCount > 1 ? "s" : ""}`
+            : "No Errors!"}
         </Typography>
       </Grid>
     </Box>
-  )
+  );
 }
 
 ErrorInfo.propTypes = {
   errorCount: PropTypes.number.isRequired,
-}
+};
 
 export default VModEditor;

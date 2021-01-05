@@ -118,7 +118,7 @@ transpiler.compile = (rawJavaScript, modInfo) => {
           description: `A VanillaMod by ${"USER_NAME_HERE"}. Last updated on ${new Date().toLocaleString()}`,
         },
       },
-      data: [
+      data: jsonFile("data", "folder", [
         jsonFile(snakeCaseModName, "folder", [jsonFile("functions", "folder")]),
         jsonFile("minecraft", "folder", [
           jsonFile("tags", "folder", [
@@ -129,7 +129,7 @@ transpiler.compile = (rawJavaScript, modInfo) => {
             ]),
           ]),
         ]),
-      ],
+      ]),
     },
   };
 
@@ -160,7 +160,7 @@ transpiler.compile = (rawJavaScript, modInfo) => {
       libraryContents.push(dependencyMCFunctionContents);
     });
 
-    mod.datapackJson.data.push(
+    mod.datapackJson.data.contents.push(
       jsonFile("vanillamod-library", "folder", [vanillaModMCF_library])
     );
   }
@@ -172,7 +172,11 @@ transpiler.compile = (rawJavaScript, modInfo) => {
 
 transpiler.transpileProgramStatement = (programStatement, mod) => {
   debugPrint("datapack JSON at start:", mod.datapackJson);
-  const functionsFolder = getFileByName("functions", mod.datapackJson.data[0]); // get the function folder from the namespace of this mod
+  const functionsFolder = getFileByName(
+    "functions",
+    mod.datapackJson.data.contents[0]
+  ); // walk down to the functions folder from the namespace of this mod
+  console.log("here f folder", functionsFolder);
   const scope = {
     functionName: "vMod-GLOBAL",
     mcFunctionName: "main",
@@ -194,8 +198,7 @@ transpiler.transpileProgramStatement = (programStatement, mod) => {
   let modInitMain;
   try {
     // assign easily accessible vars to and create mcfunctions
-    modInit = newJsonFile(scope.datapackFolder, "init", "mcfunction")
-      .contents;
+    modInit = newJsonFile(scope.datapackFolder, "init", "mcfunction").contents;
     modInitMain = newJsonFile(
       scope.datapackFolder,
       scope.mcFunctionName,
@@ -993,11 +996,7 @@ transpiler.transpileCallExpression = (
   }
 };
 
-transpiler.transpileUpdateExpression = (
-  statementToTransform,
-  mod,
-  scope
-) => {
+transpiler.transpileUpdateExpression = (statementToTransform, mod, scope) => {
   const transformedStatement = statementToTransform;
   // debugPrint('preTransformedStatement: ', transformedStatement);
 
@@ -1080,7 +1079,7 @@ transpiler.transpileAssignmentExpression = (statement, mod, scope) => {
           throw new VModError(
             statement.loc,
             `This kind of assignment expression is not supported, try =, +=, -=. ` +
-            `Feel free to ask on discord to move up the importance of adding more operations!`
+              `Feel free to ask on discord to move up the importance of adding more operations!`
           );
       }
       scope.mcFunctionContents.push(editValue);
@@ -1320,13 +1319,13 @@ transpiler.transpileBinaryExpression = (
       case "===":
         range = comparedInteger;
         break;
-      // also !=, but we not doing dat yet        
+      // also !=, but we not doing dat yet
       default:
         throw new VModError(
           test.loc,
           `This kind of comparison is not supported, try ==, <, >, >=, <=. ` +
-          `Feel free to ask on discord to move up the importance of adding more comparisons!`
-        )
+            `Feel free to ask on discord to move up the importance of adding more comparisons!`
+        );
     }
     const comparisonCommand =
       `execute store success score @s vMod_LastSuccess if score ` +
