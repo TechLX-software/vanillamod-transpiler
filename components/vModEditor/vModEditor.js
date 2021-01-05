@@ -1,20 +1,77 @@
 import React, { useEffect, useRef, useState } from "react";
-import clsx from 'clsx';
-import styles from './styles.module.css'
+import {
+  Button,
+  Toolbar,
+  Typography,
+} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import Editor, { monaco } from "@monaco-editor/react";
+import styles from "./styles.module.scss";
 
-import Editor, { monaco } from '@monaco-editor/react';
-import { transpiler } from '../transpiler'
+import { transpiler } from "../transpiler";
+
+const useStyles = makeStyles({
+  fatButton: {
+    marginLeft: "5px",
+    marginRight: "5px",
+    borderRadius: "0.5em",
+  },
+  fatButtonText: {
+    fontWeight: "bold",
+  },
+  editorTitle: {
+    paddingLeft: "20px",
+    fontWeight: "bold",
+  },
+});
+
+function addCustomError(error, editor, monacoAlive) {
+  console.log("trying to add error to editor", error.location);
+  if (error.location) {
+    let startLine;
+    let startCol;
+    let endLine;
+    let endCol;
+    if (error.location.esprima) {
+      console.log("adding esprima location");
+      startLine = error.location.line;
+      startCol = error.location.col;
+      const line = editor.getModel().getLineContent(startLine);
+      const nextSpace = line.indexOf(" ", startCol);
+      endCol = nextSpace >= 0 ? nextSpace : line.length;
+      endLine = error.location.line;
+      console.log("here are locations", startLine, startCol, endLine, endCol);
+    } else {
+      // vanillamod error
+      startLine = error.location.start.line;
+      startCol = error.location.start.column + 1;
+      endLine = error.location.end.line;
+      endCol = error.location.end.column + 1;
+    }
+    return {
+      startLineNumber: startLine,
+      startColumn: startCol,
+      endLineNumber: endLine,
+      endColumn: endCol,
+      message: error.message,
+      severity: monacoAlive.MarkerSeverity.Error,
+    };
+  }
+  console.log("NO LOCATION FOR ERROR:", error);
+  return null;
+}
 
 function VModEditor(props) {
+  const classes = useStyles();
+
   const [monacoAlive, setMonacoAlive] = useState(null);
   const editorRef = useRef();
 
   useEffect(() => {
     monaco.init().then((initializedMonaco) => {
       setMonacoAlive(initializedMonaco);
-      console.log("here monaco alive", initializedMonaco)
     });
-  }, [])
+  }, []);
 
   function handleEditorDidMount(_, editor) {
     editorRef.current = editor;
@@ -22,105 +79,95 @@ function VModEditor(props) {
 
   function checkButtonClicked() {
     const modInfo = {
-      modName: "playground mod"
-    }
+      modName: props.title,
+    };
     const code = editorRef.current.getValue();
-    const datapack = transpiler.compile(code, modInfo)
-    console.log("edditor is", editorRef.current)
+    const datapack = transpiler.compile(code, modInfo);
     if (datapack.errors && monacoAlive) {
-      monacoAlive.editor.setModelMarkers(editorRef.current.getModel(), 'hooga booga', [{
-        startLineNumber: 3,
-        startColumn: 5,
-        endLineNumber: 3,
-        endColumn: 10,
-        message: "a yuge message",
-        severity: monacoAlive.MarkerSeverity.Error
-      }])
-      // editorRef.current.changeViewZones( (changeAccessor) => {
-      //   console.log("view zones", changeAccessor)
-      //   var domNode = document.createElement('div');
-      //   domNode.style.background = 'lightgreen';
-      //   var domNode2 = document.createElement('div');
-        
-      //   viewZoneId = changeAccessor.addZone({
-      //     afterLineNumber: 4,
-      //     afterColumn: 5,
-      //     heightInLines: 3,
-      //     domNode: domNode,
-      //     marginDomNode: domNode2
-      //   });
-      // })
-      let overlayDom = document.createElement('div');
-      overlayDom.id = 'overlayId';
-      overlayDom.style.width = '100%';
-      overlayDom.style.background = '#ffb275';
-
-      // https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.ioverlaywidget.html
-      let overlayWidget = {
-        getId: () => 'overlay.zone.widget',
-        getDomNode: () => overlayDom,
-        getPosition: () => null
-      };
-      editorRef.current.addOverlayWidget(overlayWidget);
-
-      // Used only to compute the position.
-      let zoneNode = document.createElement('div');
-      zoneNode.style.background = '#8effc9';
-      zoneNode.id = "zoneId";
-
-      // Can be used to fill the margin
-      let marginDomNode = document.createElement('div');
-      marginDomNode.style.background = '#ff696e';
-      marginDomNode.id = "zoneMarginId";
-
-      editorRef.current.changeViewZones(function(changeAccessor) {
-        changeAccessor.addZone({
-          afterLineNumber: 4,
-          heightInLines: 3,
-          afterColumn: 6,
-          domNode: zoneNode,
-          marginDomNode: marginDomNode,
-          onDomNodeTop: top => {
-            overlayDom.style.top = top + "px";
-          },
-          onComputedHeight: height => {
-            overlayDom.style.height = height + "px";
-          }
-
-        });
+      const underlineMarkers = [];
+      datapack.errors.forEach((error) => {
+        const marker = addCustomError(error, editorRef.current, monacoAlive);
+        console.log("here marker", marker);
+        if (marker) underlineMarkers.push(marker);
       });
+      monacoAlive.editor.setModelMarkers(
+        editorRef.current.getModel(),
+        "vanillamod",
+        underlineMarkers
+      );
 
+      if (underlineMarkers.length > 0) {
+        setTimeout(() => {
+          const firstError = underlineMarkers[0];
+          editorRef.current.setPosition({
+            lineNumber: firstError.startLineNumber,
+            column: firstError.startColumn,
+          });
+          editorRef.current.getAction("editor.action.showHover").run();
+          const actionContainer = document.getElementsByClassName(
+            "action-container"
+          );
+          if (actionContainer.length > 0) actionContainer[0].click();
+        }, 100);
+      } else {
+        console.log(
+          "Couldn't display any errors despite finding some. Awkward.",
+          datapack.errors
+        );
+      }
     } else {
-      console.log("transpiler", datapack)
+      console.log("transpiler", datapack);
     }
   }
 
-  return <>
-    <nav className={clsx('navbar', styles.editorHeader)}>
-      <div className="navbar__inner">
-        <h1 className={styles.editorHeaderTitle}>{props.title}</h1>
-        {/* <p>Stuff</p> the error messages can be displayed here */}
-        <div className="navbar__items navbar__items--right">
-          <a className={clsx('button button--secondary button--lg', styles.editorHeaderButton)} onClick={checkButtonClicked}>
+  function downloadButtonClicked() {
+    console.log("clicking downloadd!");
+  }
+
+  return (
+    <>
+      <Toolbar className={styles.editorHeader}>
+        <Typography variant="h4" classes={{ root: classes.editorTitle }}>
+          {props.title}
+        </Typography>
+        <div>
+          <Button
+            variant="outlined"
+            color="secondary"
+            size="large"
+            classes={{
+              root: classes.fatButton,
+              label: classes.fatButtonText,
+            }}
+            onClick={checkButtonClicked}
+          >
             Check
-          </a>
-
-          <a className={clsx('button button--primary button--lg', styles.editorHeaderButton)} onClick={() => alert("hi")}>
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            classes={{
+              root: classes.fatButton,
+              label: classes.fatButtonText,
+            }}
+            onClick={downloadButtonClicked}
+          >
             Download
-          </a>
+          </Button>
         </div>
-      </div>
-    </nav>
+      </Toolbar>
 
-    <Editor
-      height="85vh"
-      language="javascript"
-      theme="dark"
-      options={{fontSize: 15, minimap: {enabled: false}}}
-      editorDidMount={handleEditorDidMount}
-      value={props.startingCode}
-    />
-  </>;
+      <Editor
+        height="85vh"
+        language="javascript"
+        theme="dark"
+        options={{ fontSize: 15, minimap: { enabled: false } }}
+        editorDidMount={handleEditorDidMount}
+        value={props.startingCode}
+      />
+    </>
+  );
 }
 
 export { VModEditor };

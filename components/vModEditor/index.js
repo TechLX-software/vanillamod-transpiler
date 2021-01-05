@@ -1,1 +1,1 @@
-export * from './vModEditor'
+export * from "./vModEditor";

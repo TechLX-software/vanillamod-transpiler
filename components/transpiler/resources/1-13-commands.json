@@ -908,9 +908,7 @@
             "axes": {
               "type": "argument",
               "parser": "minecraft:swizzle",
-              "redirect": [
-                "execute"
-              ]
+              "redirect": ["execute"]
             }
           }
         },
@@ -920,9 +918,7 @@
             "anchor": {
               "type": "argument",
               "parser": "minecraft:entity_anchor",
-              "redirect": [
-                "execute"
-              ]
+              "redirect": ["execute"]
             }
           }
         },
@@ -936,9 +932,7 @@
                 "amount": "multiple",
                 "type": "entities"
               },
-              "redirect": [
-                "execute"
-              ]
+              "redirect": ["execute"]
             }
           }
         },
@@ -952,9 +946,7 @@
                 "amount": "multiple",
                 "type": "entities"
               },
-              "redirect": [
-                "execute"
-              ]
+              "redirect": ["execute"]
             }
           }
         },
@@ -975,9 +967,7 @@
                     "anchor": {
                       "type": "argument",
                       "parser": "minecraft:entity_anchor",
-                      "redirect": [
-                        "execute"
-                      ]
+                      "redirect": ["execute"]
                     }
                   }
                 }
@@ -986,9 +976,7 @@
             "pos": {
               "type": "argument",
               "parser": "minecraft:vec3",
-              "redirect": [
-                "execute"
-              ]
+              "redirect": ["execute"]
             }
           }
         },
@@ -1006,9 +994,7 @@
                       "type": "argument",
                       "parser": "minecraft:block_predicate",
                       "executable": true,
-                      "redirect": [
-                        "execute"
-                      ]
+                      "redirect": ["execute"]
                     }
                   }
                 }
@@ -1032,16 +1018,12 @@
                             "all": {
                               "type": "literal",
                               "executable": true,
-                              "redirect": [
-                                "execute"
-                              ]
+                              "redirect": ["execute"]
                             },
                             "masked": {
                               "type": "literal",
                               "executable": true,
-                              "redirect": [
-                                "execute"
-                              ]
+                              "redirect": ["execute"]
                             }
                           }
                         }
@@ -1062,9 +1044,7 @@
                     "type": "entities"
                   },
                   "executable": true,
-                  "redirect": [
-                    "execute"
-                  ]
+                  "redirect": ["execute"]
                 }
               }
             },
@@ -1096,9 +1076,7 @@
                                   "type": "argument",
                                   "parser": "minecraft:objective",
                                   "executable": true,
-                                  "redirect": [
-                                    "execute"
-                                  ]
+                                  "redirect": ["execute"]
                                 }
                               }
                             }
@@ -1118,9 +1096,7 @@
                                   "type": "argument",
                                   "parser": "minecraft:objective",
                                   "executable": true,
-                                  "redirect": [
-                                    "execute"
-                                  ]
+                                  "redirect": ["execute"]
                                 }
                               }
                             }
@@ -1140,9 +1116,7 @@
                                   "type": "argument",
                                   "parser": "minecraft:objective",
                                   "executable": true,
-                                  "redirect": [
-                                    "execute"
-                                  ]
+                                  "redirect": ["execute"]
                                 }
                               }
                             }
@@ -1162,9 +1136,7 @@
                                   "type": "argument",
                                   "parser": "minecraft:objective",
                                   "executable": true,
-                                  "redirect": [
-                                    "execute"
-                                  ]
+                                  "redirect": ["execute"]
                                 }
                               }
                             }
@@ -1184,9 +1156,7 @@
                                   "type": "argument",
                                   "parser": "minecraft:objective",
                                   "executable": true,
-                                  "redirect": [
-                                    "execute"
-                                  ]
+                                  "redirect": ["execute"]
                                 }
                               }
                             }
@@ -1199,9 +1169,7 @@
                               "type": "argument",
                               "parser": "minecraft:int_range",
                               "executable": true,
-                              "redirect": [
-                                "execute"
-                              ]
+                              "redirect": ["execute"]
                             }
                           }
                         }
@@ -1218,21 +1186,15 @@
           "children": {
             "overworld": {
               "type": "literal",
-              "redirect": [
-                "execute"
-              ]
+              "redirect": ["execute"]
             },
             "the_end": {
               "type": "literal",
-              "redirect": [
-                "execute"
-              ]
+              "redirect": ["execute"]
             },
             "the_nether": {
               "type": "literal",
-              "redirect": [
-                "execute"
-              ]
+              "redirect": ["execute"]
             }
           }
         },
@@ -1249,18 +1211,14 @@
                     "amount": "multiple",
                     "type": "entities"
                   },
-                  "redirect": [
-                    "execute"
-                  ]
+                  "redirect": ["execute"]
                 }
               }
             },
             "pos": {
               "type": "argument",
               "parser": "minecraft:vec3",
-              "redirect": [
-                "execute"
-              ]
+              "redirect": ["execute"]
             }
           }
         },
@@ -1277,18 +1235,14 @@
                     "amount": "multiple",
                     "type": "entities"
                   },
-                  "redirect": [
-                    "execute"
-                  ]
+                  "redirect": ["execute"]
                 }
               }
             },
             "rot": {
               "type": "argument",
               "parser": "minecraft:rotation",
-              "redirect": [
-                "execute"
-              ]
+              "redirect": ["execute"]
             }
           }
         },
@@ -1318,9 +1272,7 @@
                                 "scale": {
                                   "type": "argument",
                                   "parser": "brigadier:double",
-                                  "redirect": [
-                                    "execute"
-                                  ]
+                                  "redirect": ["execute"]
                                 }
                               }
                             },
@@ -1330,9 +1282,7 @@
                                 "scale": {
                                   "type": "argument",
                                   "parser": "brigadier:double",
-                                  "redirect": [
-                                    "execute"
-                                  ]
+                                  "redirect": ["execute"]
                                 }
                               }
                             },
@@ -1342,9 +1292,7 @@
                                 "scale": {
                                   "type": "argument",
                                   "parser": "brigadier:double",
-                                  "redirect": [
-                                    "execute"
-                                  ]
+                                  "redirect": ["execute"]
                                 }
                               }
                             },
@@ -1354,9 +1302,7 @@
                                 "scale": {
                                   "type": "argument",
                                   "parser": "brigadier:double",
-                                  "redirect": [
-                                    "execute"
-                                  ]
+                                  "redirect": ["execute"]
                                 }
                               }
                             },
@@ -1366,9 +1312,7 @@
                                 "scale": {
                                   "type": "argument",
                                   "parser": "brigadier:double",
-                                  "redirect": [
-                                    "execute"
-                                  ]
+                                  "redirect": ["execute"]
                                 }
                               }
                             },
@@ -1378,9 +1322,7 @@
                                 "scale": {
                                   "type": "argument",
                                   "parser": "brigadier:double",
-                                  "redirect": [
-                                    "execute"
-                                  ]
+                                  "redirect": ["execute"]
                                 }
                               }
                             }
@@ -1399,15 +1341,11 @@
                       "children": {
                         "max": {
                           "type": "literal",
-                          "redirect": [
-                            "execute"
-                          ]
+                          "redirect": ["execute"]
                         },
                         "value": {
                           "type": "literal",
-                          "redirect": [
-                            "execute"
-                          ]
+                          "redirect": ["execute"]
                         }
                       }
                     }
@@ -1434,9 +1372,7 @@
                                 "scale": {
                                   "type": "argument",
                                   "parser": "brigadier:double",
-                                  "redirect": [
-                                    "execute"
-                                  ]
+                                  "redirect": ["execute"]
                                 }
                               }
                             },
@@ -1446,9 +1382,7 @@
                                 "scale": {
                                   "type": "argument",
                                   "parser": "brigadier:double",
-                                  "redirect": [
-                                    "execute"
-                                  ]
+                                  "redirect": ["execute"]
                                 }
                               }
                             },
@@ -1458,9 +1392,7 @@
                                 "scale": {
                                   "type": "argument",
                                   "parser": "brigadier:double",
-                                  "redirect": [
-                                    "execute"
-                                  ]
+                                  "redirect": ["execute"]
                                 }
                               }
                             },
@@ -1470,9 +1402,7 @@
                                 "scale": {
                                   "type": "argument",
                                   "parser": "brigadier:double",
-                                  "redirect": [
-                                    "execute"
-                                  ]
+                                  "redirect": ["execute"]
                                 }
                               }
                             },
@@ -1482,9 +1412,7 @@
                                 "scale": {
                                   "type": "argument",
                                   "parser": "brigadier:double",
-                                  "redirect": [
-                                    "execute"
-                                  ]
+                                  "redirect": ["execute"]
                                 }
                               }
                             },
@@ -1494,9 +1422,7 @@
                                 "scale": {
                                   "type": "argument",
                                   "parser": "brigadier:double",
-                                  "redirect": [
-                                    "execute"
-                                  ]
+                                  "redirect": ["execute"]
                                 }
                               }
                             }
@@ -1519,9 +1445,7 @@
                         "objective": {
                           "type": "argument",
                           "parser": "minecraft:objective",
-                          "redirect": [
-                            "execute"
-                          ]
+                          "redirect": ["execute"]
                         }
                       }
                     }
@@ -1549,9 +1473,7 @@
                                 "scale": {
                                   "type": "argument",
                                   "parser": "brigadier:double",
-                                  "redirect": [
-                                    "execute"
-                                  ]
+                                  "redirect": ["execute"]
                                 }
                               }
                             },
@@ -1561,9 +1483,7 @@
                                 "scale": {
                                   "type": "argument",
                                   "parser": "brigadier:double",
-                                  "redirect": [
-                                    "execute"
-                                  ]
+                                  "redirect": ["execute"]
                                 }
                               }
                             },
@@ -1573,9 +1493,7 @@
                                 "scale": {
                                   "type": "argument",
                                   "parser": "brigadier:double",
-                                  "redirect": [
-                                    "execute"
-                                  ]
+                                  "redirect": ["execute"]
                                 }
                               }
                             },
@@ -1585,9 +1503,7 @@
                                 "scale": {
                                   "type": "argument",
                                   "parser": "brigadier:double",
-                                  "redirect": [
-                                    "execute"
-                                  ]
+                                  "redirect": ["execute"]
                                 }
                               }
                             },
@@ -1597,9 +1513,7 @@
                                 "scale": {
                                   "type": "argument",
                                   "parser": "brigadier:double",
-                                  "redirect": [
-                                    "execute"
-                                  ]
+                                  "redirect": ["execute"]
                                 }
                               }
                             },
@@ -1609,9 +1523,7 @@
                                 "scale": {
                                   "type": "argument",
                                   "parser": "brigadier:double",
-                                  "redirect": [
-                                    "execute"
-                                  ]
+                                  "redirect": ["execute"]
                                 }
                               }
                             }
@@ -1630,15 +1542,11 @@
                       "children": {
                         "max": {
                           "type": "literal",
-                          "redirect": [
-                            "execute"
-                          ]
+                          "redirect": ["execute"]
                         },
                         "value": {
                           "type": "literal",
-                          "redirect": [
-                            "execute"
-                          ]
+                          "redirect": ["execute"]
                         }
                       }
                     }
@@ -1665,9 +1573,7 @@
                                 "scale": {
                                   "type": "argument",
                                   "parser": "brigadier:double",
-                                  "redirect": [
-                                    "execute"
-                                  ]
+                                  "redirect": ["execute"]
                                 }
                               }
                             },
@@ -1677,9 +1583,7 @@
                                 "scale": {
                                   "type": "argument",
                                   "parser": "brigadier:double",
-                                  "redirect": [
-                                    "execute"
-                                  ]
+                                  "redirect": ["execute"]
                                 }
                               }
                             },
@@ -1689,9 +1593,7 @@
                                 "scale": {
                                   "type": "argument",
                                   "parser": "brigadier:double",
-                                  "redirect": [
-                                    "execute"
-                                  ]
+                                  "redirect": ["execute"]
                                 }
                               }
                             },
@@ -1701,9 +1603,7 @@
                                 "scale": {
                                   "type": "argument",
                                   "parser": "brigadier:double",
-                                  "redirect": [
-                                    "execute"
-                                  ]
+                                  "redirect": ["execute"]
                                 }
                               }
                             },
@@ -1713,9 +1613,7 @@
                                 "scale": {
                                   "type": "argument",
                                   "parser": "brigadier:double",
-                                  "redirect": [
-                                    "execute"
-                                  ]
+                                  "redirect": ["execute"]
                                 }
                               }
                             },
@@ -1725,9 +1623,7 @@
                                 "scale": {
                                   "type": "argument",
                                   "parser": "brigadier:double",
-                                  "redirect": [
-                                    "execute"
-                                  ]
+                                  "redirect": ["execute"]
                                 }
                               }
                             }
@@ -1750,9 +1646,7 @@
                         "objective": {
                           "type": "argument",
                           "parser": "minecraft:objective",
-                          "redirect": [
-                            "execute"
-                          ]
+                          "redirect": ["execute"]
                         }
                       }
                     }
@@ -1776,9 +1670,7 @@
                       "type": "argument",
                       "parser": "minecraft:block_predicate",
                       "executable": true,
-                      "redirect": [
-                        "execute"
-                      ]
+                      "redirect": ["execute"]
                     }
                   }
                 }
@@ -1802,16 +1694,12 @@
                             "all": {
                               "type": "literal",
                               "executable": true,
-                              "redirect": [
-                                "execute"
-                              ]
+                              "redirect": ["execute"]
                             },
                             "masked": {
                               "type": "literal",
                               "executable": true,
-                              "redirect": [
-                                "execute"
-                              ]
+                              "redirect": ["execute"]
                             }
                           }
                         }
@@ -1832,9 +1720,7 @@
                     "type": "entities"
                   },
                   "executable": true,
-                  "redirect": [
-                    "execute"
-                  ]
+                  "redirect": ["execute"]
                 }
               }
             },
@@ -1866,9 +1752,7 @@
                                   "type": "argument",
                                   "parser": "minecraft:objective",
                                   "executable": true,
-                                  "redirect": [
-                                    "execute"
-                                  ]
+                                  "redirect": ["execute"]
                                 }
                               }
                             }
@@ -1888,9 +1772,7 @@
                                   "type": "argument",
                                   "parser": "minecraft:objective",
                                   "executable": true,
-                                  "redirect": [
-                                    "execute"
-                                  ]
+                                  "redirect": ["execute"]
                                 }
                               }
                             }
@@ -1910,9 +1792,7 @@
                                   "type": "argument",
                                   "parser": "minecraft:objective",
                                   "executable": true,
-                                  "redirect": [
-                                    "execute"
-                                  ]
+                                  "redirect": ["execute"]
                                 }
                               }
                             }
@@ -1932,9 +1812,7 @@
                                   "type": "argument",
                                   "parser": "minecraft:objective",
                                   "executable": true,
-                                  "redirect": [
-                                    "execute"
-                                  ]
+                                  "redirect": ["execute"]
                                 }
                               }
                             }
@@ -1954,9 +1832,7 @@
                                   "type": "argument",
                                   "parser": "minecraft:objective",
                                   "executable": true,
-                                  "redirect": [
-                                    "execute"
-                                  ]
+                                  "redirect": ["execute"]
                                 }
                               }
                             }
@@ -1969,9 +1845,7 @@
                               "type": "argument",
                               "parser": "minecraft:int_range",
                               "executable": true,
-                              "redirect": [
-                                "execute"
-                              ]
+                              "redirect": ["execute"]
                             }
                           }
                         }
@@ -4366,9 +4240,7 @@
     },
     "tell": {
       "type": "literal",
-      "redirect": [
-        "msg"
-      ]
+      "redirect": ["msg"]
     },
     "tellraw": {
       "type": "literal",
@@ -4540,9 +4412,7 @@
     },
     "tp": {
       "type": "literal",
-      "redirect": [
-        "teleport"
-      ]
+      "redirect": ["teleport"]
     },
     "trigger": {
       "type": "literal",
@@ -4578,9 +4448,7 @@
     },
     "w": {
       "type": "literal",
-      "redirect": [
-        "msg"
-      ]
+      "redirect": ["msg"]
     },
     "weather": {
       "type": "literal",
@@ -4804,9 +4672,7 @@
     },
     "xp": {
       "type": "literal",
-      "redirect": [
-        "experience"
-      ]
+      "redirect": ["experience"]
     }
   }
 }

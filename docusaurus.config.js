@@ -105,9 +105,10 @@ module.exports = {
             'https://github.com/bakerfugu/vanillamod-transpiler/tree/main/',
         },
         theme: {
-          customCss: require.resolve('./src/css/custom.css'),
+          customCss: require.resolve('./src/css/custom.scss'),
         },
       },
     ],
   ],
+  plugins: ['docusaurus-plugin-sass'],
 };
