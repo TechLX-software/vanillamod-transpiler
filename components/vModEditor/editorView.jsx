@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
 import SplitPane from "react-split-pane";
@@ -48,21 +48,12 @@ function EditorView({ title, startingCode, children }) {
   return (
     <div ref={editorViewRef}>
       <SplitPane split="vertical" onResizeEnd={changeLeftPanel}>
-        {showLeftPanelContent && (
-          <Pane initialSize="15%">
-            {children[0]}
-          </Pane>
-        )}
+        {showLeftPanelContent && <Pane initialSize="15%">{children[0]}</Pane>}
         {!showLeftPanelContent && <Pane initialSize="0px" />}
         <Pane>
-          <VModEditor
-            title={title}
-            startingCode={startingCode}
-          />
+          <VModEditor title={title} startingCode={startingCode} />
         </Pane>
-        <Pane initialSize="25%">
-          {children[1]}
-        </Pane>
+        <Pane initialSize="25%">{children[1]}</Pane>
       </SplitPane>
       {!showLeftPanelContent && (
         <Button
@@ -83,7 +74,7 @@ function EditorView({ title, startingCode, children }) {
 EditorView.propTypes = {
   startingCode: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  children: PropTypes.arrayOf(PropTypes.node).isRequired
-}
+  children: PropTypes.arrayOf(PropTypes.node).isRequired,
+};
 
 export default EditorView;

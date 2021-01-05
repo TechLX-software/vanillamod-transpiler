@@ -19,7 +19,7 @@ class VModError extends Error {
 }
 
 validator.validate = function (statement, inGameVars) {
-  console.log("statement is validating", statement)
+  console.log("statement is validating", statement);
   debugPrint(
     "================================================ validate() ================================================"
   );

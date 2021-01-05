@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { Button } from "@material-ui/core";
-import { makeStyles, createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import {
+  makeStyles,
+  createMuiTheme,
+  ThemeProvider,
+} from "@material-ui/core/styles";
 // eslint-disable-next-line import/no-unresolved
 import Layout from "@theme/Layout";
 import styles from "./styles.module.scss";
@@ -17,12 +21,12 @@ const useStyles = makeStyles({
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#d36135',
+      main: "#d36135",
     },
     secondary: {
-      main: '#006d77',
+      main: "#006d77",
     },
-  }
+  },
 });
 
 function EditorPlayground() {
@@ -38,10 +42,7 @@ function EditorPlayground() {
     >
       <main>
         <ThemeProvider theme={theme}>
-          <EditorView
-            title="vMod Playground"
-            startingCode={editorStarterCode}
-          >
+          <EditorView title="vMod Playground" startingCode={editorStarterCode}>
             {/* Left Panel */}
             <div className={styles.paneContentWrapper}>
               <div className="card">
@@ -51,8 +52,8 @@ function EditorPlayground() {
                 <div className="card__body">
                   <p>
                     This resizable panel will hold the table of contents of a
-                    course if the current mod has one. Unsure of what it
-                    should display for a normal user-made mod.
+                    course if the current mod has one. Unsure of what it should
+                    display for a normal user-made mod.
                   </p>
                   <p>Eventually, there might be a file browser here too.</p>
                 </div>
@@ -71,7 +72,9 @@ function EditorPlayground() {
                       mod or lesson. It will have a tab to switch to the
                       interactive documentation.
                     </p>
-                    <p>Eventually, there might be a display for test results.</p>
+                    <p>
+                      Eventually, there might be a display for test results.
+                    </p>
                   </div>
                 </div>
                 <div className="card">
