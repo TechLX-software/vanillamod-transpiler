@@ -19,7 +19,6 @@ class VModError extends Error {
 }
 
 validator.validate = function (statement, inGameVars) {
-  console.log("statement is validating", statement);
   debugPrint(
     "================================================ validate() ================================================"
   );
@@ -62,10 +61,9 @@ validator.validate = function (statement, inGameVars) {
     validator.command = [];
     const propertyName = statement.callee.property.name;
     const objectName = statement.callee.object.name;
-    if (objectName == "vMod") {
-      console.log("INSIDE VMOD");
+    if (objectName === "vMod") {
       if (vMod[propertyName] && typeof vMod[propertyName] === "function") {
-        if (propertyName == "command") {
+        if (propertyName === "command") {
           if (
             statement.arguments[0] &&
             statement.arguments[0].type == "Literal"

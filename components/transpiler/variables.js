@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import vMod from "./library-1-13";
 
 const vars = {};
@@ -46,7 +47,6 @@ vars.Variable = class extends vars.Declared {
   constructor(declarator, variableType, mcFunctionContents) {
     super(...Object.values(declarator));
     this.defined = true;
-    console.log("Making a variable!");
     // this.varName = declarator.varName
     // this tag stuff should be replaced with UUID referencing at some point
     this.scopeID = `var-${declarator.varName}-line-${declarator.lineNum}-column-${declarator.columnNum}`;
@@ -79,7 +79,6 @@ vars.Variable = class extends vars.Declared {
 
 vars.Drone = class extends vars.Variable {
   constructor(entityType, declarator, mcFunctionContents) {
-    console.log("Creating a drone!");
     vars.mod.addDependency("drone-summon");
     super(declarator, "drone", mcFunctionContents);
     if (!entityType) {
@@ -197,6 +196,7 @@ vars.Function = class {
     } has a last success of: ",{"score":{"name":"${this.getSelector()}","objective":"vMod_LastSuccess"}}`;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   createClickableFunctionChatJSON(mod, functionName) {
     const runFunction = vMod
       .function(getMCFunctionPath(mod, functionName, "run"))

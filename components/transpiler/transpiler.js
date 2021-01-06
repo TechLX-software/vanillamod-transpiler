@@ -176,7 +176,6 @@ transpiler.transpileProgramStatement = (programStatement, mod) => {
     "functions",
     mod.datapackJson.data.contents[0]
   ); // walk down to the functions folder from the namespace of this mod
-  console.log("here f folder", functionsFolder);
   const scope = {
     functionName: "vMod-GLOBAL",
     mcFunctionName: "main",
@@ -273,7 +272,6 @@ transpiler.transpileProgramStatement = (programStatement, mod) => {
     }
   });
 
-  debugPrint("Do stuff inside functions now (loop #2)");
   esprimaFunctions.forEach((functionStatement) => {
     // debugPrint('in statement with statement type:', statement.type);
     try {
@@ -282,6 +280,10 @@ transpiler.transpileProgramStatement = (programStatement, mod) => {
       mod.errors.push(e);
     }
   });
+
+  debugPrint(
+    `] - end program`
+  );
 
   try {
     mod.objectives.forEach((objectiveName) => {
@@ -371,7 +373,7 @@ transpiler.transpileFunctionDeclaration = (statement, mod, scope) => {
   runFunction.push(`kill ${thisFunction.getSelector()}`);
 
   debugPrint(
-    `${indenter(scope.depth)} ${scope.depth}:${
+    `${indenter(scope.depth)}${scope.depth}:${
       scope.index
     } function declaration`
   );
@@ -444,7 +446,7 @@ transpiler.transpileBlockStatement = (statement, mod, oldScope) => {
 
 transpiler.transpileVariableDeclaration = (statement, mod, scope) => {
   debugPrint(
-    `${indenter(scope.depth)} ${scope.depth}:${
+    `${indenter(scope.depth)}${scope.depth}:${
       scope.index
     } variable declaration`
   );
@@ -459,7 +461,6 @@ transpiler.transpileVariableDeclaration = (statement, mod, scope) => {
   statement.declarations.forEach((declaration) => {
     const varName = declaration.id.name;
     if (!scope.variables.has(varName)) {
-      debugPrint(`Variable: ${statement} being declared`);
       const codeLocation = statement.loc.start;
       const variableBeingDeclared = new vars.Declared(
         varName,
@@ -525,7 +526,7 @@ transpiler.transpileVariableDeclaration = (statement, mod, scope) => {
 transpiler.transpileIfStatement = (statement, mod, scope) => {
   // handles if, else if, and else all in one ... well, it will
   debugPrint(
-    `${indenter(scope.depth)} ${scope.depth}:${scope.index} if statement`
+    `${indenter(scope.depth)}${scope.depth}:${scope.index} if statement`
   );
   const oldMCFunctionPath = scope.mcFunctionPath;
   const oldMCFunctionContents = scope.mcFunctionContents;
@@ -658,7 +659,7 @@ transpiler.transpileIfStatement = (statement, mod, scope) => {
       transpiler.transpileIfStatement(statement.alternate, mod, scope);
     } else {
       debugPrint(
-        `${indenter(scope.depth)} ${scope.depth}:${scope.index} else statement`
+        `${indenter(scope.depth)}${scope.depth}:${scope.index} else statement`
       );
       const elseLocation = statement.alternate.loc.start;
       const elseFolderName = newStatementSubPath(elseLocation.line, "else");
@@ -707,7 +708,7 @@ transpiler.transpileIfStatement = (statement, mod, scope) => {
 // ZIP SKIPPED
 transpiler.transpileForStatement = (statement, mod, scope) => {
   debugPrint(
-    `${indenter(scope.depth)} ${scope.depth}:${scope.index} for statement`
+    `${indenter(scope.depth)}${scope.depth}:${scope.index} for statement`
   );
   // try to use ifstatement? possibly not possible? Everything conditional?
 
@@ -878,7 +879,7 @@ transpiler.transpileForStatement = (statement, mod, scope) => {
 transpiler.transpileExpressionStatement = (statement, mod, scope) => {
   // function call -- technically var declaration is an expressionstatement too
   debugPrint(
-    `${indenter(scope.depth)} ${scope.depth}:${
+    `${indenter(scope.depth)}${scope.depth}:${
       scope.index
     } expression statement`
   );
@@ -906,7 +907,7 @@ transpiler.transpileCallExpression = (
   isCondition = false
 ) => {
   debugPrint(
-    `${indenter(scope.depth)} ${scope.depth}:${
+    `${indenter(scope.depth)}${scope.depth}:${
       scope.index
     } function call (expression)`
   );
@@ -924,19 +925,15 @@ transpiler.transpileCallExpression = (
         minecraftPrintJSON(scope, statement.arguments),
       ];
       const validatedCommand = command.join(" ");
-      debugPrint("scope: ", JSON.stringify(scope, null, 4));
-      debugPrint(
-        "command contents",
-        scope.mcFunctionContents,
-        "is it an array?:",
-        Array.isArray(scope.mcFunctionContents),
-        "typeof",
-        typeof scope.mcFunctionContents
-      );
-      debugPrint(
-        "The prototype of scope.mcfunctioncontents:",
-        scope.mcFunctionContents.prototype
-      );
+      // debugPrint("scope: ", JSON.stringify(scope, null, 4));
+      // debugPrint(
+      //   "command contents",
+      //   scope.mcFunctionContents,
+      //   "is it an array?:",
+      //   Array.isArray(scope.mcFunctionContents),
+      //   "typeof",
+      //   typeof scope.mcFunctionContents
+      // );
       scope.mcFunctionContents.push(validatedCommand);
       return;
     }
@@ -949,8 +946,6 @@ transpiler.transpileCallExpression = (
   // declare calledfunctionname out here for when it is not a memberExpession
   if (statement.callee.type === "MemberExpression") {
     const validateObject = validator.validate(statement, scope.variables);
-    debugPrint(`validateObject.valid: ${validateObject.valid}`);
-    debugPrint("Validator threw no errors: pushing command");
 
     // debugPrint('scope: ', JSON.stringify(scope))
     // debugPrint('command contents', scope.mcFunctionContents)
@@ -1030,7 +1025,7 @@ transpiler.transpileUpdateExpression = (statementToTransform, mod, scope) => {
 // NEEDS 1.13 HELP, LOOK IN SWITCH STATEMENT
 transpiler.transpileAssignmentExpression = (statement, mod, scope) => {
   debugPrint(
-    `${indenter(scope.depth)} ${scope.depth}:${
+    `${indenter(scope.depth)}${scope.depth}:${
       scope.index
     } assignment expression`
   );
@@ -1108,7 +1103,7 @@ transpiler.transpileAssignmentExpression = (statement, mod, scope) => {
 transpiler.transpileNewExpression = (statement, mod, scope, varName) => {
   // new object being declared
   debugPrint(
-    `${indenter(scope.depth)} ${scope.depth}:${scope.index} new expression`
+    `${indenter(scope.depth)}${scope.depth}:${scope.index} new expression`
   );
   // PARAMS FIRST (when we have them)
   // technically we should also kill the old drones, but lazy for now
@@ -1167,10 +1162,6 @@ transpiler.transpileNewExpression = (statement, mod, scope, varName) => {
           }
         } else {
           scope.mcFunctionContents.push(...createCommands);
-          debugPrint(
-            "NOT ARRAY, mcfunctioncontents:",
-            scope.mcFunctionContents
-          );
         }
       }
 
@@ -1227,7 +1218,7 @@ transpiler.transpileBinaryExpression = (
   getSimpleCommand = false
 ) => {
   debugPrint(
-    `${indenter(scope.depth)} ${scope.depth}:${scope.index} binary expression`
+    `${indenter(scope.depth)}${scope.depth}:${scope.index} binary expression`
   );
   // assumes variable on the left
 
@@ -1354,7 +1345,7 @@ transpiler.transpileLogicalExpression = (statement, mod, scope) => {
   // probably not possible
   // scope.depth FIRST
   debugPrint(
-    `${indenter(scope.depth)} ${scope.depth}:${scope.index} logical expression`
+    `${indenter(scope.depth)}${scope.depth}:${scope.index} logical expression`
   );
 
   throw new VModError(
@@ -1367,7 +1358,7 @@ transpiler.transpileLogicalExpression = (statement, mod, scope) => {
 transpiler.transpileIdentifier = (statement, mod, scope) => {
   // this is easy, check scope, and then... ?
   debugPrint(
-    `${indenter(scope.depth)} ${scope.depth}:${
+    `${indenter(scope.depth)}${scope.depth}:${
       scope.index
     } simple assignment expression`
   );
@@ -1375,7 +1366,7 @@ transpiler.transpileIdentifier = (statement, mod, scope) => {
 
 transpiler.transpileLiteral = (statement, mod, scope) => {
   debugPrint(
-    `${indenter(scope.depth)} ${scope.depth}:${
+    `${indenter(scope.depth)}${scope.depth}:${
       scope.index
     } literal (found on its own?)`
   );
