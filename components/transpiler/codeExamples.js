@@ -9,8 +9,8 @@ function sayHello() {
 };
 
 const simpleErrorMessage = {
-  title: "Simple Error Message",
-  code: `// Display an error message
+  title: "Error Message",
+  code: `// Displays an error message when you try downloading.x
 
 function begin() {
     notExistentFunction();
@@ -18,6 +18,17 @@ function begin() {
 `,
 };
 
-const examples = [helloWorld, simpleErrorMessage];
+const droneSetblock = {
+  title: "Drone Setblock",
+  code: `// A drone will place a gold block when you run this function
+
+function dronePlaceGold() {
+    let myDrone = new vMod.Drone();
+    myDrone.setblock("~ ~ ~", "gold_block");
+}
+`,
+};
+
+const examples = [helloWorld, simpleErrorMessage, droneSetblock];
 
 export default examples;
