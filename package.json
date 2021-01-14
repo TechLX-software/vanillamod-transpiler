@@ -42,11 +42,6 @@
       "last 1 safari version"
     ]
   },
-  "bit": {
-    "env": {},
-    "componentsDefaultDirectory": "components/{name}",
-    "packageManager": "yarn"
-  },
   "eslintConfig": {
     "extends": [
       "eslint:recommended",
