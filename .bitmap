@@ -54,7 +54,7 @@
         "origin": "AUTHORED",
         "exported": true
     },
-    "techlx.vanillamod/vmod-editor@2.0.3": {
+    "techlx.vanillamod/vmod-editor@2.0.4": {
         "files": [
             {
                 "name": "editorView.jsx",
