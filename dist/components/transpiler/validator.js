@@ -398,8 +398,11 @@ validator.validate = function (statement, inGameVars) {
 };
 
 function debugPrint() {
-  if (process.env.ENVIRONMENT == "dev") {
-    console.log.apply(console, arguments);
+  if (process.env.ENVIRONMENT === "dev") {
+    var _console;
+
+    // eslint-disable-next-line no-console
+    (_console = console).log.apply(_console, arguments);
   }
 }
 
