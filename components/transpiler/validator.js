@@ -5,6 +5,12 @@ const validator = {};
 
 const commandValidator = commandTree.children;
 
+function debugPrint(...args) {
+  if (process.env.ENVIRONMENT === "dev") {
+    // eslint-disable-next-line no-console
+    console.log(...args);
+  }
+}
 class VModError extends Error {
   constructor(location, message) {
     const wrappedMessage = message
@@ -354,7 +360,7 @@ validator.validate = function (statement, inGameVars) {
             remainingArgs.slice(1)
           );
         }
-        if (argument == "run") {
+        if (argument === "run") {
           return checkCommand(commandValidator, remainingArgs.slice(1));
         }
         throw new VModError(
@@ -389,12 +395,5 @@ validator.validate = function (statement, inGameVars) {
     }
   }
 };
-
-function debugPrint(...args) {
-  if (process.env.ENVIRONMENT === "dev") {
-    // eslint-disable-next-line no-console
-    console.log(...args);
-  }
-}
 
 export default validator;

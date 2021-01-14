@@ -58,6 +58,15 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 var validator = {};
 var commandValidator = _commands.default.children;
 
+function debugPrint() {
+  if (process.env.ENVIRONMENT === "dev") {
+    var _console;
+
+    // eslint-disable-next-line no-console
+    (_console = console).log.apply(_console, arguments);
+  }
+}
+
 var VModError = /*#__PURE__*/function (_Error) {
   _inherits(VModError, _Error);
 
@@ -372,7 +381,7 @@ validator.validate = function (statement, inGameVars) {
           return checkCommand(commandValidator[currentPropKey.redirect[0]].children, remainingArgs.slice(1));
         }
 
-        if (argument == "run") {
+        if (argument === "run") {
           return checkCommand(commandValidator, remainingArgs.slice(1));
         }
 
@@ -396,15 +405,6 @@ validator.validate = function (statement, inGameVars) {
     }
   }
 };
-
-function debugPrint() {
-  if (process.env.ENVIRONMENT === "dev") {
-    var _console;
-
-    // eslint-disable-next-line no-console
-    (_console = console).log.apply(_console, arguments);
-  }
-}
 
 var _default = validator;
 exports.default = _default;

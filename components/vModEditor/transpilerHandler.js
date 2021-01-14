@@ -2,7 +2,7 @@ import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import transpiler from "../transpiler";
 
-// interacts with transpiler component
+// handles all interactions with transpiler component
 
 function addCustomError(error, editor, monacoAlive) {
   if (error.location) {

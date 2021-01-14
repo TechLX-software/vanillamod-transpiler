@@ -14,7 +14,7 @@ var _transpiler = _interopRequireDefault(require("../transpiler"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// interacts with transpiler component
+// handles all interactions with transpiler component
 function addCustomError(error, editor, monacoAlive) {
   if (error.location) {
     var startLine;

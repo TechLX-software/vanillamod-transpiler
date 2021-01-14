@@ -67,6 +67,13 @@
         "env": {
           "compiler": "bit.envs/compilers/babel@7.0.4"
         }
+      },
+      "components/vModEditor/*": {
+        "peerDependencies": {
+          "react": "^16.8.4",
+          "react-dom": "^16.8.4",
+          "react-split-pane": "^2.0.3"
+        }
       }
     },
     "componentsDefaultDirectory": "components/{name}",
