@@ -45,7 +45,7 @@
   "bit": {
     "env": {},
     "componentsDefaultDirectory": "components/{name}",
-    "packageManager": "npm"
+    "packageManager": "yarn"
   },
   "eslintConfig": {
     "extends": [
