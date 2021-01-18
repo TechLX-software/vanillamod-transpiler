@@ -9,31 +9,31 @@ import styles from "./styles.module.scss";
 const features = [
   {
     title: "Easy to Use",
-    imageUrl: "img/undraw_docusaurus_mountain.svg",
+    imageUrl: "img/undraw_relaxing_walk.svg",
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        Create and share with a single file. VanillaMod works without
+        any installation or configuration.
       </>
     ),
   },
   {
-    title: "Focus on What Matters",
-    imageUrl: "img/undraw_docusaurus_tree.svg",
+    title: "Learn Programming",
+    imageUrl: "img/undraw_code_review.svg",
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        When you create with VanillaMod, you'll be learning and using
+        JavaScript, the world's most popular programming language.
       </>
     ),
   },
   {
-    title: "Powered by React",
-    imageUrl: "img/undraw_docusaurus_react.svg",
+    title: "Crazy Powerful",
+    imageUrl: "img/undraw_powerful_cape.svg",
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        Already an experienced Minecraft map maker? VanillaMod will
+        make your map making faster, easier, and reusable.
       </>
     ),
   },

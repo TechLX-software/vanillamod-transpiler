@@ -10,7 +10,7 @@ module.exports = {
   projectName: 'vanillamod-transpiler', // Usually your repo name.
   themeConfig: {
     navbar: {
-      title: 'vMod',
+      title: 'Home',
       logo: {
         alt: 'My Site Logo',
         src: 'img/logo.svg',
@@ -27,6 +27,11 @@ module.exports = {
           activeBasePath: 'playground',
           label: 'Playground',
           position: 'left',
+        },
+        {
+          href: 'https://www.vanillamod.com/',
+          label: 'VanillaMod.com',
+          position: 'right',
         },
         {
           href: 'https://www.techlx.com/blog/',
