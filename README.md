@@ -31,7 +31,7 @@ vMod will parse this JavaScript code and turn it into a datapack with several `.
 tellraw @p ["","Initiating countdown sequence!"," "]
 # Initialize the "counter" variable
 function v_mod_playground:countdown/line0005_for-loop/init
-# Check the for loop condition
+# Check the for loop condition (counter > 0)
 execute store success score @s vMod_LastSuccess if score @e[tag=vMod-v_mod_playground-var-counter-line-5-column-7,limit=1] vMod_Variable matches 1..
 # If the condition passes, run the body of the for loop
 execute if entity @s[scores={vMod_LastSuccess=1..}] run function v_mod_playground:countdown/line0005_for-loop/body
@@ -61,7 +61,7 @@ scoreboard players set @e[tag=vMod-v_mod_playground-var-counter-line-5-column-7]
 tellraw @p ["",{"score":{"name":"@e[tag=vMod-v_mod_playground-var-counter-line-5-column-7]","objective":"vMod_Variable"}}," ","seconds remaining"," "]
 # Subtract 1 from the value of "counter" (as specified in the for loop)
 scoreboard players remove @e[tag=vMod-v_mod_playground-var-counter-line-5-column-7] vMod_Variable 1
-# Check the for loop condition
+# Check the for loop condition (counter > 0)
 execute store success score @s vMod_LastSuccess if score @e[tag=vMod-v_mod_playground-var-counter-line-5-column-7,limit=1] vMod_Variable matches 1..
 # If the condition passes, run the body of the for loop
 execute if entity @s[scores={vMod_LastSuccess=1..}] run function v_mod_playground:countdown/line0005_for-loop/body
