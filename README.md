@@ -11,6 +11,8 @@ Talk with the community and the TechLX team on the [VanillaMod Discord Server](h
 This is best illustrated with an example. Here is some JavaScript:
 
 ```javascript
+// Counts down from 10 to liftoff!
+
 function countdown() {
   console.log("Initiating countdown sequence!")
   for (let counter = 10; counter > 0; counter--) {
@@ -25,7 +27,7 @@ vMod will parse this JavaScript code and turn it into a datapack with several `.
 #### The body of `countdown()`
 
 ```mcfunction 
-# File path - ./PACK_NAME/data/v_mod_playground/functions/countdown/main.mcfunction
+# File - ./PACK_NAME/data/v_mod_playground/functions/countdown/main.mcfunction
 
 # First console.log
 tellraw @p ["","Initiating countdown sequence!"," "]
@@ -44,7 +46,7 @@ tellraw @p ["","Liftoff!"," "]
 #### Initializing the variable `counter`
 
 ```mcfunction
-# File path - ./PACK_NAME/data/v_mod_playground/functions/countdown/line0005_for-loop/init.mcfunction
+# File - ./PACK_NAME/data/v_mod_playground/functions/countdown/line0005_for-loop/init.mcfunction
 
 # Create an entity to hold the value of "counter"
 summon minecraft:area_effect_cloud ~ ~ ~ {CustomName:"\"int-counter\"",NoGravity:1b,Duration:2147483647,Tags:["vMod-v_mod_playground","v_mod_playground.countdown.line0005_for-loop-depth-1","vMod-v_mod_playground-var-counter-line-5-column-7"]}
@@ -55,7 +57,7 @@ scoreboard players set @e[tag=vMod-v_mod_playground-var-counter-line-5-column-7]
 #### The body of the for loop
 
 ```mcfunction
-# File path - ./PACK_NAME/data/v_mod_playground/functions/countdown/line0005_for-loop/body.mcfunction
+# File - ./PACK_NAME/data/v_mod_playground/functions/countdown/line0005_for-loop/body.mcfunction
 
 # Log the value of "counter" followed by the string "seconds remaining"
 tellraw @p ["",{"score":{"name":"@e[tag=vMod-v_mod_playground-var-counter-line-5-column-7]","objective":"vMod_Variable"}}," ","seconds remaining"," "]
