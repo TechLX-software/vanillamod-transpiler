@@ -22,7 +22,7 @@ function hello() {
 
 ## What can functions do?
 
-Functions are for blah blah
+Functions are for making code...
 
 ## More examples
 
