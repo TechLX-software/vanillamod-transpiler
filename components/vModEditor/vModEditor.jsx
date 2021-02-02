@@ -5,7 +5,6 @@ import { Button, Toolbar, Typography, Grid, Box } from "@material-ui/core";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import Editor, { monaco } from "@monaco-editor/react";
-import styles from "./styles.module.scss";
 
 import { transpileCode, downloadDatapack } from "./transpilerHandler";
 
@@ -21,6 +20,11 @@ const useStyles = makeStyles({
   editorTitle: {
     paddingLeft: "20px",
     fontWeight: "bold",
+  },
+  editorHeader: {
+    height: "5em",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
 });
 
@@ -121,7 +125,7 @@ function VModEditor({ title, startingCode }) {
 
   return (
     <>
-      <Toolbar className={styles.editorHeader}>
+      <Toolbar classes={{ root: classes.editorHeader }}>
         <Box width="60%" display="inline-block">
           <Typography variant="h4" classes={{ root: classes.editorTitle }}>
             {title}
