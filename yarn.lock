@@ -1026,7 +1026,7 @@
     core-js-pure "^3.0.0"
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.1.2", "@babel/runtime@^7.10.2", "@babel/runtime@^7.10.3", "@babel/runtime@^7.11.0", "@babel/runtime@^7.11.2", "@babel/runtime@^7.12.1", "@babel/runtime@^7.12.5", "@babel/runtime@^7.3.1", "@babel/runtime@^7.4.4", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.3", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7":
+"@babel/runtime@^7.1.2", "@babel/runtime@^7.10.2", "@babel/runtime@^7.10.3", "@babel/runtime@^7.11.2", "@babel/runtime@^7.12.1", "@babel/runtime@^7.12.5", "@babel/runtime@^7.3.1", "@babel/runtime@^7.4.4", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.3", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7":
   version "7.12.5"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.12.5.tgz#410e7e487441e1b360c29be715d870d9b985882e"
   integrity sha512-plcc+hbExy3McchJCEQG3knOsuh3HH+Prx1P6cLIkET/0dLuQDEnrT+s27Axgc9bqfsmNUNHfscgMUdBpC9xfg==
@@ -1561,13 +1561,21 @@
   resolved "https://registry.yarnpkg.com/@mdx-js/util/-/util-1.6.22.tgz#219dfd89ae5b97a8801f015323ffa4b62f45718b"
   integrity sha512-H1rQc1ZOHANWBvPcW+JpGwr+juXSxM8Q8YCkm3GhZd8REu1fHR3z99CErO1p9pkcfcxZnMdIZdIsXkOHY0NilA==
 
-"@monaco-editor/react@^3.7.4":
-  version "3.7.4"
-  resolved "https://registry.yarnpkg.com/@monaco-editor/react/-/react-3.7.4.tgz#f13a798c37f19c9f864c8bae65c24bade5da8645"
-  integrity sha512-nblpHA50mpeH3gT88EWFnaNIhGzxm4Vjc0H4UbOlHneg39kl8CakDbVTrxhtk2VWueWZEbFUllPH5dp6W/lLbg==
+"@monaco-editor/loader@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@monaco-editor/loader/-/loader-1.0.0.tgz#c7ea78ef07cebcae83d92bbfe2bddab563468102"
+  integrity sha512-CA35bf5Y7wFWfeJZfkLslOxiatln3oTBKkfbdo+TF5H+UdPP96qHvhOUjjd1DeQ2NWsRkVPSnoSYek7NE5B26w==
   dependencies:
-    "@babel/runtime" "^7.11.0"
-    state-local "^1.0.1"
+    state-local "^1.0.6"
+
+"@monaco-editor/react@^4.0.9":
+  version "4.0.9"
+  resolved "https://registry.yarnpkg.com/@monaco-editor/react/-/react-4.0.9.tgz#77f3170c6c8409efe6b450467748f0df4f64d6b2"
+  integrity sha512-mTDqf47FsPnud/Ct3ekKqSFxmytkk4oMVIPUFMJF9iJcKH5AoqXs1oobXtPoVWiL9uWePatBNVCFv1pg4AqZuA==
+  dependencies:
+    "@monaco-editor/loader" "^1.0.0"
+    prop-types "^15.7.2"
+    state-local "^1.0.7"
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
@@ -10818,10 +10826,10 @@ stable@^0.1.8:
   resolved "https://registry.yarnpkg.com/stable/-/stable-0.1.8.tgz#836eb3c8382fe2936feaf544631017ce7d47a3cf"
   integrity sha512-ji9qxRnOVfcuLDySj9qzhGSEFVobyt1kIOSkj1qZzYLzq7Tos/oUUWvotUPQLlrsidqsK6tBH89Bc9kL5zHA6w==
 
-state-local@^1.0.1:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/state-local/-/state-local-1.0.4.tgz#aaa6a39d00728fa5ab8d3f3b7e52dd0527f1c926"
-  integrity sha512-ea0qFgZAlqjuwyUnIEST/sDxKhbW3CEcZJVR6ay3hCCXFPDfONsXjslPjHzhhtM/PFlIv0FTpteg3H5wFTNDyw==
+state-local@^1.0.6, state-local@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/state-local/-/state-local-1.0.7.tgz#da50211d07f05748d53009bee46307a37db386d5"
+  integrity sha512-HTEHMNieakEnoe33shBYcZ7NX83ACUjCu8c40iOGEZsngj9zRnkqS9j1pqQPXwobB0ZcVTk27REb7COQ0UR59w==
 
 state-toggle@^1.0.0:
   version "1.0.3"

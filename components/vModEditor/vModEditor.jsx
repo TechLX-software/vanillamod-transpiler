@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import { Button, Toolbar, Typography, Grid, Box } from "@material-ui/core";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
-import Editor, { monaco } from "@monaco-editor/react";
+import Editor from "@monaco-editor/react";
 
 import { transpileCode, downloadDatapack } from "./transpilerHandler";
 
@@ -58,19 +58,26 @@ function displayErrors(errorMarkers, editor, monacoAlive) {
 function VModEditor({ title, startingCode }) {
   const classes = useStyles();
 
-  const [monacoAlive, setMonacoAlive] = useState(null);
+  // const [monacoAlive, setMonacoAlive] = useState(null);
   const [errorInfo, setErrorInfo] = useState(null);
   const [clearErrorInfo, setClearErrorInfo] = useState(null);
-  const editorRef = useRef();
+  // const monaco = useMonaco();
+  // const editorRef = useRef();
 
-  useEffect(() => {
-    monaco.init().then((initializedMonaco) => {
-      setMonacoAlive(initializedMonaco);
-    });
-  }, []);
+  const editorRef = useRef(null);
+  const monacoRef = useRef(null);
 
-  function handleEditorDidMount(_, editor) {
+  function handleEditorWillMount(monaco) {
+    // here is the monaco instance
+    // do stuff before editor is mounted
+    // like removing DOM library and adding
+    // vmod constants for intellisense 
+    monaco.languages.typescript.javascriptDefaults.setEagerModelSync(true);
+  }
+
+  function handleEditorDidMount(editor, monaco) {
     editorRef.current = editor;
+    monacoRef.current = monaco;
   }
 
   function showErrorInfo(errorMarkers) {
@@ -95,10 +102,10 @@ function VModEditor({ title, startingCode }) {
       code,
       modInfo,
       editorRef.current,
-      monacoAlive
+      monacoRef.current
     );
     if (errorMarkers) {
-      displayErrors(errorMarkers, editorRef.current, monacoAlive);
+      displayErrors(errorMarkers, editorRef.current, monacoRef.current);
     }
 
     showErrorInfo(errorMarkers);
@@ -113,10 +120,10 @@ function VModEditor({ title, startingCode }) {
       code,
       modInfo,
       editorRef.current,
-      monacoAlive
+      monacoRef.current
     );
     if (errorMarkers) {
-      displayErrors(errorMarkers, editorRef.current, monacoAlive);
+      displayErrors(errorMarkers, editorRef.current, monacoRef.current);
       showErrorInfo(errorMarkers);
     } else {
       downloadDatapack(datapack);
@@ -172,7 +179,8 @@ function VModEditor({ title, startingCode }) {
         language="javascript"
         theme="dark"
         options={{ fontSize: 15, minimap: { enabled: false } }}
-        editorDidMount={handleEditorDidMount}
+        beforeMount={handleEditorWillMount}
+        onMount={handleEditorDidMount}
         value={startingCode}
       />
     </>
