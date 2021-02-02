@@ -19,7 +19,7 @@ const useStyles = makeStyles({
   },
 });
 
-function EditorView({ title, startingCode, children }) {
+function EditorView({ title, startingCode, isDarkTheme, children }) {
   const classes = useStyles();
   const [showLeftPanelContent, setShowLeftPanelContent] = useState(true);
 
@@ -51,7 +51,7 @@ function EditorView({ title, startingCode, children }) {
         {showLeftPanelContent && <Pane initialSize="15%">{children[0]}</Pane>}
         {!showLeftPanelContent && <Pane initialSize="0px" />}
         <Pane>
-          <VModEditor title={title} startingCode={startingCode} />
+          <VModEditor title={title} startingCode={startingCode} isDarkTheme={isDarkTheme}/>
         </Pane>
         <Pane initialSize="25%">{children[1]}</Pane>
       </SplitPane>
@@ -75,6 +75,11 @@ EditorView.propTypes = {
   startingCode: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   children: PropTypes.arrayOf(PropTypes.node).isRequired,
+  isDarkTheme: PropTypes.bool
+};
+
+EditorView.defaultProps = {
+  isDarkTheme: false
 };
 
 export default EditorView;

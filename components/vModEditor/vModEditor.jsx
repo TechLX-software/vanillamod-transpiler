@@ -55,7 +55,7 @@ function displayErrors(errorMarkers, editor, monacoAlive) {
   // display red X thingy saying errors were found
 }
 
-function VModEditor({ title, startingCode }) {
+function VModEditor({ title, startingCode, isDarkTheme }) {
   const classes = useStyles();
 
   // const [monacoAlive, setMonacoAlive] = useState(null);
@@ -177,7 +177,7 @@ function VModEditor({ title, startingCode }) {
       <Editor
         height="85vh"
         language="javascript"
-        theme="dark"
+        theme={isDarkTheme ? "vs-dark" : "light"}
         options={{ fontSize: 15, minimap: { enabled: false } }}
         beforeMount={handleEditorWillMount}
         onMount={handleEditorDidMount}
@@ -190,6 +190,11 @@ function VModEditor({ title, startingCode }) {
 VModEditor.propTypes = {
   startingCode: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
+  isDarkTheme: PropTypes.bool
+};
+
+VModEditor.defaultProps = {
+  isDarkTheme: false
 };
 
 function ErrorInfo({ errorCount }) {
