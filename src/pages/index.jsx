@@ -8,22 +8,22 @@ import styles from "./styles.module.scss";
 
 const features = [
   {
-    title: "Easy to Use",
-    imageUrl: "img/undraw_relaxing_walk.svg",
-    description: (
-      <>
-        Create and share with a single file. VanillaMod works without
-        any installation or configuration.
-      </>
-    ),
-  },
-  {
     title: "Learn Programming",
     imageUrl: "img/undraw_code_review.svg",
     description: (
       <>
         When you create with VanillaMod, you'll be learning and using
         JavaScript, the world's most popular programming language.
+      </>
+    ),
+  },
+  {
+    title: "Easy to Use",
+    imageUrl: "img/undraw_relaxing_walk.svg",
+    description: (
+      <>
+        Create and share with a single file. VanillaMod works without
+        any installation or configuration.
       </>
     ),
   },
