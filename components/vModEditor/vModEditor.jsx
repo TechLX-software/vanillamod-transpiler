@@ -71,7 +71,7 @@ function VModEditor({ title, startingCode, isDarkTheme }) {
     // here is the monaco instance
     // do stuff before editor is mounted
     // like removing DOM library and adding
-    // vmod constants for intellisense 
+    // vmod constants for intellisense
     monaco.languages.typescript.javascriptDefaults.setEagerModelSync(true);
   }
 
@@ -190,11 +190,11 @@ function VModEditor({ title, startingCode, isDarkTheme }) {
 VModEditor.propTypes = {
   startingCode: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  isDarkTheme: PropTypes.bool
+  isDarkTheme: PropTypes.bool,
 };
 
 VModEditor.defaultProps = {
-  isDarkTheme: false
+  isDarkTheme: false,
 };
 
 function ErrorInfo({ errorCount }) {

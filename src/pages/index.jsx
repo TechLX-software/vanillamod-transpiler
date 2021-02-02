@@ -22,8 +22,8 @@ const features = [
     imageUrl: "img/undraw_relaxing_walk.svg",
     description: (
       <>
-        Create and share with a single file. VanillaMod works without
-        any installation or configuration.
+        Create and share with a single file. VanillaMod works without any
+        installation or configuration.
       </>
     ),
   },
@@ -32,8 +32,8 @@ const features = [
     imageUrl: "img/undraw_powerful_cape.svg",
     description: (
       <>
-        Already an experienced Minecraft map maker? VanillaMod will
-        make your map making faster, easier, and reusable.
+        Already an experienced Minecraft map maker? VanillaMod will make your
+        map making faster, easier, and reusable.
       </>
     ),
   },

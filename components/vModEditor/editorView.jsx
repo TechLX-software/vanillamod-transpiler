@@ -51,7 +51,11 @@ function EditorView({ title, startingCode, isDarkTheme, children }) {
         {showLeftPanelContent && <Pane initialSize="15%">{children[0]}</Pane>}
         {!showLeftPanelContent && <Pane initialSize="0px" />}
         <Pane>
-          <VModEditor title={title} startingCode={startingCode} isDarkTheme={isDarkTheme}/>
+          <VModEditor
+            title={title}
+            startingCode={startingCode}
+            isDarkTheme={isDarkTheme}
+          />
         </Pane>
         <Pane initialSize="25%">{children[1]}</Pane>
       </SplitPane>
@@ -75,11 +79,11 @@ EditorView.propTypes = {
   startingCode: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   children: PropTypes.arrayOf(PropTypes.node).isRequired,
-  isDarkTheme: PropTypes.bool
+  isDarkTheme: PropTypes.bool,
 };
 
 EditorView.defaultProps = {
-  isDarkTheme: false
+  isDarkTheme: false,
 };
 
 export default EditorView;

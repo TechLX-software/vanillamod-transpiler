@@ -281,9 +281,7 @@ transpiler.transpileProgramStatement = (programStatement, mod) => {
     }
   });
 
-  debugPrint(
-    `] - end program`
-  );
+  debugPrint(`] - end program`);
 
   try {
     mod.objectives.forEach((objectiveName) => {
@@ -373,9 +371,7 @@ transpiler.transpileFunctionDeclaration = (statement, mod, scope) => {
   runFunction.push(`kill ${thisFunction.getSelector()}`);
 
   debugPrint(
-    `${indenter(scope.depth)}${scope.depth}:${
-      scope.index
-    } function declaration`
+    `${indenter(scope.depth)}${scope.depth}:${scope.index} function declaration`
   );
   transpiler[`transpile${statement.body.type}`](statement.body, mod, scope);
   // first see if init stuff works
@@ -446,9 +442,7 @@ transpiler.transpileBlockStatement = (statement, mod, oldScope) => {
 
 transpiler.transpileVariableDeclaration = (statement, mod, scope) => {
   debugPrint(
-    `${indenter(scope.depth)}${scope.depth}:${
-      scope.index
-    } variable declaration`
+    `${indenter(scope.depth)}${scope.depth}:${scope.index} variable declaration`
   );
 
   if (statement.kind === "const") {
@@ -879,9 +873,7 @@ transpiler.transpileForStatement = (statement, mod, scope) => {
 transpiler.transpileExpressionStatement = (statement, mod, scope) => {
   // function call -- technically var declaration is an expressionstatement too
   debugPrint(
-    `${indenter(scope.depth)}${scope.depth}:${
-      scope.index
-    } expression statement`
+    `${indenter(scope.depth)}${scope.depth}:${scope.index} expression statement`
   );
 
   // this looks wrong
