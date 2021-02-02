@@ -8,7 +8,7 @@ This is a link to [another document.](doc1.md) This is a link to an [external pa
 
 ## What is a function?
 
-A function is...
+A function is a collection...
 
 ## Simple example
 
