@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Button } from "@material-ui/core";
 import {
   makeStyles,
+  createMuiTheme,
+  ThemeProvider,
 } from "@material-ui/core/styles";
 // eslint-disable-next-line import/no-unresolved
 import useThemeContext from '@theme/hooks/useThemeContext';
@@ -16,6 +18,17 @@ const useStyles = makeStyles({
   },
 });
 
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#d36135",
+    },
+    secondary: {
+      main: "#006d77",
+    },
+  },
+});
+
 function EditorViewDummyContent() {
   const classes = useStyles();
   const { isDarkTheme } = useThemeContext();
@@ -24,6 +37,9 @@ function EditorViewDummyContent() {
   );
 
   return (
+    <main>
+        <ThemeProvider theme={theme}>
+          
     <EditorView title="vMod Playground" startingCode={editorStarterCode} isDarkTheme={isDarkTheme}>
       {/* Left Panel */}
       <div className={styles.paneContentWrapper}>
@@ -78,6 +94,8 @@ function EditorViewDummyContent() {
         </div>
       </div>
     </EditorView>
+      </ThemeProvider>
+    </main>
   );
 }
 
