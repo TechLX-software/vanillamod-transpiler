@@ -2,7 +2,7 @@
 
 **vMod** is the open source library behind the [**vanillamod.com**](https://www.vanillamod.com/) website. **vMod** translates JavaScript into Minecraft commands (like `/gamemode creative`). The result is the practicality of a real programming language, with the features and compatibility of vanilla Minecraft. **vMod** only works for Minecraft Java Edition.
 
-This repository holds the [documentation](https://meta.vanillamod.com/docs/), transpiler, and code editor used on the [**vanillamod.com**](https://www.vanillamod.com/) website.
+This repository holds the [documentation](https://meta.vanillamod.com/docs/), transpiler, and code editor used on the [**vanillamod.com**](https://www.vanillamod.com/) website. There is also a live playground for the transpiler and editor: https://meta.vanillamod.com/playground
 
 Talk with the community and the TechLX team on the [VanillaMod Discord Server](https://discord.gg/WPMCMjy)!
 
