@@ -10,7 +10,7 @@ function sayHello() {
 
 const simpleErrorMessage = {
   title: "Error Message",
-  code: `// Displays an error message when you try downloading.x
+  code: `// Displays an error message when you try downloading.
 
 function begin() {
     notExistentFunction();

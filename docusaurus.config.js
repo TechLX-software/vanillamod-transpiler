@@ -5,7 +5,7 @@ module.exports = {
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/flower-icon-256.png',
+  favicon: 'img/32x32-dark.png',
   organizationName: 'bakerfugu', // Usually your GitHub org/user name.
   projectName: 'vanillamod-transpiler', // Usually your repo name.
   themeConfig: {
