@@ -13,7 +13,7 @@ module.exports = {
       title: 'Home',
       logo: {
         alt: 'My Site Logo',
-        src: 'img/flower-icon-256.png',
+        src: 'img/flower-icon-64.png',
       },
       items: [
         {
