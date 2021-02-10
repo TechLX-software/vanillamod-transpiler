@@ -2,11 +2,9 @@ module.exports = {
   mainSidebar: {
     'vMod': [
       'vMod/introduction', 
-      'vMod/quick-start', 
       'vMod/examples', 
-      'vMod/transpiler', 
-      'vMod/editor', 
-      'vMod/contributing'
+      'vMod/features', 
+      'vMod/quick-start', 
     ],
     'Code': [
       'Code/quick-reference',
@@ -27,6 +25,11 @@ module.exports = {
       'Code/sensing',
       'Code/shorthand',
       'mdx'
+    ],
+    'Technical': [
+      'Technical/contributing', 
+      'Technical/editor', 
+      'Technical/transpiler', 
     ],
   },
 };

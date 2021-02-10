@@ -38,7 +38,7 @@ If you're already familiar with Minecraft and programming, try the [Quick Start 
 
 Stuff - (As a Student, Educator, Game Developer / Map Maker.) (Learn JS, online courses and documentation, Convenience and power of real code syntax; no installs or configuraton, just add the MC world to your saves; helpful editor checks for command errors; performance optimization and analyzer)
 
-The [Editor page](editor.md) has a more detailed explanation of many helpful features. 
+Take a look at our [Features page](features) for a more detailed list! 
 
 ## How does vMod work?
 
@@ -87,4 +87,4 @@ Each step of the vMod transpiling process is described in detail on the [Transpi
 
 ## What is this documentation for?
 
-This documentation describes the features of the **vMod** library and the code editor on [**vanillamod.com**](https://www.vanillamod.com/). It is primarily a reference for writing JavaScript using the **vMod** library.
+This primary purpose of this documentation is to be a reference for people writing JavaScript using the **vMod** library. It also documents the features of the **vMod** library and the code editor on [**vanillamod.com**](https://www.vanillamod.com/). It is not documentation for the source code of the vMod library, though the technical descriptions of the transpiler, editor, and documentation may be helpful if you are interested in contributing!
