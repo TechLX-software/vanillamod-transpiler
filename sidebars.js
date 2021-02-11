@@ -1,10 +1,10 @@
 module.exports = {
   mainSidebar: {
-    'vMod': [
-      'vMod/introduction', 
-      'vMod/examples', 
-      'vMod/features', 
-      'vMod/quick-start', 
+    'VanillaMod': [
+      'VanillaMod/introduction', 
+      'VanillaMod/examples', 
+      'VanillaMod/features', 
+      'VanillaMod/quick-start', 
     ],
     'Code': [
       'Code/quick-reference',

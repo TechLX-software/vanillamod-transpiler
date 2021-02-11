@@ -37,9 +37,9 @@ Here's how VanillaMod helps you do all of that.
 * (Planned) **Visual Command Generators** - GUIs (mcstacker-esque) for making items, entities, and etc
 
 
-## Features for Learners (and Teachers!)
+## Features for Students (and Teachers!)
 
-* **E-Learning Courses** - Learn from our list of online courses, made by TechLX or our community.
+* **Interactive eLearning Courses** - Learn from our list of online courses, made by TechLX or our community.
 
 * **Friendly Error Messages** - VanillaMod error messages are written to be understandable to novice programmers.
 
@@ -52,6 +52,12 @@ Here's how VanillaMod helps you do all of that.
 
 ## Features for Map Makers
 
-* **Automatic Version Updating** - Whenever Minecraft releases an update that the changes command syntax or breaks datapacks from previous versions in any way, VanillaMod will give you the option to automatically update your code so that it works in the newest version.
+* **Full Runtime Logic** - The real and natural JavaScript syntax VanillaMod uses isn't just for show. A datapack made with VanillaModd runs like JavaScript. This is one of the most significant features that makes VanillaMod different from other powerful `mcfunction` compilers out there, like Trident, mcbuild, and Sandstone. When you write a for loop in JavaScript, VanillaMod does not pre-compile that loop. **VanillaMod implements runtime iteration** your datapack, among other things. If the loop condition compares the loop variable to another variable, you can change that variable in game, and it will affect how many times the loop iterates. 
+
+* **Compiler Optimization** - VanillaMod analyzes your code as it transpiles, looking for areas to improve performance by reducing the number of commands used. VanillaMod's default runtime functionality has also been extensively benchmarked, so you don't have to worry about making sure you're taking the most performant approach. With that said, VanillaMod's compiletime optimization is respectable but not perfect, so this feature still has an impressive potential for improvement.
+
+* **Automatic Version Updates** - Whenever Minecraft releases an update that the changes command syntax or breaks datapacks from previous versions in any way, VanillaMod will give you the option to automatically update your code so that it works in the newest version.
+
+* (Planned) **Performace Benchmarking** - Use a built in benchmarking tool to compare the performance of two functions or get a performance heuristic for a lone function.
 
 * (Planned) **Import Code** - Use the JS `import` keyword to import code from other user's mods.
