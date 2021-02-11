@@ -4,6 +4,10 @@ title: Quick Start
 slug: /quick-start
 ---
 
+:::caution Unfinished Page
+This page of the documentation isn't finished. We'll get to it eventually, but if you want to help you can use the "Edit this page" link at the bottom of the page!
+:::
+
 ## Try the Intro to Modding Course!
 
 The best way to get started with VanillaMod is the "Intro to Modding (with Minecraft)" online course on [**vanillamod.com**](https://www.vanillamod.com/). Sign in, go to the courses page, find the Intro to Modding course, then click "Enroll."
@@ -12,7 +16,7 @@ The best way to get started with VanillaMod is the "Intro to Modding (with Minec
 
 ## Quick Start Guide
 
-:::caution
+:::info
 This quick start guide is meant for people who are familiar with programming and basic Minecraft map making. Whether or not you are familiar with both of those things, this guide is objectively way less cool than the Intro to Modding online course. 
 :::
 

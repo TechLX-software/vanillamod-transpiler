@@ -14,7 +14,7 @@ module.exports = {
         'Minecraft': [
           'Code/Minecraft/mc-commands',
           'Code/Minecraft/mc-selectors',
-          'Code/Minecraft/mc-constants'
+          'Code/Minecraft/mc-constants',
         ]
       },
       'Code/variables',
@@ -24,7 +24,6 @@ module.exports = {
       'Code/events',
       'Code/sensing',
       'Code/shorthand',
-      'mdx'
     ],
     'Technical': [
       'Technical/contributing', 
