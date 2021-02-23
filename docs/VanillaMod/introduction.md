@@ -26,11 +26,11 @@ If you're already familiar with Minecraft and programming, try the [Quick Start 
 
 ## Why should I use VanillaMod?
 
-You should use VanillaMod because it will help you spend more time making and playing your creations. VanillaMod is still evolvingg, but it's already being used by teachers, students, and map makers because there's nothing else that works the same way.
+You should use VanillaMod because it will help you spend more time making and playing with your creations. VanillaMod is still evolvingg, but it's already being used by teachers, students, and map makers because there's nothing else that works the same way.
 
 ### For Students and Educators
 
-VanillaMod was created as an educational tool, and it shines because of its friendliness for beginners. When students get to express themselves and make things they're excited about, learning is self-motivating. The [**vanillamod.com**](https://www.vanillamod.com/) has several interactive eLearning courses to introduce students to VanillaMod or teach programming concepts and other skills. TechLX also offers classroom-tested curriculum and extensive lesson plans, please [get in touch with us](https://www.techlx.com/contact/) if you're interested!
+VanillaMod was created as an educational tool, and it shines because of its friendliness for beginners. When students get to express themselves and make things they're excited about, learning is self-motivating. The [**vanillamod.com**](https://www.vanillamod.com/) website has several interactive eLearning courses to introduce students to VanillaMod or teach programming concepts and other skills. TechLX also offers classroom-tested curriculum and extensive lesson plans, please [get in touch with us](https://www.techlx.com/contact/) if you're interested!
 
 The [Features page](features) also has a specific [list of features](features#features-for-students-and-teachers) for students and educators. 
 
