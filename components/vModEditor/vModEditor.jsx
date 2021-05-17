@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { Button, Toolbar, Typography, Grid, Box } from "@material-ui/core";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
+// import Editor, { monaco } from "@monaco-editor/react";
 import Editor from "@monaco-editor/react";
 
 import { transpileCode, downloadDatapack } from "./transpilerHandler";

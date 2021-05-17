@@ -19,17 +19,17 @@ var _ErrorOutline = _interopRequireDefault(require("@material-ui/icons/ErrorOutl
 
 var _CheckCircleOutline = _interopRequireDefault(require("@material-ui/icons/CheckCircleOutline"));
 
-var _react2 = _interopRequireWildcard(require("@monaco-editor/react"));
-
-var _stylesModule = _interopRequireDefault(require("./styles.module.scss"));
+var _react2 = _interopRequireDefault(require("@monaco-editor/react"));
 
 var _transpilerHandler = require("./transpilerHandler");
 
+var _jsxRuntime = require("react/jsx-runtime");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
@@ -39,7 +39,7 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _iterableToArrayLimit(arr, i) { var _i = arr && (typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]); if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -55,6 +55,11 @@ var useStyles = (0, _styles.makeStyles)({
   editorTitle: {
     paddingLeft: "20px",
     fontWeight: "bold"
+  },
+  editorHeader: {
+    height: "5em",
+    alignItems: "center",
+    justifyContent: "space-between"
   }
 });
 
@@ -79,33 +84,36 @@ function displayErrors(errorMarkers, editor, monacoAlive) {
 
 function VModEditor(_ref) {
   var title = _ref.title,
-      startingCode = _ref.startingCode;
-  var classes = useStyles();
+      startingCode = _ref.startingCode,
+      isDarkTheme = _ref.isDarkTheme;
+  var classes = useStyles(); // const [monacoAlive, setMonacoAlive] = useState(null);
 
   var _useState = (0, _react.useState)(null),
       _useState2 = _slicedToArray(_useState, 2),
-      monacoAlive = _useState2[0],
-      setMonacoAlive = _useState2[1];
+      errorInfo = _useState2[0],
+      setErrorInfo = _useState2[1];
 
   var _useState3 = (0, _react.useState)(null),
       _useState4 = _slicedToArray(_useState3, 2),
-      errorInfo = _useState4[0],
-      setErrorInfo = _useState4[1];
+      clearErrorInfo = _useState4[0],
+      setClearErrorInfo = _useState4[1]; // const monaco = useMonaco();
+  // const editorRef = useRef();
 
-  var _useState5 = (0, _react.useState)(null),
-      _useState6 = _slicedToArray(_useState5, 2),
-      clearErrorInfo = _useState6[0],
-      setClearErrorInfo = _useState6[1];
 
-  var editorRef = (0, _react.useRef)();
-  (0, _react.useEffect)(function () {
-    _react2.monaco.init().then(function (initializedMonaco) {
-      setMonacoAlive(initializedMonaco);
-    });
-  }, []);
+  var editorRef = (0, _react.useRef)(null);
+  var monacoRef = (0, _react.useRef)(null);
 
-  function handleEditorDidMount(_, editor) {
+  function handleEditorWillMount(monaco) {
+    // here is the monaco instance
+    // do stuff before editor is mounted
+    // like removing DOM library and adding
+    // vmod constants for intellisense
+    monaco.languages.typescript.javascriptDefaults.setEagerModelSync(true);
+  }
+
+  function handleEditorDidMount(editor, monaco) {
     editorRef.current = editor;
+    monacoRef.current = monaco;
   }
 
   function showErrorInfo(errorMarkers) {
@@ -113,7 +121,7 @@ function VModEditor(_ref) {
     // exists, but is not zero (which is a vMod "crash")
     // see top part of displayErrors(...)
 
-    setErrorInfo( /*#__PURE__*/_react.default.createElement(ErrorInfo, {
+    setErrorInfo( /*#__PURE__*/(0, _jsxRuntime.jsx)(ErrorInfo, {
       errorCount: errorCount
     }));
     if (clearErrorInfo) clearTimeout(clearErrorInfo);
@@ -129,11 +137,11 @@ function VModEditor(_ref) {
     };
     var code = editorRef.current.getValue();
 
-    var _transpileCode = (0, _transpilerHandler.transpileCode)(code, modInfo, editorRef.current, monacoAlive),
+    var _transpileCode = (0, _transpilerHandler.transpileCode)(code, modInfo, editorRef.current, monacoRef.current),
         errorMarkers = _transpileCode.errorMarkers;
 
     if (errorMarkers) {
-      displayErrors(errorMarkers, editorRef.current, monacoAlive);
+      displayErrors(errorMarkers, editorRef.current, monacoRef.current);
     }
 
     showErrorInfo(errorMarkers);
@@ -145,92 +153,111 @@ function VModEditor(_ref) {
     };
     var code = editorRef.current.getValue();
 
-    var _transpileCode2 = (0, _transpilerHandler.transpileCode)(code, modInfo, editorRef.current, monacoAlive),
+    var _transpileCode2 = (0, _transpilerHandler.transpileCode)(code, modInfo, editorRef.current, monacoRef.current),
         datapack = _transpileCode2.datapack,
         errorMarkers = _transpileCode2.errorMarkers;
 
     if (errorMarkers) {
-      displayErrors(errorMarkers, editorRef.current, monacoAlive);
+      displayErrors(errorMarkers, editorRef.current, monacoRef.current);
       showErrorInfo(errorMarkers);
     } else {
       (0, _transpilerHandler.downloadDatapack)(datapack);
     }
   }
 
-  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_core.Toolbar, {
-    className: _stylesModule.default.editorHeader
-  }, /*#__PURE__*/_react.default.createElement(_core.Box, {
-    width: "60%",
-    display: "inline-block"
-  }, /*#__PURE__*/_react.default.createElement(_core.Typography, {
-    variant: "h4",
-    classes: {
-      root: classes.editorTitle
-    }
-  }, title)), /*#__PURE__*/_react.default.createElement(_core.Box, {
-    width: "40%",
-    display: "inline-block"
-  }, /*#__PURE__*/_react.default.createElement(_core.Grid, {
-    container: true,
-    direction: "row",
-    justify: "flex-end",
-    alignItems: "center"
-  }, errorInfo, /*#__PURE__*/_react.default.createElement(_core.Button, {
-    variant: "outlined",
-    color: "secondary",
-    size: "large",
-    classes: {
-      root: classes.fatButton,
-      label: classes.fatButtonText
-    },
-    onClick: checkButtonClicked
-  }, "Check"), /*#__PURE__*/_react.default.createElement(_core.Button, {
-    variant: "contained",
-    color: "primary",
-    size: "large",
-    classes: {
-      root: classes.fatButton,
-      label: classes.fatButtonText
-    },
-    onClick: downloadButtonClicked
-  }, "Download")))), /*#__PURE__*/_react.default.createElement(_react2.default, {
-    height: "85vh",
-    language: "javascript",
-    theme: "dark",
-    options: {
-      fontSize: 15,
-      minimap: {
-        enabled: false
-      }
-    },
-    editorDidMount: handleEditorDidMount,
-    value: startingCode
-  }));
+  return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
+    children: [/*#__PURE__*/(0, _jsxRuntime.jsxs)(_core.Toolbar, {
+      classes: {
+        root: classes.editorHeader
+      },
+      children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_core.Box, {
+        width: "60%",
+        display: "inline-block",
+        children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_core.Typography, {
+          variant: "h4",
+          classes: {
+            root: classes.editorTitle
+          },
+          children: title
+        })
+      }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_core.Box, {
+        width: "40%",
+        display: "inline-block",
+        children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_core.Grid, {
+          container: true,
+          direction: "row",
+          justify: "flex-end",
+          alignItems: "center",
+          children: [errorInfo, /*#__PURE__*/(0, _jsxRuntime.jsx)(_core.Button, {
+            variant: "outlined",
+            color: "secondary",
+            size: "large",
+            classes: {
+              root: classes.fatButton,
+              label: classes.fatButtonText
+            },
+            onClick: checkButtonClicked,
+            children: "Check"
+          }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_core.Button, {
+            variant: "contained",
+            color: "primary",
+            size: "large",
+            classes: {
+              root: classes.fatButton,
+              label: classes.fatButtonText
+            },
+            onClick: downloadButtonClicked,
+            children: "Download"
+          })]
+        })
+      })]
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_react2.default, {
+      height: "85vh",
+      language: "javascript",
+      theme: isDarkTheme ? "vs-dark" : "light",
+      options: {
+        fontSize: 15,
+        minimap: {
+          enabled: false
+        }
+      },
+      beforeMount: handleEditorWillMount,
+      onMount: handleEditorDidMount,
+      value: startingCode
+    })]
+  });
 }
 
 VModEditor.propTypes = {
   startingCode: _propTypes.default.string.isRequired,
-  title: _propTypes.default.string.isRequired
+  title: _propTypes.default.string.isRequired,
+  isDarkTheme: _propTypes.default.bool
+};
+VModEditor.defaultProps = {
+  isDarkTheme: false
 };
 
 function ErrorInfo(_ref2) {
   var errorCount = _ref2.errorCount;
   // expand this eventually to have a modal button that displays
   // a list of all the errors
-  return /*#__PURE__*/_react.default.createElement(_core.Box, {
-    width: "30%"
-  }, /*#__PURE__*/_react.default.createElement(_core.Grid, {
-    container: true,
-    direction: "row",
-    justify: "space-evenly",
-    alignItems: "center"
-  }, errorCount ? /*#__PURE__*/_react.default.createElement(_ErrorOutline.default, {
-    color: "error"
-  }) : /*#__PURE__*/_react.default.createElement(_CheckCircleOutline.default, {
-    color: "secondary"
-  }), /*#__PURE__*/_react.default.createElement(_core.Typography, {
-    color: errorCount ? "error" : "secondary"
-  }, errorCount ? "".concat(errorCount, " Error").concat(errorCount > 1 ? "s" : "") : "No Errors!")));
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_core.Box, {
+    width: "30%",
+    children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_core.Grid, {
+      container: true,
+      direction: "row",
+      justify: "space-evenly",
+      alignItems: "center",
+      children: [errorCount ? /*#__PURE__*/(0, _jsxRuntime.jsx)(_ErrorOutline.default, {
+        color: "error"
+      }) : /*#__PURE__*/(0, _jsxRuntime.jsx)(_CheckCircleOutline.default, {
+        color: "secondary"
+      }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_core.Typography, {
+        color: errorCount ? "error" : "secondary",
+        children: errorCount ? "".concat(errorCount, " Error").concat(errorCount > 1 ? "s" : "") : "No Errors!"
+      })]
+    })
+  });
 }
 
 ErrorInfo.propTypes = {

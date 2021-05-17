@@ -62,21 +62,7 @@
   },
   "bit": {
     "env": {
-      "compiler": "bit.envs/compilers/react@1.0.21"
-    },
-    "overrides": {
-      "components/transpiler/*": {
-        "env": {
-          "compiler": "bit.envs/compilers/babel@7.0.4"
-        }
-      },
-      "components/vModEditor/*": {
-        "peerDependencies": {
-          "react": "^16.9.0",
-          "react-dom": "^16.9.0",
-          "react-split-pane": "^2.0.3"
-        }
-      }
+      "compiler": "bit.envs/compilers/react@2.0.0"
     },
     "componentsDefaultDirectory": "components/{name}",
     "packageManager": "yarn"

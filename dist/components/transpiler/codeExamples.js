@@ -10,7 +10,7 @@ var helloWorld = {
 };
 var simpleErrorMessage = {
   title: "Error Message",
-  code: "// Displays an error message when you try downloading.x\n\nfunction begin() {\n    notExistentFunction();\n}\n"
+  code: "// Displays an error message when you try downloading.\n\nfunction begin() {\n    notExistentFunction();\n}\n"
 };
 var droneSetblock = {
   title: "Drone Setblock",
