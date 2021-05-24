@@ -12,7 +12,7 @@ This is a link to [another document.](doc1.md) This is a link to an [external pa
 
 ## What is a function?
 
-A function is a collection...
+A function is a group of code that is put together and given a name so that it can be reused very easily. 
 
 ## Simple example
 
