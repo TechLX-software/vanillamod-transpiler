@@ -1,7 +1,12 @@
 import React, { useRef, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+// import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
-import { Button, Toolbar, Typography, Grid, Box } from "@material-ui/core";
+import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+
+// import { Button, Toolbar, Typography, Grid, Box } from "@material-ui/core";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 // import Editor, { monaco } from "@monaco-editor/react";
@@ -9,25 +14,25 @@ import Editor from "@monaco-editor/react";
 
 import { transpileCode, downloadDatapack } from "./transpilerHandler";
 
-const useStyles = makeStyles({
-  fatButton: {
-    marginLeft: "5px",
-    marginRight: "5px",
-    borderRadius: "0.5em",
-  },
-  fatButtonText: {
-    fontWeight: "bold",
-  },
-  editorTitle: {
-    paddingLeft: "20px",
-    fontWeight: "bold",
-  },
-  editorHeader: {
-    height: "5em",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-});
+// const useStyles = makeStyles({
+//   fatButton: {
+//     marginLeft: "5px",
+//     marginRight: "5px",
+//     borderRadius: "0.5em",
+//   },
+//   fatButtonText: {
+//     fontWeight: "bold",
+//   },
+//   editorTitle: {
+//     paddingLeft: "20px",
+//     fontWeight: "bold",
+//   },
+//   editorHeader: {
+//     height: "5em",
+//     alignItems: "center",
+//     justifyContent: "space-between",
+//   },
+// });
 
 function displayErrors(errorMarkers, editor, monacoAlive) {
   if (errorMarkers.length < 1) {
@@ -57,7 +62,7 @@ function displayErrors(errorMarkers, editor, monacoAlive) {
 }
 
 function VModEditor({ title, startingCode, isDarkTheme }) {
-  const classes = useStyles();
+  // const classes = useStyles();
 
   // const [monacoAlive, setMonacoAlive] = useState(null);
   const [errorInfo, setErrorInfo] = useState(null);
@@ -132,8 +137,39 @@ function VModEditor({ title, startingCode, isDarkTheme }) {
   }
 
   return (
-    <>
-      <Toolbar classes={{ root: classes.editorHeader }}>
+    <Container>
+      <Row>
+        <Col>
+          <h1 className="py-2">{title}</h1>
+        </Col>
+        <Col md="auto" className="d-flex py-3">
+          <Button
+            variant="secondary"
+            size="lg"
+            className="mx-1"
+            // classes={{
+            //   root: classes.fatButton,
+            //   label: classes.fatButtonText,
+            // }}
+            onClick={checkButtonClicked}
+          >
+            Check
+          </Button>
+          <Button
+            variant="primary"
+            size="lg"
+            className="mx-1"
+            // classes={{
+            //   root: classes.fatButton,
+            //   label: classes.fatButtonText,
+            // }}
+            onClick={downloadButtonClicked}
+          >
+            Download
+          </Button>
+        </Col>
+        {/* 
+        <Toolbar classes={{ root: classes.editorHeader }}>
         <Box width="60%" display="inline-block">
           <Typography variant="h4" classes={{ root: classes.editorTitle }}>
             {title}
@@ -173,18 +209,22 @@ function VModEditor({ title, startingCode, isDarkTheme }) {
             </Button>
           </Grid>
         </Box>
-      </Toolbar>
+      </Toolbar> */}
+      </Row>
+      
 
-      <Editor
-        height="85vh"
-        language="javascript"
-        theme={isDarkTheme ? "vs-dark" : "light"}
-        options={{ fontSize: 15, minimap: { enabled: false } }}
-        beforeMount={handleEditorWillMount}
-        onMount={handleEditorDidMount}
-        value={startingCode}
-      />
-    </>
+      <Row>
+        <Editor
+          height="85vh"
+          language="javascript"
+          theme={isDarkTheme ? "vs-dark" : "light"}
+          options={{ fontSize: 15, minimap: { enabled: false } }}
+          beforeMount={handleEditorWillMount}
+          onMount={handleEditorDidMount}
+          value={startingCode}
+        />
+      </Row>
+    </Container>
   );
 }
 

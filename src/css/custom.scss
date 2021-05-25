@@ -1,3 +1,7 @@
+// @import "~bootswatch/dist/litera/variables";
+// @import "~bootstrap/scss/bootstrap";
+// @import "./bootswatch-litera-customizations.scss";
+
 /* stylelint-disable docusaurus/copyright-header */
 /**
  * Any CSS included here will be global. The classic template
@@ -31,3 +35,250 @@ https://coolors.co/ffffff-f2f2f2-9da89f-d36135-654c4f-006d77-303846
   padding: 0 var(--ifm-pre-padding);
 }
 
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+body {
+  overflow: auto;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/*header styles*/
+#header {
+  background-color: #222;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+.main-nav {
+  font-size: 13pt;
+}
+
+.navbar-nav > li > a {
+  line-height: 50px;
+}
+
+.navbar-brand img {
+  height: 50px;
+}
+
+.nav-tabs {
+  border-bottom: 0px;
+}
+
+#header a:hover {
+  color: #fff;
+  background-color: transparent;
+}
+
+.logo {
+  max-width: 200px;
+}
+
+.cta {
+  margin-left: 40px;
+  margin-right: 40px;
+}
+
+/*home styles*/
+section {
+  padding-top: 5px;
+}
+
+#hero {
+  text-align: center;
+}
+
+#hero p {
+  max-width: 600px;
+  margin: 1em auto;
+  margin-bottom: 75px;
+  font-size: 125%;
+}
+
+.hero-image {
+  background-image: url('/images/minecraft-server.png');
+  background-size: cover;
+  background-position: center;
+  height: 500px;
+  width: 100%;
+  margin-bottom: 75px;
+  margin-top: -5px;
+}
+
+#sample-mods {
+  margin-top: 75px;
+  margin-bottom: 75px;
+}
+
+#mod-cards {
+  text-align: center;
+}
+
+.footer {
+  border-width: 1px 0 0 0;
+  border-color: black;
+  border-style: solid;
+  margin-top: 40px;
+  padding-top: 20px;
+  padding-bottom: 40px;
+  background-color: #eee;
+}
+
+// .btn-primary {
+//   background-color: #ed7743;
+//   border-color: #ed7743;
+// }
+
+// .btn-primary:hover {
+//   color: #ffff;
+//   background-color: #286090;
+//   border-color: #204d74;
+// }
+
+// .btn-outline-primary {
+//   color: #ed7743 !important;
+//   border-color: #ed7743;
+// }
+
+// .btn-outline-primary:hover {
+//   color: #ffff !important;
+//   background-color: #ed7743;
+//   border-color: #ed7743;
+// }
+
+.btn-secondary {
+  color: #ffff;
+  background-color: #9d9d9d;
+  border-color: #9d9d9d;
+}
+
+// .btn-secondary:hover {
+//   color: #ffff;
+//   background-color: #286090;
+//   border-color: #204d74;
+// }
+
+// .btn-outline-secondary {
+//   color: #9d9d9d;
+//   border-color: #9d9d9d;
+// }
+
+// .btn-outline-secondary:hover {
+//   color: #ffff !important;
+//   background-color: #9d9d9d;
+//   border-color: #9d9d9d;
+// }
+
+// .btn-disabled {
+//    pointer-events: none;
+// }
+
+/* My Mods */
+a.mod-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+a.mod-link:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
+.item-card {
+  max-width: 450px;
+  margin: 10px;
+}
+
+.grow {
+  transition: all .2s ease-in-out;
+}
+
+.grow:hover {
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+/* My Servers */
+.billing-options {
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+}
+
+#my-servers .table, #my-servers select.form-control {
+  margin: 30px 0;
+}
+
+#my-servers th, #my-servers tr {
+  text-align: center;
+}
+
+#my-servers .form-control::placeholder {
+  color: #6d6d6d !important;
+}
+
+#payment-info {
+  margin-top: 15px;
+}
+
+.expiration div {
+  width: 46%;
+  float: left;
+}
+
+.expiration:first-child div {
+  margin-right: 4%;
+}
+
+/* Login and Signup */
+.signup-link {
+  padding-top: 1em;
+}
+
+.content-area {
+  min-height: calc(100vh - 120px);
+}
+
+/* Privacy */
+#privacy-nav {
+  list-style-type: none;
+}
+
+#privacy-policy section:nth-child(n+2) {
+  padding-top: 15px;
+}
+
+#success-message {
+  color: green;
+  margin: 0;
+  clear: both;
+}
+
+#error-message, #details-error-message {
+  color: red;
+  text-align: left;
+  margin: 0;
+  clear: both;
+}
+
+#success-message, #details-success-message {
+  color: green;
+  text-align: left;
+  margin: 0;
+  clear: both;
+}
