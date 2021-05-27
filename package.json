@@ -15,25 +15,25 @@
     "udeploy": "GIT_USER=$(grep GIT_USER .env | cut -d '=' -f2) docusaurus deploy"
   },
   "dependencies": {
-    "@docusaurus/core": "2.0.0-alpha.70",
-    "@docusaurus/preset-classic": "2.0.0-alpha.70",
+    "@docusaurus/core": "^2.0.0-beta.0",
+    "@docusaurus/preset-classic": "^2.0.0-beta.0",
     "@mdx-js/react": "^1.6.21",
     "@monaco-editor/react": "^4.0.9",
     "bootstrap": "4.6.0",
     "bootswatch": "^5.0.1",
     "clsx": "^1.1.1",
     "docusaurus-plugin-sass": "^0.1.11",
+    "docusaurus2-dotenv": "^1.4.0",
     "esprima": "^4.0.1",
     "file-saver": "^2.0.5",
     "jszip": "^3.5.0",
     "monaco-editor": "^0.21.2",
     "prop-types": "^15.7.2",
-    "react": "^16.9.0",
+    "react": "17.0.1",
     "react-bootstrap": "^1.6.0",
     "react-bootstrap-icons": "^1.5.0",
-    "react-dom": "^16.9.0",
-    "react-resizable": "^3.0.1",
-    "react-split-pane": "^2.0.3"
+    "react-dom": "17.0.1",
+    "react-resizable": "^3.0.1"
   },
   "browserslist": {
     "production": [
@@ -68,6 +68,28 @@
       "compiler": "bit.envs/compilers/react@2.0.0"
     },
     "componentsDefaultDirectory": "components/{name}",
-    "packageManager": "yarn"
+    "packageManager": "yarn",
+    "overrides": {
+      "*": {
+        "dependencies": {
+          "prop-types": "-",
+          "react-bootstrap": "-",
+          "react-resizable": "-",
+          "react": "-",
+          "file-saver": "-",
+          "jszip": "-",
+          "@monaco-editor/react": "-"
+        },
+        "peerDependencies": {
+          "prop-types": "+",
+          "react-bootstrap": "+",
+          "react-resizable": "+",
+          "react": "+",
+          "file-saver": "+",
+          "jszip": "+",
+          "@monaco-editor/react": "+"
+        }
+      }
+    }
   }
 }

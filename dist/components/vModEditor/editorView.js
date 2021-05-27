@@ -15,8 +15,6 @@ var _Button = _interopRequireDefault(require("react-bootstrap/Button"));
 
 var _reactResizable = require("react-resizable");
 
-require("./resizable-styles.css");
-
 var _vModEditor = _interopRequireDefault(require("./vModEditor"));
 
 var _jsxRuntime = require("react/jsx-runtime");

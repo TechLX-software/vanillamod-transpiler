@@ -6,7 +6,7 @@ const validator = {};
 const commandValidator = commandTree.children;
 
 function debugPrint(...args) {
-  if (process.env.ENVIRONMENT === "dev") {
+  if (typeof process !== "undefined" && process.env.ENVIRONMENT === "dev") {
     // eslint-disable-next-line no-console
     console.log(...args);
   }

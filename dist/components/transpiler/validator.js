@@ -59,7 +59,7 @@ var validator = {};
 var commandValidator = _commands.default.children;
 
 function debugPrint() {
-  if (process.env.ENVIRONMENT === "dev") {
+  if (typeof process !== "undefined" && process.env.ENVIRONMENT === "dev") {
     var _console;
 
     // eslint-disable-next-line no-console

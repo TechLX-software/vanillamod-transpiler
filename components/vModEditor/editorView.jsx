@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Button from 'react-bootstrap/Button';
 import { ResizableBox } from 'react-resizable';
-import "./resizable-styles.css";
-// import SplitPane from "react-split-pane";
-// import Pane from "react-split-pane/lib/Pane";
+// Must import resizable styles globally
+// import "./resizable-styles.css";
 
 import VModEditor from "./vModEditor";
 
