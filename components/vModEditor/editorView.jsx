@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/core/styles";
-import { Button } from "@material-ui/core";
+import Button from 'react-bootstrap/Button';
 import { ResizableBox } from 'react-resizable';
 import "./resizable-styles.css";
 // import SplitPane from "react-split-pane";
@@ -9,20 +8,19 @@ import "./resizable-styles.css";
 
 import VModEditor from "./vModEditor";
 
-const useStyles = makeStyles({
-  expandLeftButton: {
-    position: "absolute",
-    top: "65px",
-    left: "5px",
-    padding: "0px",
-    minWidth: "30px",
-    width: "30px",
-    height: "25px",
-  },
-});
+// const useStyles = makeStyles({
+//   expandLeftButton: {
+//     position: "absolute",
+//     top: "65px",
+//     left: "5px",
+//     padding: "0px",
+//     minWidth: "30px",
+//     width: "30px",
+//     height: "25px",
+//   },
+// });
 
 function EditorView({ title, startingCode, isDarkTheme, children }) {
-  const classes = useStyles();
   const [leftPanelWidth, setLeftPanelWidth] = useState(250);
   const [rightPanelWidth, setRightPanelWidth] = useState(250);
   const [editorHeight, setEditorHeight] = useState(800);
@@ -31,6 +29,8 @@ function EditorView({ title, startingCode, isDarkTheme, children }) {
 
   const editorViewRef = React.useRef();
 
+  // doesn't actually do anything
+  // must add call to this inside resize of left panel box
   const changeLeftPanel = (sizes) => {
     const leftSize = parseFloat(sizes[0], 10);
     if (leftSize < 10) {
@@ -41,14 +41,6 @@ function EditorView({ title, startingCode, isDarkTheme, children }) {
   };
 
   useEffect(() => {
-    // const draggables = editorViewRef.current.querySelectorAll(
-    //   "div[data-type='Resizer']"
-    // );
-    // if (draggables) {
-    //   draggables.forEach((elem) => {
-    //     elem.style.opacity = 0;
-    //   });
-    // }
     if (editorViewRef && editorViewRef.current) {
       const totalWidth = editorViewRef.current.offsetWidth;
       setLeftPanelWidth(totalWidth * 0.15);
@@ -104,26 +96,11 @@ function EditorView({ title, startingCode, isDarkTheme, children }) {
         {children[1]}
       </ResizableBox>
       
-        {/* <SplitPane split="vertical" onResizeEnd={changeLeftPanel}>
-        
-        {!showLeftPanelContent && <Pane initialSize="0px" />}
-        <Pane>
-          <VModEditor
-            title={title}
-            startingCode={startingCode}
-            isDarkTheme={isDarkTheme}
-          />
-        </Pane>
-        <Pane initialSize="25%">{}</Pane>
-      </SplitPane> */}
       {!showLeftPanelContent && (
         <Button
-          size="small"
-          variant="contained"
+          size="sm"
+          variant="outline-secondary"
           onClick={() => changeLeftPanel([10])}
-          classes={{
-            root: classes.expandLeftButton,
-          }}
         >
           {">"}
         </Button>

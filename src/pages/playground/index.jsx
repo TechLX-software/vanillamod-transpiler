@@ -6,6 +6,7 @@ import Layout from "@theme/Layout";
 // eslint-disable-next-line import/no-unresolved
 import useThemeContext from "@theme/hooks/useThemeContext";
 
+import "./vmodStyles.scss";
 import styles from "./styles.module.scss";
 import codeExamples from "../../../components/transpiler/codeExamples";
 import EditorView from "../../../components/vModEditor";
@@ -17,7 +18,7 @@ function EditorViewDummyContent() {
   );
 
   return (
-    <main>
+    <main className="bootstrap-iso">
       <EditorView
         title="vMod Playground"
         startingCode={editorStarterCode}

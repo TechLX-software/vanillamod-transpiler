@@ -9,15 +9,15 @@ exports.default = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
-var _styles = require("@material-ui/core/styles");
-
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
-var _core = require("@material-ui/core");
+var _Button = _interopRequireDefault(require("react-bootstrap/Button"));
 
-var _ErrorOutline = _interopRequireDefault(require("@material-ui/icons/ErrorOutline"));
+var _Container = _interopRequireDefault(require("react-bootstrap/Container"));
 
-var _CheckCircleOutline = _interopRequireDefault(require("@material-ui/icons/CheckCircleOutline"));
+var _Row = _interopRequireDefault(require("react-bootstrap/Row"));
+
+var _Col = _interopRequireDefault(require("react-bootstrap/Col"));
 
 var _react2 = _interopRequireDefault(require("@monaco-editor/react"));
 
@@ -43,26 +43,25 @@ function _iterableToArrayLimit(arr, i) { var _i = arr && (typeof Symbol !== "und
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-var useStyles = (0, _styles.makeStyles)({
-  fatButton: {
-    marginLeft: "5px",
-    marginRight: "5px",
-    borderRadius: "0.5em"
-  },
-  fatButtonText: {
-    fontWeight: "bold"
-  },
-  editorTitle: {
-    paddingLeft: "20px",
-    fontWeight: "bold"
-  },
-  editorHeader: {
-    height: "5em",
-    alignItems: "center",
-    justifyContent: "space-between"
-  }
-});
-
+// const useStyles = makeStyles({
+//   fatButton: {
+//     marginLeft: "5px",
+//     marginRight: "5px",
+//     borderRadius: "0.5em",
+//   },
+//   fatButtonText: {
+//     fontWeight: "bold",
+//   },
+//   editorTitle: {
+//     paddingLeft: "20px",
+//     fontWeight: "bold",
+//   },
+//   editorHeader: {
+//     height: "5em",
+//     alignItems: "center",
+//     justifyContent: "space-between",
+//   },
+// });
 function displayErrors(errorMarkers, editor, monacoAlive) {
   if (errorMarkers.length < 1) {// something funky happened, we got an error but didn't handle it smoothly
     // usually means vMod library has a bug
@@ -86,8 +85,8 @@ function VModEditor(_ref) {
   var title = _ref.title,
       startingCode = _ref.startingCode,
       isDarkTheme = _ref.isDarkTheme;
-  var classes = useStyles(); // const [monacoAlive, setMonacoAlive] = useState(null);
 
+  // these states are not in use right now
   var _useState = (0, _react.useState)(null),
       _useState2 = _slicedToArray(_useState, 2),
       errorInfo = _useState2[0],
@@ -165,65 +164,45 @@ function VModEditor(_ref) {
     }
   }
 
-  return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
-    children: [/*#__PURE__*/(0, _jsxRuntime.jsxs)(_core.Toolbar, {
-      classes: {
-        root: classes.editorHeader
-      },
-      children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_core.Box, {
-        width: "60%",
-        display: "inline-block",
-        children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_core.Typography, {
-          variant: "h4",
-          classes: {
-            root: classes.editorTitle
-          },
+  return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Container.default, {
+    children: [/*#__PURE__*/(0, _jsxRuntime.jsxs)(_Row.default, {
+      children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_Col.default, {
+        children: /*#__PURE__*/(0, _jsxRuntime.jsx)("h1", {
+          className: "py-2",
           children: title
         })
-      }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_core.Box, {
-        width: "40%",
-        display: "inline-block",
-        children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_core.Grid, {
-          container: true,
-          direction: "row",
-          justify: "flex-end",
-          alignItems: "center",
-          children: [errorInfo, /*#__PURE__*/(0, _jsxRuntime.jsx)(_core.Button, {
-            variant: "outlined",
-            color: "secondary",
-            size: "large",
-            classes: {
-              root: classes.fatButton,
-              label: classes.fatButtonText
-            },
-            onClick: checkButtonClicked,
-            children: "Check"
-          }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_core.Button, {
-            variant: "contained",
-            color: "primary",
-            size: "large",
-            classes: {
-              root: classes.fatButton,
-              label: classes.fatButtonText
-            },
-            onClick: downloadButtonClicked,
-            children: "Download"
-          })]
-        })
+      }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Col.default, {
+        md: "auto",
+        className: "d-flex py-3",
+        children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_Button.default, {
+          variant: "secondary",
+          size: "lg",
+          className: "mx-1",
+          onClick: checkButtonClicked,
+          children: "Check"
+        }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Button.default, {
+          variant: "primary",
+          size: "lg",
+          className: "mx-1",
+          onClick: downloadButtonClicked,
+          children: "Download"
+        })]
       })]
-    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_react2.default, {
-      height: "85vh",
-      language: "javascript",
-      theme: isDarkTheme ? "vs-dark" : "light",
-      options: {
-        fontSize: 15,
-        minimap: {
-          enabled: false
-        }
-      },
-      beforeMount: handleEditorWillMount,
-      onMount: handleEditorDidMount,
-      value: startingCode
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Row.default, {
+      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_react2.default, {
+        height: "85vh",
+        language: "javascript",
+        theme: isDarkTheme ? "vs-dark" : "light",
+        options: {
+          fontSize: 15,
+          minimap: {
+            enabled: false
+          }
+        },
+        beforeMount: handleEditorWillMount,
+        onMount: handleEditorDidMount,
+        value: startingCode
+      })
     })]
   });
 }
@@ -241,23 +220,22 @@ function ErrorInfo(_ref2) {
   var errorCount = _ref2.errorCount;
   // expand this eventually to have a modal button that displays
   // a list of all the errors
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_core.Box, {
-    width: "30%",
-    children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_core.Grid, {
-      container: true,
-      direction: "row",
-      justify: "space-evenly",
-      alignItems: "center",
-      children: [errorCount ? /*#__PURE__*/(0, _jsxRuntime.jsx)(_ErrorOutline.default, {
-        color: "error"
-      }) : /*#__PURE__*/(0, _jsxRuntime.jsx)(_CheckCircleOutline.default, {
-        color: "secondary"
-      }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_core.Typography, {
-        color: errorCount ? "error" : "secondary",
-        children: errorCount ? "".concat(errorCount, " Error").concat(errorCount > 1 ? "s" : "") : "No Errors!"
-      })]
-    })
-  });
+  return null; // figure this out later
+  // https://react-bootstrap.github.io/components/overlays/
+  // return (
+  //   <Container>
+  //     {errorCount ? (
+  //       <ErrorOutlineIcon color="error" />
+  //     ) : (
+  //       <CheckCircleOutlineIcon color="secondary" />
+  //     )}
+  //     <p className={errorCount ? "text-danger" : "text-secondary"}>
+  //       {errorCount
+  //         ? `${errorCount} Error${errorCount > 1 ? "s" : ""}`
+  //         : "No Errors!"}
+  //     </p>
+  //   </Container>
+  // );
 }
 
 ErrorInfo.propTypes = {

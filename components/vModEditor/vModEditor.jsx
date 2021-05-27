@@ -1,15 +1,13 @@
 import React, { useRef, useState } from "react";
-// import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
-// import { Button, Toolbar, Typography, Grid, Box } from "@material-ui/core";
-import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
-import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
-// import Editor, { monaco } from "@monaco-editor/react";
+// need to replace these icons with bootstrap ones
+// import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
+// import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import Editor from "@monaco-editor/react";
 
 import { transpileCode, downloadDatapack } from "./transpilerHandler";
@@ -62,9 +60,7 @@ function displayErrors(errorMarkers, editor, monacoAlive) {
 }
 
 function VModEditor({ title, startingCode, isDarkTheme }) {
-  // const classes = useStyles();
-
-  // const [monacoAlive, setMonacoAlive] = useState(null);
+  // these states are not in use right now
   const [errorInfo, setErrorInfo] = useState(null);
   const [clearErrorInfo, setClearErrorInfo] = useState(null);
   // const monaco = useMonaco();
@@ -143,14 +139,14 @@ function VModEditor({ title, startingCode, isDarkTheme }) {
           <h1 className="py-2">{title}</h1>
         </Col>
         <Col md="auto" className="d-flex py-3">
+          {/* 
+          // eventually fix this error popover
+          {errorInfo} 
+          */}
           <Button
             variant="secondary"
             size="lg"
             className="mx-1"
-            // classes={{
-            //   root: classes.fatButton,
-            //   label: classes.fatButtonText,
-            // }}
             onClick={checkButtonClicked}
           >
             Check
@@ -159,57 +155,11 @@ function VModEditor({ title, startingCode, isDarkTheme }) {
             variant="primary"
             size="lg"
             className="mx-1"
-            // classes={{
-            //   root: classes.fatButton,
-            //   label: classes.fatButtonText,
-            // }}
             onClick={downloadButtonClicked}
           >
             Download
           </Button>
         </Col>
-        {/* 
-        <Toolbar classes={{ root: classes.editorHeader }}>
-        <Box width="60%" display="inline-block">
-          <Typography variant="h4" classes={{ root: classes.editorTitle }}>
-            {title}
-          </Typography>
-        </Box>
-        <Box width="40%" display="inline-block">
-          <Grid
-            container
-            direction="row"
-            justify="flex-end"
-            alignItems="center"
-          >
-            {errorInfo}
-            <Button
-              variant="outlined"
-              color="secondary"
-              size="large"
-              classes={{
-                root: classes.fatButton,
-                label: classes.fatButtonText,
-              }}
-              onClick={checkButtonClicked}
-            >
-              Check
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              size="large"
-              classes={{
-                root: classes.fatButton,
-                label: classes.fatButtonText,
-              }}
-              onClick={downloadButtonClicked}
-            >
-              Download
-            </Button>
-          </Grid>
-        </Box>
-      </Toolbar> */}
       </Row>
       
 
@@ -241,27 +191,24 @@ VModEditor.defaultProps = {
 function ErrorInfo({ errorCount }) {
   // expand this eventually to have a modal button that displays
   // a list of all the errors
-  return (
-    <Box width="30%">
-      <Grid
-        container
-        direction="row"
-        justify="space-evenly"
-        alignItems="center"
-      >
-        {errorCount ? (
-          <ErrorOutlineIcon color="error" />
-        ) : (
-          <CheckCircleOutlineIcon color="secondary" />
-        )}
-        <Typography color={errorCount ? "error" : "secondary"}>
-          {errorCount
-            ? `${errorCount} Error${errorCount > 1 ? "s" : ""}`
-            : "No Errors!"}
-        </Typography>
-      </Grid>
-    </Box>
-  );
+  return null;
+
+  // figure this out later
+  // https://react-bootstrap.github.io/components/overlays/
+  // return (
+  //   <Container>
+  //     {errorCount ? (
+  //       <ErrorOutlineIcon color="error" />
+  //     ) : (
+  //       <CheckCircleOutlineIcon color="secondary" />
+  //     )}
+  //     <p className={errorCount ? "text-danger" : "text-secondary"}>
+  //       {errorCount
+  //         ? `${errorCount} Error${errorCount > 1 ? "s" : ""}`
+  //         : "No Errors!"}
+  //     </p>
+  //   </Container>
+  // );
 }
 
 ErrorInfo.propTypes = {

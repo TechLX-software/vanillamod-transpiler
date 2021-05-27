@@ -1,0 +1,15 @@
+// Making a custom localized bootstrap import
+// install sass globally and run command:
+// sass -I node_modules --no-source-map src/css/vmodStylesIso.scss src/pages/playground/vmodStyles.scss
+// Then go to output.css do these find/replaces:
+// "bootstrap-iso html" => "bootstrap-iso"
+// "bootstrap-iso body" => "bootstrap-iso"
+
+.bootstrap-iso {
+  // note change from vmod website: removed ~ from beginning
+  @import "bootswatch/dist/litera/variables";
+  @import "bootstrap/scss/bootstrap";
+  @import "bootswatch-litera-customizations";
+
+  // variables go here at some point?
+}

@@ -11,13 +11,11 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
-var _styles = require("@material-ui/core/styles");
+var _Button = _interopRequireDefault(require("react-bootstrap/Button"));
 
-var _core = require("@material-ui/core");
+var _reactResizable = require("react-resizable");
 
-var _reactSplitPane = _interopRequireDefault(require("react-split-pane"));
-
-var _Pane = _interopRequireDefault(require("react-split-pane/lib/Pane"));
+require("./resizable-styles.css");
 
 var _vModEditor = _interopRequireDefault(require("./vModEditor"));
 
@@ -41,31 +39,47 @@ function _iterableToArrayLimit(arr, i) { var _i = arr && (typeof Symbol !== "und
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-var useStyles = (0, _styles.makeStyles)({
-  expandLeftButton: {
-    position: "absolute",
-    top: "65px",
-    left: "5px",
-    padding: "0px",
-    minWidth: "30px",
-    width: "30px",
-    height: "25px"
-  }
-});
-
+// const useStyles = makeStyles({
+//   expandLeftButton: {
+//     position: "absolute",
+//     top: "65px",
+//     left: "5px",
+//     padding: "0px",
+//     minWidth: "30px",
+//     width: "30px",
+//     height: "25px",
+//   },
+// });
 function EditorView(_ref) {
   var title = _ref.title,
       startingCode = _ref.startingCode,
       isDarkTheme = _ref.isDarkTheme,
       children = _ref.children;
-  var classes = useStyles();
 
-  var _useState = (0, _react.useState)(true),
+  var _useState = (0, _react.useState)(250),
       _useState2 = _slicedToArray(_useState, 2),
-      showLeftPanelContent = _useState2[0],
-      setShowLeftPanelContent = _useState2[1];
+      leftPanelWidth = _useState2[0],
+      setLeftPanelWidth = _useState2[1];
 
-  var editorViewRef = _react.default.useRef();
+  var _useState3 = (0, _react.useState)(250),
+      _useState4 = _slicedToArray(_useState3, 2),
+      rightPanelWidth = _useState4[0],
+      setRightPanelWidth = _useState4[1];
+
+  var _useState5 = (0, _react.useState)(800),
+      _useState6 = _slicedToArray(_useState5, 2),
+      editorHeight = _useState6[0],
+      setEditorHeight = _useState6[1];
+
+  var _useState7 = (0, _react.useState)(true),
+      _useState8 = _slicedToArray(_useState7, 2),
+      showLeftPanelContent = _useState8[0],
+      setShowLeftPanelContent = _useState8[1]; // const 
+
+
+  var editorViewRef = _react.default.useRef(); // doesn't actually do anything
+  // must add call to this inside resize of left panel box
+
 
   var changeLeftPanel = function changeLeftPanel(sizes) {
     var leftSize = parseFloat(sizes[0], 10);
@@ -78,42 +92,53 @@ function EditorView(_ref) {
   };
 
   (0, _react.useEffect)(function () {
-    var draggables = editorViewRef.current.querySelectorAll("div[data-type='Resizer']");
-
-    if (draggables) {
-      draggables.forEach(function (elem) {
-        elem.style.opacity = 0;
-      });
+    if (editorViewRef && editorViewRef.current) {
+      var totalWidth = editorViewRef.current.offsetWidth;
+      setLeftPanelWidth(totalWidth * 0.15);
+      setRightPanelWidth(totalWidth * 0.15);
+      setEditorHeight(editorViewRef.current.offsetHeight);
     }
-  }, []);
+  }, [editorViewRef]);
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+    style: {
+      display: "flex",
+      justifyContent: "space-between"
+    },
     ref: editorViewRef,
-    children: [/*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactSplitPane.default, {
-      split: "vertical",
-      onResizeEnd: changeLeftPanel,
-      children: [showLeftPanelContent && /*#__PURE__*/(0, _jsxRuntime.jsx)(_Pane.default, {
-        initialSize: "15%",
-        children: children[0]
-      }), !showLeftPanelContent && /*#__PURE__*/(0, _jsxRuntime.jsx)(_Pane.default, {
-        initialSize: "0px"
-      }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Pane.default, {
-        children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_vModEditor.default, {
-          title: title,
-          startingCode: startingCode,
-          isDarkTheme: isDarkTheme
-        })
-      }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Pane.default, {
-        initialSize: "25%",
-        children: children[1]
-      })]
-    }), !showLeftPanelContent && /*#__PURE__*/(0, _jsxRuntime.jsx)(_core.Button, {
-      size: "small",
-      variant: "contained",
+    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactResizable.ResizableBox, {
+      width: leftPanelWidth,
+      height: editorHeight,
+      axis: "x",
+      resizeHandles: ["e"],
+      handleSize: [10, 10],
+      onResize: function onResize(e, data) {
+        setLeftPanelWidth(data.size.width);
+      },
+      children: showLeftPanelContent && children[0]
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+      style: {
+        width: editorViewRef && editorViewRef.current ? editorViewRef.current.offsetWidth - leftPanelWidth - rightPanelWidth : 800
+      },
+      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_vModEditor.default, {
+        title: title,
+        startingCode: startingCode,
+        isDarkTheme: isDarkTheme
+      })
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactResizable.ResizableBox, {
+      width: rightPanelWidth,
+      height: editorHeight,
+      axis: "x",
+      resizeHandles: ["w"],
+      handleSize: [10, 10],
+      onResize: function onResize(e, data) {
+        setRightPanelWidth(data.size.width);
+      },
+      children: children[1]
+    }), !showLeftPanelContent && /*#__PURE__*/(0, _jsxRuntime.jsx)(_Button.default, {
+      size: "sm",
+      variant: "outline-secondary",
       onClick: function onClick() {
         return changeLeftPanel([10]);
-      },
-      classes: {
-        root: classes.expandLeftButton
       },
       children: ">"
     })]
