@@ -10,7 +10,7 @@ import vars from "./variables";
 import validator from "./validator";
 import MCF_library from "./resources/vMod-MCF-library.json";
 
-const transpiler = {};
+export const transpiler = {};
 
 const STORE_VARIABLE_OBJECTIVE = "vMod_Variable";
 const INIT_HELPER_ARRAY = (selector) => [
@@ -1568,8 +1568,6 @@ function newStatementSubPath(codeLine, statementType) {
     return (str + paddingRight).substring(0, paddingRight.length);
   }
 }
-
-export default transpiler;
 
 // }
 

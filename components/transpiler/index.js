@@ -1,3 +1,1 @@
-import transpiler from "./transpiler";
-
-export default transpiler;
+export { transpiler } from './transpiler';

@@ -15,25 +15,26 @@
     "udeploy": "GIT_USER=$(grep GIT_USER .env | cut -d '=' -f2) docusaurus deploy"
   },
   "dependencies": {
-    "@docusaurus/core": "^2.0.0-beta.0",
-    "@docusaurus/preset-classic": "^2.0.0-beta.0",
+    "@docusaurus/core": "^2.1.0",
+    "@docusaurus/preset-classic": "^2.1.0",
     "@mdx-js/react": "^1.6.21",
-    "@monaco-editor/react": "^4.0.9",
+    "@monaco-editor/react": "^4.4.5",
     "bootstrap": "4.6.0",
     "bootswatch": "^5.0.1",
     "clsx": "^1.1.1",
-    "docusaurus-plugin-sass": "^0.1.11",
+    "docusaurus-plugin-sass": "^0.2.2",
     "docusaurus2-dotenv": "^1.4.0",
     "esprima": "^4.0.1",
     "file-saver": "^2.0.5",
     "jszip": "^3.5.0",
-    "monaco-editor": "^0.21.2",
+    "monaco-editor": "^0.34.0",
     "prop-types": "^15.7.2",
-    "react": "17.0.1",
+    "react": "17.0.2",
     "react-bootstrap": "^1.6.0",
     "react-bootstrap-icons": "^1.5.0",
-    "react-dom": "17.0.1",
-    "react-resizable": "^3.0.1"
+    "react-dom": "17.0.2",
+    "react-resizable": "^3.0.1",
+    "sass": "^1.54.8"
   },
   "browserslist": {
     "production": [
@@ -62,31 +63,5 @@
     "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "prettier": "2.2.1"
-  },
-  "bit": {
-    "componentsDefaultDirectory": "components/{name}",
-    "packageManager": "yarn",
-    "overrides": {
-      "*": {
-        "dependencies": {
-          "prop-types": "-",
-          "react-bootstrap": "-",
-          "react-resizable": "-",
-          "react": "-",
-          "file-saver": "-",
-          "jszip": "-",
-          "@monaco-editor/react": "-"
-        },
-        "peerDependencies": {
-          "prop-types": "+",
-          "react-bootstrap": "+",
-          "react-resizable": "+",
-          "react": "+",
-          "file-saver": "+",
-          "jszip": "+",
-          "@monaco-editor/react": "+"
-        }
-      }
-    }
   }
 }
