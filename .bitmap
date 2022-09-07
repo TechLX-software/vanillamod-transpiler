@@ -9,5 +9,29 @@
  */
 
 {
+    "mod-editor": {
+        "scope": "",
+        "version": "",
+        "mainFile": "index.js",
+        "rootDir": "components/mod-editor",
+        "config": {
+            "teambit.react/react": {},
+            "teambit.envs/envs": {
+                "env": "teambit.react/react"
+            }
+        }
+    },
+    "transpiler": {
+        "scope": "",
+        "version": "",
+        "mainFile": "index.ts",
+        "rootDir": "components/transpiler",
+        "config": {
+            "teambit.harmony/node": {},
+            "teambit.envs/envs": {
+                "env": "teambit.harmony/node"
+            }
+        }
+    },
     "$schema-version": "15.0.0"
 }
