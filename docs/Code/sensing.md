@@ -11,7 +11,7 @@ This page of the documentation isn't finished. We'll get to it eventually, but i
 This is a link to [another document.](doc1.md) This is a link to an [external page.](http://www.example.com/)
 
 <details><summary>CLICK ME</summary>
-<p>
+<span>
 
 #### yes, even hidden code blocks!
 
@@ -19,5 +19,5 @@ This is a link to [another document.](doc1.md) This is a link to an [external pa
 print("hello world!")
 ```
 
-</p>
+</span>
 </details>
