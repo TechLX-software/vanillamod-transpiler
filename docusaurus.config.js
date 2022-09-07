@@ -40,8 +40,9 @@ module.exports = {
         },
         {
           href: 'https://github.com/bakerfugu/vanillamod-transpiler',
-          label: 'Source',
           position: 'right',
+          className: 'header-github-link',
+          'aria-label': 'GitHub repository',
         },
       ],
     },
@@ -98,6 +99,10 @@ module.exports = {
       ],
       copyright: `Copyright © ${new Date().getFullYear()} TechLX, Inc. Built with Docusaurus.`,
     },
+    prism: {
+      defaultLanguage: 'javascript',
+      additionalLanguages: [],
+    }
   },
   presets: [
     [
