@@ -62,31 +62,5 @@
     "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "prettier": "2.2.1"
-  },
-  "bit": {
-    "componentsDefaultDirectory": "components/{name}",
-    "packageManager": "yarn",
-    "overrides": {
-      "*": {
-        "dependencies": {
-          "prop-types": "-",
-          "react-bootstrap": "-",
-          "react-resizable": "-",
-          "react": "-",
-          "file-saver": "-",
-          "jszip": "-",
-          "@monaco-editor/react": "-"
-        },
-        "peerDependencies": {
-          "prop-types": "+",
-          "react-bootstrap": "+",
-          "react-resizable": "+",
-          "react": "+",
-          "file-saver": "+",
-          "jszip": "+",
-          "@monaco-editor/react": "+"
-        }
-      }
-    }
   }
 }
