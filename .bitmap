@@ -10,28 +10,16 @@
 
 {
     "mod-editor": {
-        "scope": "",
-        "version": "",
+        "scope": "techlx.vanillamod",
+        "version": "0.0.1",
         "mainFile": "index.js",
-        "rootDir": "components/mod-editor",
-        "config": {
-            "teambit.react/react": {},
-            "teambit.envs/envs": {
-                "env": "teambit.react/react"
-            }
-        }
+        "rootDir": "components/mod-editor"
     },
     "transpiler": {
-        "scope": "",
-        "version": "",
+        "scope": "techlx.vanillamod",
+        "version": "0.0.1",
         "mainFile": "index.js",
-        "rootDir": "components/transpiler",
-        "config": {
-            "teambit.harmony/node": {},
-            "teambit.envs/envs": {
-                "env": "teambit.harmony/node"
-            }
-        }
+        "rootDir": "components/transpiler"
     },
     "$schema-version": "15.0.0"
 }
