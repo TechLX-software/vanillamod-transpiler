@@ -48,22 +48,23 @@ function displayErrors(errorMarkers, editor, monacoAlive) {
         lineNumber: firstError.startLineNumber,
         column: firstError.startColumn,
       });
-      editor.getAction("editor.action.showHover").run();
-      const actionContainer = document.getElementsByClassName(
-        "action-container"
-      );
-      // try { // there seems to be an error triggering here?
+      try {
+        editor.getAction("editor.action.showHover").run();
+        const actionContainer = document.getElementsByClassName(
+          "action-container"
+        );
+        
         if (actionContainer.length > 0) actionContainer[0].click();
-      // } catch (e) {
-      //   console.log("error clicking on monaco error display thing", e);
-      // }
+      } catch (e) {
+        console.log("error clicking on monaco error display thing", e);
+      }
     }, 100);
   }
 
   // display red X thingy saying errors were found
 }
 
-function ModEditor({ title, startingCode, isDarkTheme }) {
+function ModEditor({ title, startingCode, hoistHelper, isDarkTheme, onChange }) {
   // these states are not in use right now
   const [errorInfo, setErrorInfo] = useState(null);
   const [clearErrorInfo, setClearErrorInfo] = useState(null);
@@ -86,6 +87,12 @@ function ModEditor({ title, startingCode, isDarkTheme }) {
     monacoRef.current = monaco;
   }
 
+  function handleOnChange(newValue, e) {
+    // do some debouncing probably
+    console.log('Editor code change:', newValue, e);
+    if (onChange) onChange(newValue, e);
+  }
+
   function showErrorInfo(errorMarkers) {
     const errorCount = errorMarkers ? errorMarkers.length : 0;
     // still need to figure out what to do when error markers
@@ -105,6 +112,7 @@ function ModEditor({ title, startingCode, isDarkTheme }) {
     };
     const code = editorRef.current.getValue();
     const { errorMarkers } = transpileCode(
+      hoistHelper.transpiler,
       code,
       modInfo,
       editorRef.current,
@@ -123,6 +131,7 @@ function ModEditor({ title, startingCode, isDarkTheme }) {
     };
     const code = editorRef.current.getValue();
     const { datapack, errorMarkers } = transpileCode(
+      hoistHelper.transpiler,
       code,
       modInfo,
       editorRef.current,
@@ -175,6 +184,7 @@ function ModEditor({ title, startingCode, isDarkTheme }) {
           options={{ fontSize: 15, minimap: { enabled: false } }}
           beforeMount={handleEditorWillMount}
           onMount={handleEditorDidMount}
+          onChange={handleOnChange}
           value={startingCode}
         />
       </Row>
@@ -185,11 +195,12 @@ function ModEditor({ title, startingCode, isDarkTheme }) {
 ModEditor.propTypes = {
   startingCode: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  isDarkTheme: PropTypes.bool,
-};
-
-ModEditor.defaultProps = {
-  isDarkTheme: false,
+  onChange: PropTypes.func.isRequired,
+  isDarkTheme: PropTypes.bool.isRequired,
+  hoistHelper: PropTypes.shape({
+    // eslint-disable-next-line react/forbid-prop-types
+    transpiler: PropTypes.object.isRequired,
+  }).isRequired,
 };
 
 function ErrorInfo({ errorCount }) {

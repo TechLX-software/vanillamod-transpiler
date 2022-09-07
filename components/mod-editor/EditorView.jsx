@@ -19,7 +19,7 @@ import { ModEditor } from "./ModEditor";
 //   },
 // });
 
-function EditorView({ title, startingCode, isDarkTheme, children }) {
+function EditorView({ title, startingCode, onChange, isDarkTheme, hoistHelper, children }) {
   const [leftPanelWidth, setLeftPanelWidth] = useState(250);
   const [rightPanelWidth, setRightPanelWidth] = useState(250);
   const [editorHeight, setEditorHeight] = useState(800);
@@ -80,6 +80,8 @@ function EditorView({ title, startingCode, isDarkTheme, children }) {
           title={title}
           startingCode={startingCode}
           isDarkTheme={isDarkTheme}
+          onChange={onChange || null}
+          hoistHelper={hoistHelper}
         />
       </div>
       <ResizableBox
@@ -112,11 +114,17 @@ EditorView.propTypes = {
   startingCode: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   children: PropTypes.arrayOf(PropTypes.node).isRequired,
+  hoistHelper: PropTypes.shape({
+    // eslint-disable-next-line react/forbid-prop-types
+    transpiler: PropTypes.object.isRequired,
+  }).isRequired,
   isDarkTheme: PropTypes.bool,
+  onChange: PropTypes.func,
 };
 
 EditorView.defaultProps = {
   isDarkTheme: false,
+  onChange: () => {},
 };
 
 export { EditorView };

@@ -6,7 +6,8 @@ import { saveAs } from "file-saver";
 // trying to run command:
 // bit tag --message "first release" 
 
-import { transpiler } from "@techlx/vanillamod.transpiler"
+// pass this as a prop to get around bit import dumbness
+// import { transpiler } from "@techlx/vanillamod.transpiler"
 
 // handles all interactions with transpiler component
 
@@ -45,7 +46,7 @@ function addCustomError(error, editor, monacoAlive) {
   return null;
 }
 
-function transpileCode(code, modInfo, editor, monaco) {
+function transpileCode(transpiler, code, modInfo, editor, monaco) {
   // reset model markers to get rid of old errors
   monaco.editor.setModelMarkers(editor.getModel(), "vanillamod", []);
 

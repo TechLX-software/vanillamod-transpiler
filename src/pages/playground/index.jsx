@@ -3,16 +3,17 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 // eslint-disable-next-line import/no-unresolved
 import Layout from "@theme/Layout";
-// eslint-disable-next-line import/no-unresolved
-import useThemeContext from "@theme/hooks/useThemeContext";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { useColorMode } from '@docusaurus/theme-common';
 
 import "./vmodStyles.scss";
 import styles from "./styles.module.scss";
 import codeExamples from "../../../components/transpiler/codeExamples";
+import { transpiler } from "../../../components/transpiler"
 import { EditorView } from "../../../components/mod-editor";
 
 function EditorViewDummyContent() {
-  const { isDarkTheme } = useThemeContext();
+  const { colorMode } = useColorMode();
   const [editorStarterCode, setEditorStarterCode] = useState(
     "// write your code here"
   );
@@ -22,7 +23,11 @@ function EditorViewDummyContent() {
       <EditorView
         title="vMod Playground"
         startingCode={editorStarterCode}
-        isDarkTheme={isDarkTheme}
+        isDarkTheme={colorMode === 'dark'}
+        // this is awkward syntax, but it's needed to workaround bit's no-dependencies restriction
+        hoistHelper={{
+          transpiler
+        }}
       >
         {/* Left Panel */}
         <div className={styles.paneContentWrapper}>
