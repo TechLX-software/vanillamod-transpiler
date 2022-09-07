@@ -9,7 +9,7 @@ import useThemeContext from "@theme/hooks/useThemeContext";
 import "./vmodStyles.scss";
 import styles from "./styles.module.scss";
 import codeExamples from "../../../components/transpiler/codeExamples";
-import EditorView from "../../../components/vModEditor";
+import { EditorView } from "../../../components/mod-editor";
 
 function EditorViewDummyContent() {
   const { isDarkTheme } = useThemeContext();

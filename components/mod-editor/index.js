@@ -1,1 +1,1 @@
-export { ModEditor } from './mod-editor';
+export { EditorView } from './EditorView';
