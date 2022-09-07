@@ -1,7 +1,7 @@
 module.exports = {
   title: 'vMod',
   tagline: 'Learn and Accelerate Game Development in Minecraft',
-  url: 'https://bakerfugu.github.io',
+  url: 'https://meta.vanillamod.com',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -12,7 +12,7 @@ module.exports = {
     navbar: {
       title: 'Home',
       logo: {
-        alt: 'My Site Logo',
+        alt: 'Vanilla blossom overlaid with gear icon',
         src: 'img/flower-icon-64.png',
       },
       items: [
@@ -39,7 +39,7 @@ module.exports = {
           position: 'right',
         },
         {
-          href: 'https://github.com/bakerfugu/vanillamod-transpiler',
+          href: 'https://github.com/TechLX-software/vanillamod-transpiler',
           position: 'right',
           className: 'header-github-link',
           'aria-label': 'GitHub repository',
@@ -75,7 +75,7 @@ module.exports = {
             },
             {
               label: 'Github',
-              href: 'https://github.com/bakerfugu/vanillamod-transpiler/discussions',
+              href: 'https://github.com/TechLX-software/vanillamod-transpiler/discussions',
             },
           ],
         },
@@ -88,7 +88,7 @@ module.exports = {
             },
             {
               label: 'Source',
-              href: 'https://github.com/bakerfugu/vanillamod-transpiler',
+              href: 'https://github.com/TechLX-software/vanillamod-transpiler',
             },
             {
               label: 'TechLX',
@@ -112,7 +112,7 @@ module.exports = {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           editUrl:
-            'https://github.com/bakerfugu/vanillamod-transpiler/tree/main/',
+            'https://github.com/TechLX-software/vanillamod-transpiler/tree/main/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.scss'),
