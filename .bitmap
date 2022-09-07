@@ -24,7 +24,7 @@
     "transpiler": {
         "scope": "",
         "version": "",
-        "mainFile": "index.ts",
+        "mainFile": "index.js",
         "rootDir": "components/transpiler",
         "config": {
             "teambit.harmony/node": {},

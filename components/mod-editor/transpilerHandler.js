@@ -1,6 +1,12 @@
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
-import { transpiler } from "../transpiler"
+// last left off:
+// need to fix this import (want it to be local but yugh)
+// might have to tag and publish transpiler first
+// trying to run command:
+// bit tag --message "first release" 
+
+import { transpiler } from "@techlx/vanillamod.transpiler"
 
 // handles all interactions with transpiler component
 
@@ -43,7 +49,9 @@ function transpileCode(code, modInfo, editor, monaco) {
   // reset model markers to get rid of old errors
   monaco.editor.setModelMarkers(editor.getModel(), "vanillamod", []);
 
+  console.log("just before error", transpiler);
   const datapack = transpiler.compile(code, modInfo);
+  console.log("just after error");
   if (datapack.errors && monaco) {
     const errorMarkers = [];
     datapack.errors.forEach((error) => {
