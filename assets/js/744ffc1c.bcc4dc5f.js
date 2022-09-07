@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkvanillamod_transpiler=self.webpackChunkvanillamod_transpiler||[]).push([[517],{3769:a=>{a.exports=JSON.parse('{"name":"docusaurus-plugin-content-docs","id":"default"}')}}]);
