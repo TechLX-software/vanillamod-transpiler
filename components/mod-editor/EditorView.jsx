@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import Button from 'react-bootstrap/Button';
-import { ResizableBox } from 'react-resizable';
-// Must import resizable styles globally
-// import "./resizable-styles.css";
+// import Button from 'react-bootstrap/Button';
+import { ReflexContainer, ReflexSplitter, ReflexElement } from "react-reflex";
+import "react-reflex/styles.css";
 
 import { ModEditor } from "./ModEditor";
 
@@ -49,64 +48,44 @@ function EditorView({ title, startingCode, onChange, isDarkTheme, hoistHelper, c
   }, [editorViewRef]);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between"
-      }}
-      ref={editorViewRef}
-    >
-      <ResizableBox 
-        width={leftPanelWidth}
-        height={editorHeight}
-        axis="x"
-        resizeHandles={["e"]}
-        handleSize={[10, 10]}
-        onResize={(e, data) => {
-          setLeftPanelWidth(data.size.width);
-        }}
-      >
-        {showLeftPanelContent && children[0]}
-      </ResizableBox>
+    <ReflexContainer orientation="vertical">
+      <ReflexElement className="left-pane" flex={0.15}>
+        <div className="pane-content">
+          {children[0]}
+        </div>
+      </ReflexElement>
 
-      <div
-        style={{
-          width: editorViewRef && editorViewRef.current
-              ? editorViewRef.current.offsetWidth - leftPanelWidth - rightPanelWidth
-              : 800
-        }}
-      >
-        <ModEditor
-          title={title}
-          startingCode={startingCode}
-          isDarkTheme={isDarkTheme}
-          onChange={onChange || null}
-          hoistHelper={hoistHelper}
-        />
-      </div>
-      <ResizableBox
-        width={rightPanelWidth}
-        height={editorHeight}
-        axis="x"
-        resizeHandles={["w"]}
-        handleSize={[10, 10]}
-        onResize={(e, data) => {
-          setRightPanelWidth(data.size.width);
-        }}
-      >
-        {children[1]}
-      </ResizableBox>
+      <ReflexSplitter style={{ height: "auto" }} propagate={true}/>
       
-      {!showLeftPanelContent && (
-        <Button
-          size="sm"
-          variant="outline-secondary"
-          onClick={() => changeLeftPanel([10])}
-        >
-          {">"}
-        </Button>
-      )}
-    </div>
+      <ReflexElement className="middle-pane" minSize={500}>
+        <div className="pane-content">
+          <ModEditor
+            title={title}
+            startingCode={startingCode}
+            isDarkTheme={isDarkTheme}
+            onChange={onChange || null}
+            hoistHelper={hoistHelper}
+          />
+        </div>
+      </ReflexElement>
+
+      <ReflexSplitter style={{ height: "auto" }} propagate={true}/>
+
+      <ReflexElement className="right-pane" flex={0.25}>
+        <div className="pane-content">
+          {children[1]}
+        </div>
+      </ReflexElement>
+    </ReflexContainer>
+      // {!showLeftPanelContent && (
+      //   <Button
+      //     size="sm"
+      //     variant="outline-secondary"
+      //     onClick={() => changeLeftPanel([10])}
+      //   >
+      //     {">"}
+      //   </Button>
+      // )}
   );
 }
 
