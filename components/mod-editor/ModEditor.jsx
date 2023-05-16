@@ -8,6 +8,7 @@ import Col from 'react-bootstrap/Col'
 // need to replace these icons with bootstrap ones
 // import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 // import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
+import { ExclamationCircle } from 'react-bootstrap-icons';
 import Editor from "@monaco-editor/react";
 
 import { transpileCode, downloadDatapack } from "./transpilerHandler";
@@ -68,6 +69,8 @@ function ModEditor({ title, startingCode, hoistHelper, isDarkTheme, onChange }) 
   // these states are not in use right now
   const [errorInfo, setErrorInfo] = useState(null);
   const [clearErrorInfo, setClearErrorInfo] = useState(null);
+  const [errorCount, setErrorCount] = useState(0);
+
   // const monaco = useMonaco();
   // const editorRef = useRef();
 
@@ -91,6 +94,9 @@ function ModEditor({ title, startingCode, hoistHelper, isDarkTheme, onChange }) 
     // do some debouncing probably
     console.log('Editor code change:', newValue, e);
     if (onChange) onChange(newValue, e);
+
+    // if status is anything but the default status
+    // change to the default status
   }
 
   function showErrorInfo(errorMarkers) {
@@ -119,7 +125,13 @@ function ModEditor({ title, startingCode, hoistHelper, isDarkTheme, onChange }) 
       monacoRef.current
     );
     if (errorMarkers) {
+      // error markers are present, update the number of errors to the length of errorMarkers
+      setErrorCount(errorMarkers.length);
       displayErrors(errorMarkers, editorRef.current, monacoRef.current);
+    }
+    else {
+      // no error markers, then reset the number of errors to zero
+      setErrorCount(0);
     }
 
     showErrorInfo(errorMarkers);
@@ -159,10 +171,13 @@ function ModEditor({ title, startingCode, hoistHelper, isDarkTheme, onChange }) 
           <Button
             variant="secondary"
             size="lg"
-            className="mx-1"
             onClick={checkButtonClicked}
           >
-            Check
+            <span>{errorCount}</span>
+            <span>
+              <ExclamationCircle color="red" />
+            </span>
+            
           </Button>
           <Button
             variant="primary"
