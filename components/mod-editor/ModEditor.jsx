@@ -79,10 +79,6 @@ function ModEditor({ title, startingCode, hoistHelper, isDarkTheme, onChange }) 
   const editorRef = useRef(null);
   const monacoRef = useRef(null);
 
-  useEffect(() => {
-    console.log(errorCount, '- Has changed')
-  },[errorCount])
-
   function handleEditorWillMount(monaco) {
     // here is the monaco instance
     // do stuff before editor is mounted
@@ -101,21 +97,9 @@ function ModEditor({ title, startingCode, hoistHelper, isDarkTheme, onChange }) 
     console.log('Editor code change:', newValue, e);
     if (onChange) onChange(newValue, e);
 
-    // if status is anything but the default status
-    // change to the default status
-  }
-
-  function showErrorInfo(errorMarkers) {
-    const errorCount = errorMarkers ? errorMarkers.length : 0;
-    // still need to figure out what to do when error markers
-    // exists, but is not zero (which is a vMod "crash")
-    // see top part of displayErrors(...)
-    setErrorInfo(<ErrorInfo errorCount={errorCount} />);
-    if (clearErrorInfo) clearTimeout(clearErrorInfo);
-    const newClear = setTimeout(() => {
-      setErrorInfo(null);
-    }, 8000);
-    setClearErrorInfo(newClear);
+    if (errorCount != 0) {
+      setErrorCount(0)
+    }
   }
 
   function checkButtonClicked() {
@@ -137,10 +121,8 @@ function ModEditor({ title, startingCode, hoistHelper, isDarkTheme, onChange }) 
     }
     else {
       // no error markers, then reset the number of errors to zero
-      setErrorCount(0);
+      setErrorCount(-1);
     }
-
-    showErrorInfo(errorMarkers);
   }
 
   function downloadButtonClicked() {
@@ -157,7 +139,6 @@ function ModEditor({ title, startingCode, hoistHelper, isDarkTheme, onChange }) 
     );
     if (errorMarkers) {
       displayErrors(errorMarkers, editorRef.current, monacoRef.current);
-      showErrorInfo(errorMarkers);
     } else {
       downloadDatapack(datapack);
     }
@@ -179,16 +160,8 @@ function ModEditor({ title, startingCode, hoistHelper, isDarkTheme, onChange }) 
             size="lg"
             onClick={checkButtonClicked}
           >
-            {
-              errorCount > 0 ?
-                <span>
-                  {errorCount}
-                  <ExclamationCircle color="red" style={{marginLeft: '3px', marginBottom: '3px'}}/>
-                </span>
-                :
-                <span>
-                  <CheckLg color="green" style={{marginBottom: '3px'}}/>
-                </span>
+            { 
+              checkButtonStatus(errorCount)
             }
           </Button>
           <Button
@@ -219,6 +192,29 @@ function ModEditor({ title, startingCode, hoistHelper, isDarkTheme, onChange }) 
   );
 }
 
+function checkButtonStatus(errorCount) {
+  console.log("error count", errorCount)
+  if (errorCount == -1) {
+    return (
+      <span>
+        <CheckLg color="green" style={{marginRight: '5px', marginBottom: '3px'}}/>
+        Good!
+      </span>
+    )
+  }
+  
+  if (errorCount > 0) {
+    return (
+      <span>
+        <ExclamationCircle color="red" style={{marginRight: '5px', marginBottom: '3px'}}/>
+        {errorCount} {errorCount > 1 ? "Errors" : "Error"}
+      </span>
+    ) 
+  }
+  
+  return <span>Check</span>
+}
+
 ModEditor.propTypes = {
   startingCode: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
@@ -228,33 +224,6 @@ ModEditor.propTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     transpiler: PropTypes.object.isRequired,
   }).isRequired,
-};
-
-function ErrorInfo({ errorCount }) {
-  // expand this eventually to have a modal button that displays
-  // a list of all the errors
-  return null;
-
-  // figure this out later
-  // https://react-bootstrap.github.io/components/overlays/
-  // return (
-  //   <Container>
-  //     {errorCount ? (
-  //       <ErrorOutlineIcon color="error" />
-  //     ) : (
-  //       <CheckCircleOutlineIcon color="secondary" />
-  //     )}
-  //     <p className={errorCount ? "text-danger" : "text-secondary"}>
-  //       {errorCount
-  //         ? `${errorCount} Error${errorCount > 1 ? "s" : ""}`
-  //         : "No Errors!"}
-  //     </p>
-  //   </Container>
-  // );
-}
-
-ErrorInfo.propTypes = {
-  errorCount: PropTypes.number.isRequired,
 };
 
 export { ModEditor };
