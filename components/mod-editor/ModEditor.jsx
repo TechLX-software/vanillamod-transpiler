@@ -4,11 +4,13 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import { useEffect } from "react";
 
 // need to replace these icons with bootstrap ones
 // import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 // import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import { ExclamationCircle } from 'react-bootstrap-icons';
+import { CheckLg } from "react-bootstrap-icons";
 import Editor from "@monaco-editor/react";
 
 import { transpileCode, downloadDatapack } from "./transpilerHandler";
@@ -76,6 +78,10 @@ function ModEditor({ title, startingCode, hoistHelper, isDarkTheme, onChange }) 
 
   const editorRef = useRef(null);
   const monacoRef = useRef(null);
+
+  useEffect(() => {
+    console.log(errorCount, '- Has changed')
+  },[errorCount])
 
   function handleEditorWillMount(monaco) {
     // here is the monaco instance
@@ -173,11 +179,17 @@ function ModEditor({ title, startingCode, hoistHelper, isDarkTheme, onChange }) 
             size="lg"
             onClick={checkButtonClicked}
           >
-            <span>{errorCount}</span>
-            <span>
-              <ExclamationCircle color="red" />
-            </span>
-            
+            {
+              errorCount > 0 ?
+                <span>
+                  {errorCount}
+                  <ExclamationCircle color="red" style={{marginLeft: '3px', marginBottom: '3px'}}/>
+                </span>
+                :
+                <span>
+                  <CheckLg color="green" style={{marginBottom: '3px'}}/>
+                </span>
+            }
           </Button>
           <Button
             variant="primary"
