@@ -4,39 +4,21 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+// import { useEffect } from "react";
 
-// need to replace these icons with bootstrap ones
-// import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
-// import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
+import { ExclamationCircle, CheckLg } from 'react-bootstrap-icons';
 import Editor from "@monaco-editor/react";
 
 import { transpileCode, downloadDatapack } from "./transpilerHandler";
-
-// const useStyles = makeStyles({
-//   fatButton: {
-//     marginLeft: "5px",
-//     marginRight: "5px",
-//     borderRadius: "0.5em",
-//   },
-//   fatButtonText: {
-//     fontWeight: "bold",
-//   },
-//   editorTitle: {
-//     paddingLeft: "20px",
-//     fontWeight: "bold",
-//   },
-//   editorHeader: {
-//     height: "5em",
-//     alignItems: "center",
-//     justifyContent: "space-between",
-//   },
-// });
 
 function displayErrors(errorMarkers, editor, monacoAlive) {
   if (errorMarkers.length < 1) {
     // something funky happened, we got an error but didn't handle it smoothly
     // usually means vMod library has a bug
   } else {
+    // weird that the error message hover says 1 or 2 in upper right
+    // https://microsoft.github.io/monaco-editor/docs.html#interfaces/editor.IMarkerData.html
+    // console.log("error markers:", errorMarkers)
     monacoAlive.editor.setModelMarkers(
       editor.getModel(),
       "vanillamod",
@@ -60,14 +42,11 @@ function displayErrors(errorMarkers, editor, monacoAlive) {
       }
     }, 100);
   }
-
-  // display red X thingy saying errors were found
 }
 
 function ModEditor({ title, startingCode, hoistHelper, isDarkTheme, onChange }) {
-  // these states are not in use right now
-  const [errorInfo, setErrorInfo] = useState(null);
-  const [clearErrorInfo, setClearErrorInfo] = useState(null);
+  const [errorCount, setErrorCount] = useState(0);
+
   // const monaco = useMonaco();
   // const editorRef = useRef();
 
@@ -88,22 +67,11 @@ function ModEditor({ title, startingCode, hoistHelper, isDarkTheme, onChange }) 
   }
 
   function handleOnChange(newValue, e) {
-    // do some debouncing probably
-    console.log('Editor code change:', newValue, e);
-    if (onChange) onChange(newValue, e);
-  }
+    // debouncing for autosave handled in private repo
 
-  function showErrorInfo(errorMarkers) {
-    const errorCount = errorMarkers ? errorMarkers.length : 0;
-    // still need to figure out what to do when error markers
-    // exists, but is not zero (which is a vMod "crash")
-    // see top part of displayErrors(...)
-    setErrorInfo(<ErrorInfo errorCount={errorCount} />);
-    if (clearErrorInfo) clearTimeout(clearErrorInfo);
-    const newClear = setTimeout(() => {
-      setErrorInfo(null);
-    }, 8000);
-    setClearErrorInfo(newClear);
+    // console.log('Editor code change:', newValue, e);
+    if (onChange) onChange(newValue, e);
+    if (errorCount !== 0) setErrorCount(0);
   }
 
   function checkButtonClicked() {
@@ -119,10 +87,14 @@ function ModEditor({ title, startingCode, hoistHelper, isDarkTheme, onChange }) 
       monacoRef.current
     );
     if (errorMarkers) {
+      // error markers are present, update the number of errors to the length of errorMarkers
+      setErrorCount(errorMarkers.length);
       displayErrors(errorMarkers, editorRef.current, monacoRef.current);
     }
-
-    showErrorInfo(errorMarkers);
+    else {
+      // no error markers, then reset the number of errors to zero
+      setErrorCount(-1);
+    }
   }
 
   function downloadButtonClicked() {
@@ -138,9 +110,10 @@ function ModEditor({ title, startingCode, hoistHelper, isDarkTheme, onChange }) 
       monacoRef.current
     );
     if (errorMarkers) {
+      setErrorCount(errorMarkers.length);
       displayErrors(errorMarkers, editorRef.current, monacoRef.current);
-      showErrorInfo(errorMarkers);
     } else {
+      setErrorCount(-1);
       downloadDatapack(datapack);
     }
   }
@@ -152,17 +125,14 @@ function ModEditor({ title, startingCode, hoistHelper, isDarkTheme, onChange }) 
           <h1 className="py-2">{title}</h1>
         </Col>
         <Col md="auto" className="d-flex py-3">
-          {/* 
-          // eventually fix this error popover
-          {errorInfo} 
-          */}
           <Button
             variant="secondary"
             size="lg"
-            className="mx-1"
             onClick={checkButtonClicked}
           >
-            Check
+            { 
+              checkButtonStatus(errorCount)
+            }
           </Button>
           <Button
             variant="primary"
@@ -174,8 +144,6 @@ function ModEditor({ title, startingCode, hoistHelper, isDarkTheme, onChange }) 
           </Button>
         </Col>
       </Row>
-      
-
       <Row>
         <Editor
           height="85vh"
@@ -192,6 +160,28 @@ function ModEditor({ title, startingCode, hoistHelper, isDarkTheme, onChange }) 
   );
 }
 
+function checkButtonStatus(errorCount) {
+  if (errorCount === -1) {
+    return (
+      <span>
+        <CheckLg color="green" style={{marginRight: '5px', marginBottom: '3px'}}/>
+        Good!
+      </span>
+    )
+  }
+  
+  if (errorCount > 0) {
+    return (
+      <span>
+        <ExclamationCircle color="red" style={{marginRight: '5px', marginBottom: '3px'}}/>
+        {errorCount} {errorCount > 1 ? "Errors" : "Error"}
+      </span>
+    ) 
+  }
+  
+  return <span>Check</span>
+}
+
 ModEditor.propTypes = {
   startingCode: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
@@ -203,31 +193,5 @@ ModEditor.propTypes = {
   }).isRequired,
 };
 
-function ErrorInfo({ errorCount }) {
-  // expand this eventually to have a modal button that displays
-  // a list of all the errors
-  return null;
-
-  // figure this out later
-  // https://react-bootstrap.github.io/components/overlays/
-  // return (
-  //   <Container>
-  //     {errorCount ? (
-  //       <ErrorOutlineIcon color="error" />
-  //     ) : (
-  //       <CheckCircleOutlineIcon color="secondary" />
-  //     )}
-  //     <p className={errorCount ? "text-danger" : "text-secondary"}>
-  //       {errorCount
-  //         ? `${errorCount} Error${errorCount > 1 ? "s" : ""}`
-  //         : "No Errors!"}
-  //     </p>
-  //   </Container>
-  // );
-}
-
-ErrorInfo.propTypes = {
-  errorCount: PropTypes.number.isRequired,
-};
-
+// eslint-disable-next-line import/prefer-default-export
 export { ModEditor };
