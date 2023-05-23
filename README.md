@@ -84,4 +84,18 @@ yarn start
 
 `yarn install` downloads the required packages, and `yarn start` initiates a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
 
+<details>
+  <summary>Component export with Bit</summary>
+
+  To push an update to the transpiler or editor components up to Bit cloud (so they are version synced with the private repo) run the following commands:
+
+  ```
+  bit tag techlx.vanillamod/mod-editor --force-deploy
+  bit export techlx.vanillamod/mod-editor
+  ```
+
+  Use `techlx.vanillamod/transpiler` instead if the changes are to the transpiler instead of the editor.
+</details>
+
 This website is built using [Docusaurus 2](https://v2.docusaurus.io/), a modern static website generator.
+

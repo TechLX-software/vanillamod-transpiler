@@ -11,7 +11,7 @@
 {
     "mod-editor": {
         "scope": "techlx.vanillamod",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.js",
         "rootDir": "components/mod-editor"
     },
