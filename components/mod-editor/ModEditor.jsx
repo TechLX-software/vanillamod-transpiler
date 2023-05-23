@@ -4,42 +4,21 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import { useEffect } from "react";
+// import { useEffect } from "react";
 
-// need to replace these icons with bootstrap ones
-// import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
-// import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
-import { ExclamationCircle } from 'react-bootstrap-icons';
-import { CheckLg } from "react-bootstrap-icons";
+import { ExclamationCircle, CheckLg } from 'react-bootstrap-icons';
 import Editor from "@monaco-editor/react";
 
 import { transpileCode, downloadDatapack } from "./transpilerHandler";
-
-// const useStyles = makeStyles({
-//   fatButton: {
-//     marginLeft: "5px",
-//     marginRight: "5px",
-//     borderRadius: "0.5em",
-//   },
-//   fatButtonText: {
-//     fontWeight: "bold",
-//   },
-//   editorTitle: {
-//     paddingLeft: "20px",
-//     fontWeight: "bold",
-//   },
-//   editorHeader: {
-//     height: "5em",
-//     alignItems: "center",
-//     justifyContent: "space-between",
-//   },
-// });
 
 function displayErrors(errorMarkers, editor, monacoAlive) {
   if (errorMarkers.length < 1) {
     // something funky happened, we got an error but didn't handle it smoothly
     // usually means vMod library has a bug
   } else {
+    // weird that the error message hover says 1 or 2 in upper right
+    // https://microsoft.github.io/monaco-editor/docs.html#interfaces/editor.IMarkerData.html
+    // console.log("error markers:", errorMarkers)
     monacoAlive.editor.setModelMarkers(
       editor.getModel(),
       "vanillamod",
@@ -63,14 +42,9 @@ function displayErrors(errorMarkers, editor, monacoAlive) {
       }
     }, 100);
   }
-
-  // display red X thingy saying errors were found
 }
 
 function ModEditor({ title, startingCode, hoistHelper, isDarkTheme, onChange }) {
-  // these states are not in use right now
-  const [errorInfo, setErrorInfo] = useState(null);
-  const [clearErrorInfo, setClearErrorInfo] = useState(null);
   const [errorCount, setErrorCount] = useState(0);
 
   // const monaco = useMonaco();
@@ -93,13 +67,11 @@ function ModEditor({ title, startingCode, hoistHelper, isDarkTheme, onChange }) 
   }
 
   function handleOnChange(newValue, e) {
-    // do some debouncing probably
-    console.log('Editor code change:', newValue, e);
-    if (onChange) onChange(newValue, e);
+    // debouncing for autosave handled in private repo
 
-    if (errorCount != 0) {
-      setErrorCount(0)
-    }
+    // console.log('Editor code change:', newValue, e);
+    if (onChange) onChange(newValue, e);
+    if (errorCount !== 0) setErrorCount(0);
   }
 
   function checkButtonClicked() {
@@ -138,8 +110,10 @@ function ModEditor({ title, startingCode, hoistHelper, isDarkTheme, onChange }) 
       monacoRef.current
     );
     if (errorMarkers) {
+      setErrorCount(errorMarkers.length);
       displayErrors(errorMarkers, editorRef.current, monacoRef.current);
     } else {
+      setErrorCount(-1);
       downloadDatapack(datapack);
     }
   }
@@ -151,10 +125,6 @@ function ModEditor({ title, startingCode, hoistHelper, isDarkTheme, onChange }) 
           <h1 className="py-2">{title}</h1>
         </Col>
         <Col md="auto" className="d-flex py-3">
-          {/* 
-          // eventually fix this error popover
-          {errorInfo} 
-          */}
           <Button
             variant="secondary"
             size="lg"
@@ -174,8 +144,6 @@ function ModEditor({ title, startingCode, hoistHelper, isDarkTheme, onChange }) 
           </Button>
         </Col>
       </Row>
-      
-
       <Row>
         <Editor
           height="85vh"
@@ -193,8 +161,7 @@ function ModEditor({ title, startingCode, hoistHelper, isDarkTheme, onChange }) 
 }
 
 function checkButtonStatus(errorCount) {
-  console.log("error count", errorCount)
-  if (errorCount == -1) {
+  if (errorCount === -1) {
     return (
       <span>
         <CheckLg color="green" style={{marginRight: '5px', marginBottom: '3px'}}/>
@@ -226,4 +193,5 @@ ModEditor.propTypes = {
   }).isRequired,
 };
 
+// eslint-disable-next-line import/prefer-default-export
 export { ModEditor };
